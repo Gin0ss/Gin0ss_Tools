@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Vector_Maths_Tool
 {
-    public partial class Form1 : Form
+    public partial class Vector_Tool : Form
     {
-        public Form1()
+        public Vector_Tool()
         {
             InitializeComponent();
         }

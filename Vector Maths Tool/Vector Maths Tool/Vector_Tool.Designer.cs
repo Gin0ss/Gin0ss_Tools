@@ -1,7 +1,7 @@
 ﻿
 namespace Vector_Maths_Tool
 {
-    partial class Form1
+    partial class Vector_Tool
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace Vector_Maths_Tool
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Vector_Tool));
             this.SuspendLayout();
             // 
             // Form1
