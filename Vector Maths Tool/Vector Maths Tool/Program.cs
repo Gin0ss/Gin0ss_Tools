@@ -8,15 +8,13 @@ namespace Vector_Maths_Tool
 {
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Vector_Tool());
+            Application.Run(new Vector_Form());
+
         }
     }
 }

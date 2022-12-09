@@ -46,16 +46,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Vector_Tool.cs">
+    <Compile Include="Vector_Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Vector_Tool.Designer.cs">
-      <DependentUpon>Vector_Tool.cs</DependentUpon>
+    <Compile Include="Vector_Form.Designer.cs">
+      <DependentUpon>Vector_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Vector_Tool.resx">
-      <DependentUpon>Vector_Tool.cs</DependentUpon>
+    <Compile Include="Vector_Loop.cs" />
+    <Compile Include="Vector_Manager.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Vector_Manager.Designer.cs">
+      <DependentUpon>Vector_Manager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vector_Shapes.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Vector_Shapes.Designer.cs">
+      <DependentUpon>Vector_Shapes.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Vector_Form.resx">
+      <DependentUpon>Vector_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
