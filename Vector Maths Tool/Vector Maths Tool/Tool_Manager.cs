@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Vector_Maths_Tool
 {
-    class Vector_Shapes
+    public class Tool_Manager
     {
-
+        public static bool isRunning = true;
 
     }
 }

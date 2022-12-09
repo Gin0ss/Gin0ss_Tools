@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Drawing;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace Vector_Maths_Tool
 {
     public partial class Vector_Form : Form
-    {
+    { 
         Graphics graphics;
         Brush drawBrush;
         Pen drawPen;
@@ -16,6 +17,7 @@ namespace Vector_Maths_Tool
         Point screenCentre;
         Size drawSize;
 
+        bool timerRunning = false;
         public Vector_Form()
         {
             InitializeComponent();
@@ -53,7 +55,8 @@ namespace Vector_Maths_Tool
 
         private void ExitButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            if (timerWorker.WorkerSupportsCancellation) { timerWorker.CancelAsync(); }
+            Application.Exit();
 
         }
 
@@ -61,5 +64,34 @@ namespace Vector_Maths_Tool
         {
             Console.WriteLine("Vector Tools by Gin0ss || V. 0.01");
         }
+
+        private void TimerButton_Click(object sender, EventArgs e)
+        {
+            if (timerRunning) { timerRunning = false; }
+            else { timerRunning = true; }
+            if (!timerWorker.IsBusy) { timerWorker.RunWorkerAsync(); }
+
+        }
+
+        private void timerWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+                BackgroundWorker worker = sender as BackgroundWorker;
+
+                int time = 0;
+                while (timerRunning)
+                {
+                    System.Threading.Thread.Sleep(1);
+                    time+=1;
+                    worker.ReportProgress(time);
+
+                }
+
+        }
+
+        private void timerWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            TimerButton.Text = e.ProgressPercentage.ToString();
+        }
+
     }
 }

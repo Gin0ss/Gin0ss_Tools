@@ -32,6 +32,8 @@ namespace Vector_Maths_Tool
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Vector_Form));
             this.ExitButton = new System.Windows.Forms.Button();
             this.HeaderText_1 = new System.Windows.Forms.Label();
+            this.TimerButton = new System.Windows.Forms.Button();
+            this.timerWorker = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // ExitButton
@@ -39,12 +41,12 @@ namespace Vector_Maths_Tool
             this.ExitButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.ExitButton.Cursor = System.Windows.Forms.Cursors.Default;
             this.ExitButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.ExitButton.Font = new System.Drawing.Font("Input", 26F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.ExitButton.ForeColor = System.Drawing.Color.DarkRed;
-            this.ExitButton.Location = new System.Drawing.Point(1801, 1035);
+            this.ExitButton.Font = new System.Drawing.Font("Input", 26F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.ExitButton.ForeColor = System.Drawing.Color.Red;
+            this.ExitButton.Location = new System.Drawing.Point(1801, 1031);
             this.ExitButton.Name = "ExitButton";
             this.ExitButton.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.ExitButton.Size = new System.Drawing.Size(107, 33);
+            this.ExitButton.Size = new System.Drawing.Size(107, 37);
             this.ExitButton.TabIndex = 0;
             this.ExitButton.Text = "CLOSE";
             this.ExitButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -63,6 +65,26 @@ namespace Vector_Maths_Tool
             this.HeaderText_1.Text = "Vector Tool";
             this.HeaderText_1.Click += new System.EventHandler(this.HeaderText_1_Click);
             // 
+            // TimerButton
+            // 
+            this.TimerButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
+            this.TimerButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.TimerButton.Font = new System.Drawing.Font("Input", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TimerButton.Location = new System.Drawing.Point(1655, 12);
+            this.TimerButton.Name = "TimerButton";
+            this.TimerButton.Size = new System.Drawing.Size(253, 39);
+            this.TimerButton.TabIndex = 2;
+            this.TimerButton.Text = "Timer";
+            this.TimerButton.UseVisualStyleBackColor = false;
+            this.TimerButton.Click += new System.EventHandler(this.TimerButton_Click);
+            // 
+            // timerWorker
+            // 
+            this.timerWorker.WorkerReportsProgress = true;
+            this.timerWorker.WorkerSupportsCancellation = true;
+            this.timerWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.timerWorker_DoWork);
+            this.timerWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.timerWorker_ProgressChanged);
+            // 
             // Vector_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 10F);
@@ -70,6 +92,7 @@ namespace Vector_Maths_Tool
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Desktop;
             this.ClientSize = new System.Drawing.Size(1920, 1080);
+            this.Controls.Add(this.TimerButton);
             this.Controls.Add(this.HeaderText_1);
             this.Controls.Add(this.ExitButton);
             this.Cursor = System.Windows.Forms.Cursors.Default;
@@ -91,6 +114,8 @@ namespace Vector_Maths_Tool
 
         private System.Windows.Forms.Button ExitButton;
         private System.Windows.Forms.Label HeaderText_1;
+        private System.Windows.Forms.Button TimerButton;
+        private System.ComponentModel.BackgroundWorker timerWorker;
     }
 }
 
