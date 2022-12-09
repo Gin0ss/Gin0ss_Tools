@@ -32,18 +32,20 @@ namespace Vector_Maths_Tool
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Vector_Tool));
             this.SuspendLayout();
             // 
-            // Form1
+            // Vector_Tool
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(4F, 14F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 10F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Desktop;
             this.ClientSize = new System.Drawing.Size(1904, 1041);
-            this.Font = new System.Drawing.Font("Agency FB", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Input", 8.249999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.Name = "Form1";
+            this.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.Name = "Vector_Tool";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Vector Tool";
+            this.TransparencyKey = System.Drawing.Color.Transparent;
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.ResumeLayout(false);
 
