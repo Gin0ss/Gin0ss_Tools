@@ -27,6 +27,7 @@ namespace Vector_Maths_Tool
         bool timerRunning = false;
         bool isDrawingVector = false;
         bool canvasPressed = false;
+        bool canCreateVector = true;
 
         string timerOut;
 
@@ -68,7 +69,7 @@ namespace Vector_Maths_Tool
             }
 
         }
-
+        //Draw line and create a line object
         void drawLine(Pen pen, Point lineStart, Point lineEnd)
         {
             Point[] linePoints =
@@ -79,7 +80,17 @@ namespace Vector_Maths_Tool
             };
 
             graphics.DrawLine(pen, linePoints[0], linePoints[1]);
-            vectorList.Add(new Vector_Shapes(linePoints, graphics));
+
+            if (canCreateVector)
+            {
+                canCreateVector = false;
+                vectorList.Add(new Vector_Shapes(linePoints, graphics));
+
+                for (int i = 0; i < vectorList.Count; i++)
+                {
+                    Console.WriteLine(vectorList.ToArray()[i].linePoints[0]);
+                }
+            }
 
         }
 
@@ -94,10 +105,10 @@ namespace Vector_Maths_Tool
             canvasPressed = true;
             UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
             startPoint = PointToClient(MousePosition);
-            //Canvas.Refresh();
 
         }
 
+        //Mouse button released over canvas
         private void Canvas_MouseUp(object sender, MouseEventArgs e)
         {
             canvasPressed = false;
@@ -107,6 +118,7 @@ namespace Vector_Maths_Tool
 
         }
 
+        //Mouse moved while over canvas
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
             Canvas.Refresh();
@@ -203,10 +215,10 @@ namespace Vector_Maths_Tool
 
         private void CreateVector_Click(object sender, EventArgs e)
         {
-            if (!isDrawingVector) { isDrawingVector = true; }
+            if (!isDrawingVector) { isDrawingVector = true; canCreateVector = true; ; }
             else { isDrawingVector = false; }
             UpdateBoolChecker("Line_Draw", isDrawingVector, 0);
-            Canvas.Invalidate();
+            Canvas.Refresh();
         }
 
         //Clears Screen
