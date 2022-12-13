@@ -3,6 +3,7 @@ using System.Drawing;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Vector_Maths_Tool
 {
@@ -10,20 +11,23 @@ namespace Vector_Maths_Tool
     {
         #region Variables
 
-        Graphics graphics;
-        Brush drawBrush;
-        Pen drawPen;
+        Graphics graphics = null;
 
-        Color currentColor;
-
-        Point windowCentre;
-        Point screenCentre;
-        Size drawSize;
+        Color currentColor = Color.FromArgb(255, 16, 255, 8);
+        Point canvasCentre;
+        Point startPoint;
 
         Stopwatch runTimer = new Stopwatch();
 
+        List<Vector_Shapes> vectorList = new List<Vector_Shapes>();
+
+        static PictureBox[] boolCheckers;
+        static Label[] boolLabels;
+
         bool timerRunning = false;
-        bool isDrawing = false;
+        bool isDrawingVector = false;
+        bool canvasPressed = false;
+
         string timerOut;
 
         #endregion
@@ -31,64 +35,108 @@ namespace Vector_Maths_Tool
         public Vector_Form()
         {
             runTimer.Start();
+
             InitializeComponent();
 
         }
 
+        //Initialise all bool checkboxes and label into array on load
+        private void Vector_Form_Load(object sender, EventArgs e)
+        {
+            PictureBox[] a = { Bool_Check_0, Bool_Check_1, Bool_Check_2 };
+            Label[] b = { Bool_Label_0, Bool_Label_1, Bool_Label_2 };
+            startPoint = new Point(Canvas.Width / 2, Canvas.Height / 2);
+
+            boolCheckers = a;
+            boolLabels = b;
+        }
+
         #region Graphics
-        private void Vector_Graphics_Paint(object sender, PaintEventArgs e)
+
+        private void Canvas_Paint(object sender, PaintEventArgs e)
         {
             graphics = e.Graphics;
-            currentColor = Color.FromArgb(255, 16, 255, 8);
-            drawBrush = new SolidBrush(currentColor);
-            drawPen = new Pen(currentColor);
 
-            screenCentre = new Point(Screen.FromPoint(Point.Empty).Bounds.Width / 2, Screen.FromPoint(Point.Empty).Bounds.Height / 2);
-            windowCentre = new Point(Width / 2, Height / 2);
-            drawSize = new Size(8, 8);
+            canvasCentre = new Point(Canvas.Width / 2, Canvas.Height / 2);
+            Pen drawPen = new Pen(currentColor);
+            Brush drawBrush = new SolidBrush(currentColor);
 
-            Cursor.Position = screenCentre;
-            ClearScreen();
+            if (canvasPressed && isDrawingVector)
+            {
+                drawLine(drawPen, startPoint, PointToClient(MousePosition));
+
+            }
 
         }
 
-        public void UpdateLine()
+        void drawLine(Pen pen, Point lineStart, Point lineEnd)
         {
-            ClearScreen();
-            Cursor.Position = screenCentre;
-            isDrawing = true;
-            currentColor = Color.FromArgb(128, 12, 220, 12);
-            graphics.DrawLine(drawPen, new Point(MousePosition.X - windowCentre.X, MousePosition.Y - windowCentre.Y), windowCentre);
+            Point[] linePoints =
+            {
+                lineStart,
+                lineEnd
+
+            };
+
+            graphics.DrawLine(pen, linePoints[0], linePoints[1]);
+            vectorList.Add(new Vector_Shapes(linePoints, graphics));
 
         }
 
-        public void ClearScreen(PaintEventArgs e)
-        {
-            graphics.Clear(BackColor);
-            //Other graphical constants
-
-        }
 
         #endregion
 
         #region User_Input
-        private void Vector_Form_Click(object sender, EventArgs e)
+
+        //Mouse button down over canvas
+        private void Canvas_MouseDown(object sender, MouseEventArgs e)
         {
-            if (isDrawing)
+            canvasPressed = true;
+            UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
+            startPoint = PointToClient(MousePosition);
+            //Canvas.Refresh();
+
+        }
+
+        private void Canvas_MouseUp(object sender, MouseEventArgs e)
+        {
+            canvasPressed = false;
+            isDrawingVector = false;
+            UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
+            UpdateBoolChecker("Line_Draw", isDrawingVector, 0);
+
+        }
+
+        private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            Canvas.Refresh();
+
+        }
+
+
+        //Updates Bool checker UI box and label with index of ui
+        void UpdateBoolChecker(string boolName, bool boolCheck, int boxIndex)
+        {
+            if (boolCheck) { boolCheckers[boxIndex].BackColor = currentColor; }
+            else { boolCheckers[boxIndex].BackColor = Button_Panel.BackColor; }
+
+            if (boolName.Length > 11)
             {
-                currentColor = Color.FromArgb(255, 16, 255, 8);
-                graphics.DrawLine(drawPen, new Point(MousePosition.X - windowCentre.X, MousePosition.Y - windowCentre.Y), windowCentre);
-                isDrawing = false;
+                boolName = boolName.Substring(0, 11);
             }
+            boolLabels[boxIndex].Text = boolName;
+            boolCheckers[boxIndex].Refresh();
+
         }
 
         #endregion
 
         #region Buttons
+
         //Closes App
         private void ExitButton_Click(object sender, EventArgs e)
         {
-            if (timerWorker.WorkerSupportsCancellation) { timerWorker.CancelAsync(); }
+            if (TimerWorker.WorkerSupportsCancellation) { TimerWorker.CancelAsync(); }
             Application.Exit();
 
         }
@@ -96,15 +144,17 @@ namespace Vector_Maths_Tool
         //Title text on click shows info
         private void HeaderText_1_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Vector Tools by Gin0ss || V. 0.03");
+            Console.WriteLine("Vector Tools by Gin0ss || V. 0.05");
         }
 
         #region Timer
+        //Timer Button CLicked
         private void TimerButton_Click(object sender, EventArgs e)
         {
             if (timerRunning) { timerRunning = false; }
             else { timerRunning = true; }
-            if (!timerWorker.IsBusy) { timerWorker.RunWorkerAsync(); }
+            if (!TimerWorker.IsBusy) { TimerWorker.RunWorkerAsync(); }
+            UpdateBoolChecker("Timer_Run", timerRunning, 2);
 
         }
 
@@ -151,17 +201,21 @@ namespace Vector_Maths_Tool
         }
         #endregion
 
-        #endregion
-
         private void CreateVector_Click(object sender, EventArgs e)
         {
-            UpdateLine();
+            if (!isDrawingVector) { isDrawingVector = true; }
+            else { isDrawingVector = false; }
+            UpdateBoolChecker("Line_Draw", isDrawingVector, 0);
+            Canvas.Invalidate();
         }
 
+        //Clears Screen
         private void ClearButton_Click(object sender, EventArgs e)
         {
-            ClearScreen();
+
         }
+
+        #endregion
 
     }
 }
