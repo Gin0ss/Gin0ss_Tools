@@ -9,7 +9,7 @@ namespace Vector_Maths_Tool
 {
     public class Vector_Shapes
     {
-        public Color currentColor;
+        public Color currentColor = Color.FromArgb(255, 16, 255, 8);
         public Pen drawPen = new Pen(Color.FromArgb(255, 16, 255, 8));
         public Brush drawBrush = new SolidBrush(Color.FromArgb(255, 16, 255, 8));
 
@@ -17,18 +17,10 @@ namespace Vector_Maths_Tool
 
         public Point[] linePoints;
 
-        public Vector_Shapes(Point[] points, Graphics g)
+        public Vector_Shapes(Point startPoint, Point endPoint)
         {
-            linePoints = points;
-
-        }
-
-        public void Draw_Line()
-        {
-            currentColor = Color.FromArgb(255, 16, 255, 8);
-
-            Pen drawPen = new Pen(currentColor);
-            Brush drawBrush = new SolidBrush(currentColor);
+            Console.WriteLine("Line at ( " + startPoint + " : " + endPoint + " ) Created"); //Debug Line CoOrds
+            linePoints = new Point[] { startPoint, endPoint };
 
         }
 

@@ -11,11 +11,12 @@ namespace Vector_Maths_Tool
     {
         #region Variables
 
-        Graphics graphics = null;
+        //Graphics graphics = null;
 
-        Color currentColor = Color.FromArgb(255, 16, 255, 8);
+        Color currentColor = Color.FromArgb(128, 18, 250, 16);
         Point canvasCentre;
         Point startPoint;
+        Point endPoint;
 
         Stopwatch runTimer = new Stopwatch();
 
@@ -25,8 +26,10 @@ namespace Vector_Maths_Tool
         static Label[] boolLabels;
 
         bool timerRunning = false;
+        bool onCanvas = false;
         bool isDrawingVector = false;
         bool canvasPressed = false;
+        bool canvasReleased = false;
         bool canCreateVector = true;
 
         string timerOut;
@@ -44,9 +47,8 @@ namespace Vector_Maths_Tool
         //Initialise all bool checkboxes and label into array on load
         private void Vector_Form_Load(object sender, EventArgs e)
         {
-            PictureBox[] a = { Bool_Check_0, Bool_Check_1, Bool_Check_2 };
-            Label[] b = { Bool_Label_0, Bool_Label_1, Bool_Label_2 };
-            startPoint = new Point(Canvas.Width / 2, Canvas.Height / 2);
+            PictureBox[] a = { Bool_Check_0, Bool_Check_1, Bool_Check_2, Bool_Check_3 };
+            Label[] b = { Bool_Label_0, Bool_Label_1, Bool_Label_2, Bool_Label_3 };
 
             boolCheckers = a;
             boolLabels = b;
@@ -56,7 +58,7 @@ namespace Vector_Maths_Tool
 
         private void Canvas_Paint(object sender, PaintEventArgs e)
         {
-            graphics = e.Graphics;
+            Graphics graphics = e.Graphics;
 
             canvasCentre = new Point(Canvas.Width / 2, Canvas.Height / 2);
             Pen drawPen = new Pen(currentColor);
@@ -64,33 +66,40 @@ namespace Vector_Maths_Tool
 
             if (canvasPressed && isDrawingVector)
             {
-                drawLine(drawPen, startPoint, PointToClient(MousePosition));
+                DrawGuideLine(drawPen, startPoint, PointToClient(MousePosition), e.Graphics);
+                //else if(canvasReleased){ Create_Line(drawPen, startPoint, PointToClient(MousePosition), e.Graphics); }
+
+            }
+
+            if (canvasReleased && canCreateVector && canCreateVector)
+            {
+                canvasReleased = false;
+                endPoint = PointToClient(MousePosition);
+
+                Create_Line(drawPen, startPoint, endPoint);
 
             }
 
         }
-        //Draw line and create a line object
-        void drawLine(Pen pen, Point lineStart, Point lineEnd)
+        void DrawGuideLine(Pen pen, Point lineStart, Point lineEnd, Graphics graphics)
         {
-            Point[] linePoints =
-            {
-                lineStart,
-                lineEnd
+            graphics.DrawLine(pen, lineStart, PointToClient(MousePosition));
 
-            };
+        }
 
-            graphics.DrawLine(pen, linePoints[0], linePoints[1]);
+        //Draw line and create a line object
+        void Create_Line(Pen pen, Point lineStart, Point lineEnd)
+        {
+            canCreateVector = false;
+            UpdateBoolChecker("Can_Create", canCreateVector, 2);
+            Console.WriteLine("Line Count [{0}]", vectorList.Count); //Debug Length of list
+            vectorList.Add(new Vector_Shapes(startPoint, endPoint));
 
-            if (canCreateVector)
-            {
-                canCreateVector = false;
-                vectorList.Add(new Vector_Shapes(linePoints, graphics));
+            //for (int i = 0; i < vectorList.Count; i++)
+            //{
+            //    graphics.DrawLine(vectorList[i].drawPen, vectorList[i].linePoints[0], vectorList[i].linePoints[1]);
 
-                for (int i = 0; i < vectorList.Count; i++)
-                {
-                    Console.WriteLine(vectorList.ToArray()[i].linePoints[0]);
-                }
-            }
+            //}
 
         }
 
@@ -103,18 +112,36 @@ namespace Vector_Maths_Tool
         private void Canvas_MouseDown(object sender, MouseEventArgs e)
         {
             canvasPressed = true;
-            UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
             startPoint = PointToClient(MousePosition);
+            UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
 
         }
 
         //Mouse button released over canvas
         private void Canvas_MouseUp(object sender, MouseEventArgs e)
         {
+            canvasReleased = true;
             canvasPressed = false;
             isDrawingVector = false;
             UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
-            UpdateBoolChecker("Line_Draw", isDrawingVector, 0);
+            UpdateBoolChecker("DrawingLine", isDrawingVector, 0);
+
+        }
+        //Mouse over Canvas
+        private void Canvas_MouseEnter(object sender, EventArgs e)
+        {
+            onCanvas = true;
+            UpdateBoolChecker("On_Canvas", onCanvas, 3);
+
+        }
+        //Mouse leaves Canvas
+        private void Canvas_MouseLeave(object sender, EventArgs e)
+        {
+            onCanvas = false;
+            canvasPressed = false;
+            UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
+            UpdateBoolChecker("DrawingLine", isDrawingVector, 0);
+            UpdateBoolChecker("On_Canvas", onCanvas, 3);
 
         }
 
@@ -212,13 +239,13 @@ namespace Vector_Maths_Tool
             TimerButton.Text = timerOut;
         }
         #endregion
-
+        //Create Vector/Line Button
         private void CreateVector_Click(object sender, EventArgs e)
         {
-            if (!isDrawingVector) { isDrawingVector = true; canCreateVector = true; ; }
+            if (!isDrawingVector) { isDrawingVector = true; canCreateVector = true; }
             else { isDrawingVector = false; }
-            UpdateBoolChecker("Line_Draw", isDrawingVector, 0);
-            Canvas.Refresh();
+            UpdateBoolChecker("DrawingLine", isDrawingVector, 0);
+            UpdateBoolChecker("Can_Create", canCreateVector, 2);
         }
 
         //Clears Screen
