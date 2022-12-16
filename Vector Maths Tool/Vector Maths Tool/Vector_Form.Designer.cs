@@ -45,10 +45,13 @@ namespace Vector_Maths_Tool
             this.Bool_Check_2 = new System.Windows.Forms.PictureBox();
             this.Bool_Check_0 = new System.Windows.Forms.PictureBox();
             this.UI_Delay = new System.ComponentModel.BackgroundWorker();
+            this.Bool_Label_3 = new System.Windows.Forms.Label();
+            this.Bool_Check_3 = new System.Windows.Forms.PictureBox();
             this.Button_Panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_0)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_3)).BeginInit();
             this.SuspendLayout();
             // 
             // ExitButton
@@ -153,6 +156,8 @@ namespace Vector_Maths_Tool
             this.Canvas.TabIndex = 5;
             this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
             this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
+            this.Canvas.MouseEnter += new System.EventHandler(this.Canvas_MouseEnter);
+            this.Canvas.MouseLeave += new System.EventHandler(this.Canvas_MouseLeave);
             this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
             this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
             // 
@@ -162,6 +167,8 @@ namespace Vector_Maths_Tool
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Panel.AutoSize = true;
             this.Button_Panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(14)))), ((int)(((byte)(18)))));
+            this.Button_Panel.Controls.Add(this.Bool_Label_3);
+            this.Button_Panel.Controls.Add(this.Bool_Check_3);
             this.Button_Panel.Controls.Add(this.Bool_Label_2);
             this.Button_Panel.Controls.Add(this.Bool_Label_1);
             this.Button_Panel.Controls.Add(this.Bool_Label_0);
@@ -184,7 +191,7 @@ namespace Vector_Maths_Tool
             this.Bool_Label_2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Bool_Label_2.AutoSize = true;
             this.Bool_Label_2.Font = new System.Drawing.Font("Input", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Bool_Label_2.Location = new System.Drawing.Point(131, 980);
+            this.Bool_Label_2.Location = new System.Drawing.Point(138, 924);
             this.Bool_Label_2.Name = "Bool_Label_2";
             this.Bool_Label_2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Bool_Label_2.Size = new System.Drawing.Size(53, 12);
@@ -197,7 +204,7 @@ namespace Vector_Maths_Tool
             this.Bool_Label_1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Bool_Label_1.AutoSize = true;
             this.Bool_Label_1.Font = new System.Drawing.Font("Input", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Bool_Label_1.Location = new System.Drawing.Point(131, 945);
+            this.Bool_Label_1.Location = new System.Drawing.Point(138, 889);
             this.Bool_Label_1.Name = "Bool_Label_1";
             this.Bool_Label_1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Bool_Label_1.Size = new System.Drawing.Size(53, 12);
@@ -210,7 +217,7 @@ namespace Vector_Maths_Tool
             this.Bool_Label_0.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Bool_Label_0.AutoSize = true;
             this.Bool_Label_0.Font = new System.Drawing.Font("Input", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Bool_Label_0.Location = new System.Drawing.Point(131, 910);
+            this.Bool_Label_0.Location = new System.Drawing.Point(138, 854);
             this.Bool_Label_0.Name = "Bool_Label_0";
             this.Bool_Label_0.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Bool_Label_0.Size = new System.Drawing.Size(53, 12);
@@ -222,7 +229,7 @@ namespace Vector_Maths_Tool
             // 
             this.Bool_Check_1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Bool_Check_1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Bool_Check_1.Location = new System.Drawing.Point(231, 943);
+            this.Bool_Check_1.Location = new System.Drawing.Point(238, 887);
             this.Bool_Check_1.Name = "Bool_Check_1";
             this.Bool_Check_1.Size = new System.Drawing.Size(16, 16);
             this.Bool_Check_1.TabIndex = 7;
@@ -232,7 +239,7 @@ namespace Vector_Maths_Tool
             // 
             this.Bool_Check_2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Bool_Check_2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Bool_Check_2.Location = new System.Drawing.Point(231, 978);
+            this.Bool_Check_2.Location = new System.Drawing.Point(238, 922);
             this.Bool_Check_2.Name = "Bool_Check_2";
             this.Bool_Check_2.Size = new System.Drawing.Size(16, 16);
             this.Bool_Check_2.TabIndex = 6;
@@ -242,11 +249,34 @@ namespace Vector_Maths_Tool
             // 
             this.Bool_Check_0.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Bool_Check_0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Bool_Check_0.Location = new System.Drawing.Point(231, 908);
+            this.Bool_Check_0.Location = new System.Drawing.Point(238, 852);
             this.Bool_Check_0.Name = "Bool_Check_0";
             this.Bool_Check_0.Size = new System.Drawing.Size(16, 16);
             this.Bool_Check_0.TabIndex = 5;
             this.Bool_Check_0.TabStop = false;
+            // 
+            // Bool_Label_3
+            // 
+            this.Bool_Label_3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Bool_Label_3.AutoSize = true;
+            this.Bool_Label_3.Font = new System.Drawing.Font("Input", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Bool_Label_3.Location = new System.Drawing.Point(138, 959);
+            this.Bool_Label_3.Name = "Bool_Label_3";
+            this.Bool_Label_3.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Bool_Label_3.Size = new System.Drawing.Size(53, 12);
+            this.Bool_Label_3.TabIndex = 12;
+            this.Bool_Label_3.Text = "Bool_3";
+            this.Bool_Label_3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // Bool_Check_3
+            // 
+            this.Bool_Check_3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Bool_Check_3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Bool_Check_3.Location = new System.Drawing.Point(238, 958);
+            this.Bool_Check_3.Name = "Bool_Check_3";
+            this.Bool_Check_3.Size = new System.Drawing.Size(16, 16);
+            this.Bool_Check_3.TabIndex = 11;
+            this.Bool_Check_3.TabStop = false;
             // 
             // Vector_Form
             // 
@@ -273,6 +303,7 @@ namespace Vector_Maths_Tool
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_0)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -295,6 +326,8 @@ namespace Vector_Maths_Tool
         private System.Windows.Forms.PictureBox Bool_Check_2;
         private System.Windows.Forms.PictureBox Bool_Check_0;
         private System.ComponentModel.BackgroundWorker UI_Delay;
+        private System.Windows.Forms.Label Bool_Label_3;
+        private System.Windows.Forms.PictureBox Bool_Check_3;
     }
 }
 
