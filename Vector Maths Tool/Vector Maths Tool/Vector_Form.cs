@@ -67,16 +67,22 @@ namespace Vector_Maths_Tool
             if (canvasPressed && isDrawingVector)
             {
                 DrawGuideLine(drawPen, startPoint, PointToClient(MousePosition), e.Graphics);
-                //else if(canvasReleased){ Create_Line(drawPen, startPoint, PointToClient(MousePosition), e.Graphics); }
 
             }
 
-            if (canvasReleased && canCreateVector && canCreateVector)
+            if (canvasReleased && canCreateVector)
             {
                 canvasReleased = false;
+                canCreateVector = false;
                 endPoint = PointToClient(MousePosition);
 
                 Create_Line(drawPen, startPoint, endPoint);
+
+            }
+
+            for (int i = 0; i < vectorList.Count; i++)
+            {
+                graphics.DrawLine(vectorList[i].drawPen, vectorList[i].linePoints[0], vectorList[i].linePoints[1]);
 
             }
 
@@ -92,14 +98,8 @@ namespace Vector_Maths_Tool
         {
             canCreateVector = false;
             UpdateBoolChecker("Can_Create", canCreateVector, 2);
-            Console.WriteLine("Line Count [{0}]", vectorList.Count); //Debug Length of list
+            Console.WriteLine("Line Count [{0}]", vectorList.Count);
             vectorList.Add(new Vector_Shapes(startPoint, endPoint));
-
-            //for (int i = 0; i < vectorList.Count; i++)
-            //{
-            //    graphics.DrawLine(vectorList[i].drawPen, vectorList[i].linePoints[0], vectorList[i].linePoints[1]);
-
-            //}
 
         }
 
@@ -112,7 +112,7 @@ namespace Vector_Maths_Tool
         private void Canvas_MouseDown(object sender, MouseEventArgs e)
         {
             canvasPressed = true;
-            startPoint = PointToClient(MousePosition);
+            if (isDrawingVector) { startPoint = PointToClient(MousePosition); }
             UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
 
         }
@@ -125,6 +125,7 @@ namespace Vector_Maths_Tool
             isDrawingVector = false;
             UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
             UpdateBoolChecker("DrawingLine", isDrawingVector, 0);
+            Canvas.Refresh();
 
         }
         //Mouse over Canvas
@@ -148,7 +149,7 @@ namespace Vector_Maths_Tool
         //Mouse moved while over canvas
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            Canvas.Invalidate();
+            if (isDrawingVector) { Canvas.Refresh(); }
 
         }
 
