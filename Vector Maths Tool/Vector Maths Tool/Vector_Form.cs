@@ -11,12 +11,10 @@ namespace Vector_Maths_Tool
     {
         #region Variables
 
-        //Graphics graphics = null;
-
-        Color currentColor = Color.FromArgb(128, 18, 250, 16);
+        Color currentColor = Color.FromArgb(128, 64, 220, 16);
         Point canvasCentre;
         Point startPoint;
-        Point endPoint;
+        Point canvasMousePos;
 
         Stopwatch runTimer = new Stopwatch();
 
@@ -30,7 +28,7 @@ namespace Vector_Maths_Tool
         bool isDrawingVector = false;
         bool canvasPressed = false;
         bool canvasReleased = false;
-        bool canCreateVector = true;
+        bool canCreateVector = false;
 
         string timerOut;
 
@@ -61,22 +59,28 @@ namespace Vector_Maths_Tool
             Graphics graphics = e.Graphics;
 
             canvasCentre = new Point(Canvas.Width / 2, Canvas.Height / 2);
+            canvasMousePos = new Point(PointToClient(MousePosition).X - Canvas.Location.X, PointToClient(MousePosition).Y - Canvas.Location.Y);
             Pen drawPen = new Pen(currentColor);
             Brush drawBrush = new SolidBrush(currentColor);
+            Point endPoint;
 
             if (canvasPressed && isDrawingVector)
             {
-                DrawGuideLine(drawPen, startPoint, PointToClient(MousePosition), e.Graphics);
+
+                DrawGuideLine(drawPen, startPoint, canvasMousePos, e.Graphics);
 
             }
 
-            if (canvasReleased && canCreateVector)
+            if (canvasReleased)
             {
                 canvasReleased = false;
-                canCreateVector = false;
-                endPoint = PointToClient(MousePosition);
+                if (canCreateVector)
+                {
+                    canCreateVector = false;
+                    endPoint = canvasMousePos;
 
-                Create_Line(drawPen, startPoint, endPoint);
+                    Create_Line(drawPen, startPoint, endPoint);
+                }
 
             }
 
@@ -87,9 +91,10 @@ namespace Vector_Maths_Tool
             }
 
         }
+        //Temp line top visualise line o be created
         void DrawGuideLine(Pen pen, Point lineStart, Point lineEnd, Graphics graphics)
         {
-            graphics.DrawLine(pen, lineStart, PointToClient(MousePosition));
+            graphics.DrawLine(pen, lineStart, lineEnd);
 
         }
 
@@ -99,7 +104,7 @@ namespace Vector_Maths_Tool
             canCreateVector = false;
             UpdateBoolChecker("Can_Create", canCreateVector, 2);
             Console.WriteLine("Line Count [{0}]", vectorList.Count);
-            vectorList.Add(new Vector_Shapes(startPoint, endPoint));
+            vectorList.Add(new Vector_Shapes(lineStart, lineEnd));
 
         }
 
@@ -112,7 +117,7 @@ namespace Vector_Maths_Tool
         private void Canvas_MouseDown(object sender, MouseEventArgs e)
         {
             canvasPressed = true;
-            if (isDrawingVector) { startPoint = PointToClient(MousePosition); }
+            if (isDrawingVector) { startPoint = canvasMousePos; }
             UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
 
         }
