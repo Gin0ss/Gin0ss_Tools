@@ -29,6 +29,7 @@ namespace Vector_Maths_Tool
         bool canvasPressed = false;
         bool canvasReleased = false;
         bool canCreateVector = false;
+        bool isClearingScreen = false;
 
         string timerOut;
 
@@ -63,6 +64,14 @@ namespace Vector_Maths_Tool
             Pen drawPen = new Pen(currentColor);
             Brush drawBrush = new SolidBrush(currentColor);
             Point endPoint;
+
+            if (isClearingScreen)
+            {
+                isClearingScreen = false;
+                graphics.Clear(Canvas.BackColor);
+                return;
+
+            }
 
             if (canvasPressed && isDrawingVector)
             {
@@ -257,6 +266,9 @@ namespace Vector_Maths_Tool
         //Clears Screen
         private void ClearButton_Click(object sender, EventArgs e)
         {
+            isClearingScreen = true;
+            vectorList.Clear();
+            Canvas.Refresh();
 
         }
 
