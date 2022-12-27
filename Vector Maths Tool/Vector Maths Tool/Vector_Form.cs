@@ -30,7 +30,12 @@ namespace Vector_Maths_Tool
         bool isDrawingVector = false;
         bool canvasPressed = false;
         bool canvasReleased = false;
+<<<<<<< Updated upstream
         bool canCreateVector = true;
+=======
+        bool canCreateVector = false;
+        bool isClearingScreen = false;
+>>>>>>> Stashed changes
 
         string timerOut;
 
@@ -64,6 +69,14 @@ namespace Vector_Maths_Tool
             Pen drawPen = new Pen(currentColor);
             Brush drawBrush = new SolidBrush(currentColor);
 
+            if (isClearingScreen)
+            {
+                isClearingScreen = false;
+                graphics.Clear(Canvas.BackColor);
+                return;
+
+            }
+
             if (canvasPressed && isDrawingVector)
             {
                 DrawGuideLine(drawPen, startPoint, PointToClient(MousePosition), e.Graphics);
@@ -87,6 +100,10 @@ namespace Vector_Maths_Tool
             }
 
         }
+<<<<<<< Updated upstream
+=======
+        //Temp line top visualise line to be created
+>>>>>>> Stashed changes
         void DrawGuideLine(Pen pen, Point lineStart, Point lineEnd, Graphics graphics)
         {
             graphics.DrawLine(pen, lineStart, PointToClient(MousePosition));
@@ -252,9 +269,10 @@ namespace Vector_Maths_Tool
         //Clears Screen
         private void ClearButton_Click(object sender, EventArgs e)
         {
-
+            isClearingScreen = true;
+            vectorList.Clear();
+            Canvas.Refresh();
         }
-
         #endregion
 
     }

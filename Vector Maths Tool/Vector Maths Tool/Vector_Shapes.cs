@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Vector_Maths_Tool
 {
@@ -19,7 +15,7 @@ namespace Vector_Maths_Tool
 
         public Vector_Shapes(Point startPoint, Point endPoint)
         {
-            Console.WriteLine("Line at ( " + startPoint + " : " + endPoint + " ) Created"); //Debug Line CoOrds
+            Console.WriteLine("Line at ( " + startPoint + " : " + endPoint + " ) Created");
             linePoints = new Point[] { startPoint, endPoint };
 
         }
