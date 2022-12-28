@@ -36,7 +36,6 @@ namespace Vector_Maths_Tool
             this.TimerWorker = new System.ComponentModel.BackgroundWorker();
             this.CreateVector = new System.Windows.Forms.Button();
             this.ClearButton = new System.Windows.Forms.Button();
-            this.Canvas = new System.Windows.Forms.Panel();
             this.Button_Panel = new System.Windows.Forms.Panel();
             this.Bool_Label_3 = new System.Windows.Forms.Label();
             this.Bool_Check_3 = new System.Windows.Forms.PictureBox();
@@ -47,11 +46,13 @@ namespace Vector_Maths_Tool
             this.Bool_Check_2 = new System.Windows.Forms.PictureBox();
             this.Bool_Check_0 = new System.Windows.Forms.PictureBox();
             this.UI_Delay = new System.ComponentModel.BackgroundWorker();
+            this.Canvas = new System.Windows.Forms.PictureBox();
             this.Button_Panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_0)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Canvas)).BeginInit();
             this.SuspendLayout();
             // 
             // ExitButton
@@ -139,26 +140,6 @@ namespace Vector_Maths_Tool
             this.ClearButton.Text = "Clear Screen";
             this.ClearButton.UseVisualStyleBackColor = false;
             this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
-            // 
-            // Canvas
-            // 
-            this.Canvas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Canvas.AutoSize = true;
-            this.Canvas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(8)))), ((int)(((byte)(8)))));
-            this.Canvas.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.Canvas.Location = new System.Drawing.Point(11, 28);
-            this.Canvas.Margin = new System.Windows.Forms.Padding(0);
-            this.Canvas.Name = "Canvas";
-            this.Canvas.Size = new System.Drawing.Size(1635, 1041);
-            this.Canvas.TabIndex = 5;
-            this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
-            this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
-            this.Canvas.MouseEnter += new System.EventHandler(this.Canvas_MouseEnter);
-            this.Canvas.MouseLeave += new System.EventHandler(this.Canvas_MouseLeave);
-            this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
-            this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
             // 
             // Button_Panel
             // 
@@ -277,6 +258,22 @@ namespace Vector_Maths_Tool
             this.Bool_Check_0.TabIndex = 5;
             this.Bool_Check_0.TabStop = false;
             // 
+            // Canvas
+            // 
+            this.Canvas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(6)))), ((int)(((byte)(8)))));
+            this.Canvas.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.Canvas.Location = new System.Drawing.Point(12, 29);
+            this.Canvas.Name = "Canvas";
+            this.Canvas.Size = new System.Drawing.Size(1633, 1039);
+            this.Canvas.TabIndex = 7;
+            this.Canvas.TabStop = false;
+            this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
+            this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
+            this.Canvas.MouseEnter += new System.EventHandler(this.Canvas_MouseEnter);
+            this.Canvas.MouseLeave += new System.EventHandler(this.Canvas_MouseLeave);
+            this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
+            this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
+            // 
             // Vector_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 10F);
@@ -284,8 +281,8 @@ namespace Vector_Maths_Tool
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(36)))));
             this.ClientSize = new System.Drawing.Size(1920, 1080);
-            this.Controls.Add(this.Button_Panel);
             this.Controls.Add(this.Canvas);
+            this.Controls.Add(this.Button_Panel);
             this.Controls.Add(this.HeaderText_1);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("Input", 8.249999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -303,6 +300,7 @@ namespace Vector_Maths_Tool
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_0)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Canvas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -316,7 +314,6 @@ namespace Vector_Maths_Tool
         private System.ComponentModel.BackgroundWorker TimerWorker;
         private System.Windows.Forms.Button CreateVector;
         private System.Windows.Forms.Button ClearButton;
-        private System.Windows.Forms.Panel Canvas;
         private System.Windows.Forms.Panel Button_Panel;
         private System.Windows.Forms.Label Bool_Label_2;
         private System.Windows.Forms.Label Bool_Label_1;
@@ -327,6 +324,7 @@ namespace Vector_Maths_Tool
         private System.ComponentModel.BackgroundWorker UI_Delay;
         private System.Windows.Forms.Label Bool_Label_3;
         private System.Windows.Forms.PictureBox Bool_Check_3;
+        private System.Windows.Forms.PictureBox Canvas;
     }
 }
 
