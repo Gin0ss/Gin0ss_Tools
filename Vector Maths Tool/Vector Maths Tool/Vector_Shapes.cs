@@ -1,22 +1,34 @@
 ﻿using System;
 using System.Drawing;
+using Ginoss_Tools;
 
 namespace Vector_Maths_Tool
 {
     public class Vector_Shapes
     {
-        public Color currentColor = Color.FromArgb(255, 16, 255, 8);
-        public Pen drawPen = new Pen(Color.FromArgb(255, 16, 255, 8));
-        public Brush drawBrush = new SolidBrush(Color.FromArgb(255, 16, 255, 8));
-
         public int index;
+        public int LineWidth { get; }
+
+        public Color LineColor { get; }
+        public Pen drawPen;
+        public Brush drawBrush;
 
         public Point[] linePoints;
 
-        public Vector_Shapes(Point startPoint, Point endPoint)
+        public Vector lineVector;
+
+        public Vector_Shapes(Point startPoint, Point endPoint, int lineWidth, Color lineColor)
         {
-            Console.WriteLine("Line at ( " + startPoint + " : " + endPoint + " ) Created");
+            LineColor = lineColor;
+            drawPen = new Pen(lineColor, lineWidth);
+            drawBrush = new SolidBrush(lineColor);
+
+            Console.Write("Line at ( " + startPoint + " : " + endPoint + " ) Created");
+            Console.WriteLine(" with Line Width: " + lineWidth);
             linePoints = new Point[] { startPoint, endPoint };
+            LineWidth = lineWidth;
+
+            lineVector = new Vector();
 
         }
 

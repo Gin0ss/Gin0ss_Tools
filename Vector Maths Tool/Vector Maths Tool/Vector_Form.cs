@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Drawing;
-using System.ComponentModel;
-using System.Windows.Forms;
-using System.Diagnostics;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
+using System.Windows.Forms;
+using Ginoss_Tools;
 
 namespace Vector_Maths_Tool
 {
@@ -11,7 +12,8 @@ namespace Vector_Maths_Tool
     {
         #region Variables
 
-        Color currentColor = Color.FromArgb(128, 64, 220, 16);
+        Color guideColor = Color.FromArgb(64, 32, 120, 16);
+        Color lineColor = Color.FromArgb(255, 16, 255, 8);
         Point canvasCentre;
         Point startPoint;
         Point canvasMousePos;
@@ -22,6 +24,8 @@ namespace Vector_Maths_Tool
 
         static PictureBox[] boolCheckers;
         static Label[] boolLabels;
+
+        int LineWidth;
 
         bool timerRunning = false;
         bool onCanvas = false;
@@ -51,6 +55,10 @@ namespace Vector_Maths_Tool
 
             boolCheckers = a;
             boolLabels = b;
+
+            CurrentGuideColor.Color = guideColor;
+            CurrentLineColor.Color = lineColor;
+            LineWidth = (int)LineThicknessIncrement.Value;
         }
 
         #region Graphics
@@ -61,8 +69,8 @@ namespace Vector_Maths_Tool
 
             canvasCentre = new Point(Canvas.Width / 2, Canvas.Height / 2);
             canvasMousePos = new Point(PointToClient(MousePosition).X - Canvas.Location.X, PointToClient(MousePosition).Y - Canvas.Location.Y);
-            Pen drawPen = new Pen(currentColor);
-            Brush drawBrush = new SolidBrush(currentColor);
+            Pen drawPen = new Pen(guideColor, LineWidth);
+            Brush drawBrush = new SolidBrush(guideColor);
             Point endPoint;
 
             if (isClearingScreen)
@@ -112,8 +120,8 @@ namespace Vector_Maths_Tool
         {
             canCreateVector = false;
             UpdateBoolChecker("Can_Create", canCreateVector, 2);
-            Console.WriteLine("Line Count [{0}]", vectorList.Count);
-            vectorList.Add(new Vector_Shapes(lineStart, lineEnd));
+            Vector_Shapes newShape = new Vector_Shapes(lineStart, lineEnd, (int)(LineWidth * 1.5f), lineColor);
+            vectorList.Add(newShape);
 
         }
 
@@ -171,7 +179,7 @@ namespace Vector_Maths_Tool
         //Updates Bool checker UI box and label with index of ui
         void UpdateBoolChecker(string boolName, bool boolCheck, int boxIndex)
         {
-            if (boolCheck) { boolCheckers[boxIndex].BackColor = currentColor; }
+            if (boolCheck) { boolCheckers[boxIndex].BackColor = guideColor; }
             else { boolCheckers[boxIndex].BackColor = Button_Panel.BackColor; }
 
             if (boolName.Length > 11)
@@ -185,7 +193,7 @@ namespace Vector_Maths_Tool
 
         #endregion
 
-        #region Buttons
+        #region UI Input
 
         //Closes App
         private void ExitButton_Click(object sender, EventArgs e)
@@ -272,7 +280,30 @@ namespace Vector_Maths_Tool
 
         }
 
+        private void LineThicknessIncrement_ValueChanged(object sender, EventArgs e)
+        {
+            LineWidth = (int)LineThicknessIncrement.Value;
+
+            Console.WriteLine(String.Format("Guide_Line_Width: [{0}]", LineWidth));
+
+        }
+
         #endregion
 
+        private void GuideColorButton_Click(object sender, EventArgs e)
+        {
+            CurrentGuideColor.ShowDialog();
+            guideColor = CurrentGuideColor.Color;
+            GuideColorButton.ForeColor = guideColor;
+
+        }
+
+        private void LineColorButton_Click(object sender, EventArgs e)
+        {
+            CurrentLineColor.ShowDialog();
+            lineColor = CurrentLineColor.Color;
+            LineColorButton.ForeColor = lineColor;
+
+        }
     }
 }

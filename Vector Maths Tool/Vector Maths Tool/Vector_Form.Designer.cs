@@ -37,6 +37,8 @@ namespace Vector_Maths_Tool
             this.CreateVector = new System.Windows.Forms.Button();
             this.ClearButton = new System.Windows.Forms.Button();
             this.Button_Panel = new System.Windows.Forms.Panel();
+            this.LineThicknessLabel = new System.Windows.Forms.Label();
+            this.LineThicknessIncrement = new System.Windows.Forms.NumericUpDown();
             this.Bool_Label_3 = new System.Windows.Forms.Label();
             this.Bool_Check_3 = new System.Windows.Forms.PictureBox();
             this.Bool_Label_2 = new System.Windows.Forms.Label();
@@ -47,7 +49,12 @@ namespace Vector_Maths_Tool
             this.Bool_Check_0 = new System.Windows.Forms.PictureBox();
             this.UI_Delay = new System.ComponentModel.BackgroundWorker();
             this.Canvas = new System.Windows.Forms.PictureBox();
+            this.CurrentLineColor = new System.Windows.Forms.ColorDialog();
+            this.CurrentGuideColor = new System.Windows.Forms.ColorDialog();
+            this.GuideColorButton = new System.Windows.Forms.Button();
+            this.LineColorButton = new System.Windows.Forms.Button();
             this.Button_Panel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LineThicknessIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_2)).BeginInit();
@@ -94,9 +101,9 @@ namespace Vector_Maths_Tool
             this.TimerButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
             this.TimerButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.TimerButton.Font = new System.Drawing.Font("Input", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimerButton.Location = new System.Drawing.Point(17, 29);
+            this.TimerButton.Location = new System.Drawing.Point(10, 29);
             this.TimerButton.Name = "TimerButton";
-            this.TimerButton.Size = new System.Drawing.Size(232, 39);
+            this.TimerButton.Size = new System.Drawing.Size(237, 39);
             this.TimerButton.TabIndex = 2;
             this.TimerButton.Text = "Timer";
             this.TimerButton.UseVisualStyleBackColor = false;
@@ -117,9 +124,9 @@ namespace Vector_Maths_Tool
             this.CreateVector.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
             this.CreateVector.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.CreateVector.Font = new System.Drawing.Font("Input", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CreateVector.Location = new System.Drawing.Point(17, 99);
+            this.CreateVector.Location = new System.Drawing.Point(10, 99);
             this.CreateVector.Name = "CreateVector";
-            this.CreateVector.Size = new System.Drawing.Size(232, 39);
+            this.CreateVector.Size = new System.Drawing.Size(237, 39);
             this.CreateVector.TabIndex = 3;
             this.CreateVector.Text = "Create Vector";
             this.CreateVector.UseVisualStyleBackColor = false;
@@ -133,9 +140,9 @@ namespace Vector_Maths_Tool
             this.ClearButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
             this.ClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.ClearButton.Font = new System.Drawing.Font("Input", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ClearButton.Location = new System.Drawing.Point(17, 169);
+            this.ClearButton.Location = new System.Drawing.Point(10, 169);
             this.ClearButton.Name = "ClearButton";
-            this.ClearButton.Size = new System.Drawing.Size(232, 39);
+            this.ClearButton.Size = new System.Drawing.Size(237, 39);
             this.ClearButton.TabIndex = 4;
             this.ClearButton.Text = "Clear Screen";
             this.ClearButton.UseVisualStyleBackColor = false;
@@ -145,8 +152,11 @@ namespace Vector_Maths_Tool
             // 
             this.Button_Panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_Panel.AutoSize = true;
             this.Button_Panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(14)))), ((int)(((byte)(18)))));
+            this.Button_Panel.Controls.Add(this.LineColorButton);
+            this.Button_Panel.Controls.Add(this.GuideColorButton);
+            this.Button_Panel.Controls.Add(this.LineThicknessLabel);
+            this.Button_Panel.Controls.Add(this.LineThicknessIncrement);
             this.Button_Panel.Controls.Add(this.Bool_Label_3);
             this.Button_Panel.Controls.Add(this.Bool_Check_3);
             this.Button_Panel.Controls.Add(this.Bool_Label_2);
@@ -165,6 +175,40 @@ namespace Vector_Maths_Tool
             this.Button_Panel.Padding = new System.Windows.Forms.Padding(2);
             this.Button_Panel.Size = new System.Drawing.Size(259, 1055);
             this.Button_Panel.TabIndex = 6;
+            // 
+            // LineThicknessLabel
+            // 
+            this.LineThicknessLabel.AutoSize = true;
+            this.LineThicknessLabel.Location = new System.Drawing.Point(57, 825);
+            this.LineThicknessLabel.Name = "LineThicknessLabel";
+            this.LineThicknessLabel.Size = new System.Drawing.Size(75, 10);
+            this.LineThicknessLabel.TabIndex = 14;
+            this.LineThicknessLabel.Text = "Line_Width";
+            // 
+            // LineThicknessIncrement
+            // 
+            this.LineThicknessIncrement.AutoSize = true;
+            this.LineThicknessIncrement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(6)))), ((int)(((byte)(8)))));
+            this.LineThicknessIncrement.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.LineThicknessIncrement.Cursor = System.Windows.Forms.Cursors.Default;
+            this.LineThicknessIncrement.ForeColor = System.Drawing.Color.Red;
+            this.LineThicknessIncrement.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.LineThicknessIncrement.Location = new System.Drawing.Point(138, 822);
+            this.LineThicknessIncrement.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.LineThicknessIncrement.Name = "LineThicknessIncrement";
+            this.LineThicknessIncrement.Size = new System.Drawing.Size(120, 13);
+            this.LineThicknessIncrement.TabIndex = 13;
+            this.LineThicknessIncrement.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.LineThicknessIncrement.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.LineThicknessIncrement.ValueChanged += new System.EventHandler(this.LineThicknessIncrement_ValueChanged);
             // 
             // Bool_Label_3
             // 
@@ -264,7 +308,7 @@ namespace Vector_Maths_Tool
             this.Canvas.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Canvas.Location = new System.Drawing.Point(12, 29);
             this.Canvas.Name = "Canvas";
-            this.Canvas.Size = new System.Drawing.Size(1633, 1039);
+            this.Canvas.Size = new System.Drawing.Size(1633, 1040);
             this.Canvas.TabIndex = 7;
             this.Canvas.TabStop = false;
             this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
@@ -273,6 +317,38 @@ namespace Vector_Maths_Tool
             this.Canvas.MouseLeave += new System.EventHandler(this.Canvas_MouseLeave);
             this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
             this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
+            // 
+            // GuideColorButton
+            // 
+            this.GuideColorButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GuideColorButton.AutoSize = true;
+            this.GuideColorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
+            this.GuideColorButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.GuideColorButton.Font = new System.Drawing.Font("Input", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GuideColorButton.Location = new System.Drawing.Point(155, 794);
+            this.GuideColorButton.Name = "GuideColorButton";
+            this.GuideColorButton.Size = new System.Drawing.Size(103, 22);
+            this.GuideColorButton.TabIndex = 15;
+            this.GuideColorButton.Text = "Guide Color";
+            this.GuideColorButton.UseVisualStyleBackColor = false;
+            this.GuideColorButton.Click += new System.EventHandler(this.GuideColorButton_Click);
+            // 
+            // LineColorButton
+            // 
+            this.LineColorButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LineColorButton.AutoSize = true;
+            this.LineColorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
+            this.LineColorButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.LineColorButton.Font = new System.Drawing.Font("Input", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LineColorButton.Location = new System.Drawing.Point(131, 765);
+            this.LineColorButton.Name = "LineColorButton";
+            this.LineColorButton.Size = new System.Drawing.Size(127, 24);
+            this.LineColorButton.TabIndex = 16;
+            this.LineColorButton.Text = "Line Colour";
+            this.LineColorButton.UseVisualStyleBackColor = false;
+            this.LineColorButton.Click += new System.EventHandler(this.LineColorButton_Click);
             // 
             // Vector_Form
             // 
@@ -296,6 +372,7 @@ namespace Vector_Maths_Tool
             this.Load += new System.EventHandler(this.Vector_Form_Load);
             this.Button_Panel.ResumeLayout(false);
             this.Button_Panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LineThicknessIncrement)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_2)).EndInit();
@@ -325,6 +402,12 @@ namespace Vector_Maths_Tool
         private System.Windows.Forms.Label Bool_Label_3;
         private System.Windows.Forms.PictureBox Bool_Check_3;
         private System.Windows.Forms.PictureBox Canvas;
+        private System.Windows.Forms.NumericUpDown LineThicknessIncrement;
+        private System.Windows.Forms.Label LineThicknessLabel;
+        private System.Windows.Forms.ColorDialog CurrentLineColor;
+        private System.Windows.Forms.Button LineColorButton;
+        private System.Windows.Forms.Button GuideColorButton;
+        private System.Windows.Forms.ColorDialog CurrentGuideColor;
     }
 }
 
