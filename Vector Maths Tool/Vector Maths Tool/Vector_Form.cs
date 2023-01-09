@@ -6,6 +6,28 @@ using System.Drawing;
 using System.Windows.Forms;
 using Ginoss_Tools;
 
+/* TO DO:
+ * Line Created (X)
+ * Get start and end (X)
+ * Calculate Vector normal and magnitude (X)
+ * Click Select Vector button on sidebar (X)
+ * Loop through each pixel using Bresenham Algorithm going along the normal (Infinite loop did something wrong)
+ * Store pixel locations under lines index value in an xml file
+ * When mouse moves check for the current mouse position coordinates in the file for associated line index
+ * if coordinate exists in file and is linked to a line index get the line index
+ * Show visual effect of line cursor is on (change color for now)
+ * (Add glow effect)
+ * if mouse clicks while over line create context menu to the right of cursor position
+ * Custom context menu should show information on line such as magnitude, normal, button for maths functions
+ * (Add Scale up and Move animation using deltaTime)
+ * if math button pressed create another pop up menu with different math functions tooltip on how to use
+ * if math function pressed brief instruction on how to use (label will do) e.g. Select another line to add
+ * Select another line to add together and create the resulting line color with color dialouge popup
+ * (Add deltaTime for animation functionality and possibly smooth mouse cursor while creating a line)
+ * (linePoints array in Vector_Shapes class change to start and end point variable to avoid confusion)
+ * (Make Line stats on sidebar update during guide line drawing)
+ */
+
 namespace Vector_Maths_Tool
 {
     public partial class Vector_Form : Form
@@ -27,13 +49,14 @@ namespace Vector_Maths_Tool
 
         int LineWidth;
 
-        bool timerRunning = false;
         bool onCanvas = false;
-        bool isDrawingVector = false;
+        bool timerRunning = false;
         bool canvasPressed = false;
         bool canvasReleased = false;
         bool canCreateVector = false;
+        bool isDrawingVector = false;
         bool isClearingScreen = false;
+        bool isSelectingVector = false;
 
         string timerOut;
 
@@ -97,6 +120,7 @@ namespace Vector_Maths_Tool
                     endPoint = canvasMousePos;
 
                     Create_Line(drawPen, startPoint, endPoint);
+
                 }
 
             }
@@ -120,11 +144,47 @@ namespace Vector_Maths_Tool
         {
             canCreateVector = false;
             UpdateBoolChecker("Can_Create", canCreateVector, 2);
-            Vector_Shapes newShape = new Vector_Shapes(lineStart, lineEnd, (int)(LineWidth * 1.5f), lineColor);
+            Vector_Shapes newShape = new Vector_Shapes(lineStart, lineEnd, LineWidth, lineColor);
             vectorList.Add(newShape);
+            BresenhamLine(newShape);
+
+            label6.Text = "Gradient: " + newShape.lineGradient;
+            label5.Text = "Line Count: " + vectorList.Count;
+            label4.Text = "Start: " + newShape.linePoints[0];
+            label3.Text = "End: " + newShape.linePoints[1];
+            label2.Text = "Magnitude: " + newShape.lineVector.Magnitude();
+            label1.Text = "Normal: {" + newShape.lineVector.X + ", " + newShape.lineVector.Y + "}";
 
         }
 
+        void BresenhamLine(Vector_Shapes shape)
+        {
+            Vector lineVector = shape.lineVector;
+            Vector startPoint = new Vector(shape.linePoints[0]);
+            Vector endPoint = new Vector(shape.linePoints[1]);
+            Vector currentPosition = startPoint;
+            float error = lineVector.X - lineVector.Y;
+
+            Console.WriteLine(error);
+
+            //while (lineVector != endPoint)
+            //{
+            //    if (error >= 0)
+            //    {
+            //        error -= lineVector.Y;
+            //        currentPosition.X += startPoint.X;
+
+            //    }
+            //    else
+            //    {
+            //        error -= lineVector.X;
+            //        currentPosition.Y += startPoint.Y;
+
+            //    }
+
+            //}
+
+        }
 
         #endregion
 
@@ -145,6 +205,8 @@ namespace Vector_Maths_Tool
             canvasReleased = true;
             canvasPressed = false;
             isDrawingVector = false;
+            isSelectingVector = false;
+            UpdateBoolChecker("Select_Line", isSelectingVector, 3);
             UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
             UpdateBoolChecker("DrawingLine", isDrawingVector, 0);
             Canvas.Refresh();
@@ -154,7 +216,6 @@ namespace Vector_Maths_Tool
         private void Canvas_MouseEnter(object sender, EventArgs e)
         {
             onCanvas = true;
-            UpdateBoolChecker("On_Canvas", onCanvas, 3);
 
         }
         //Mouse leaves Canvas
@@ -164,7 +225,6 @@ namespace Vector_Maths_Tool
             canvasPressed = false;
             UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
             UpdateBoolChecker("DrawingLine", isDrawingVector, 0);
-            UpdateBoolChecker("On_Canvas", onCanvas, 3);
 
         }
 
@@ -276,19 +336,16 @@ namespace Vector_Maths_Tool
         {
             isClearingScreen = true;
             vectorList.Clear();
+            label5.Text = "Line Count: 0";
             Canvas.Refresh();
 
         }
 
         private void LineThicknessIncrement_ValueChanged(object sender, EventArgs e)
         {
-            LineWidth = (int)LineThicknessIncrement.Value;
-
-            Console.WriteLine(String.Format("Guide_Line_Width: [{0}]", LineWidth));
+            LineWidth = (int)((float)LineThicknessIncrement.Value * 1.25f);
 
         }
-
-        #endregion
 
         private void GuideColorButton_Click(object sender, EventArgs e)
         {
@@ -305,5 +362,19 @@ namespace Vector_Maths_Tool
             LineColorButton.ForeColor = lineColor;
 
         }
+
+        private void SelectVectorButton_Click(object sender, EventArgs e)
+        {
+            if (!isDrawingVector) 
+            {
+                isSelectingVector = true;
+                UpdateBoolChecker("Select_Line", isSelectingVector, 3);
+
+            }
+
+        }
+
+        #endregion
+
     }
 }

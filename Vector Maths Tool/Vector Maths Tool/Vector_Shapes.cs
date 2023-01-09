@@ -8,12 +8,15 @@ namespace Vector_Maths_Tool
     {
         public int index;
         public int LineWidth { get; }
+        public float lineGradient { get; }
 
         public Color LineColor { get; }
         public Pen drawPen;
         public Brush drawBrush;
 
-        public Point[] linePoints;
+        public Point[] linePoints; //May need to change this so it isn't as confusing to code below and change code accessing variable
+        //public Point startPoint;
+        //public Point endPoint;
 
         public Vector lineVector;
 
@@ -23,12 +26,14 @@ namespace Vector_Maths_Tool
             drawPen = new Pen(lineColor, lineWidth);
             drawBrush = new SolidBrush(lineColor);
 
-            Console.Write("Line at ( " + startPoint + " : " + endPoint + " ) Created");
-            Console.WriteLine(" with Line Width: " + lineWidth);
             linePoints = new Point[] { startPoint, endPoint };
             LineWidth = lineWidth;
 
-            lineVector = new Vector();
+            lineVector = new Vector(startPoint, endPoint);
+
+            if (startPoint != endPoint) { lineGradient = lineVector.Y / lineVector.X; }
+            else { lineGradient = 0; }
+
 
         }
 

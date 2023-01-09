@@ -15,6 +15,15 @@ namespace Ginoss_Tools
 
         }
 
+        public Vector(Point point)
+        {
+            Vector result = new Vector(point.X, point.Y);
+
+            x = result.X;
+            y = result.Y;
+
+        }
+
         public Vector(Point point1, Point point2)
         {
             Vector result = new Vector(point2.X - point1.X, point2.Y - point1.Y);
@@ -102,6 +111,18 @@ namespace Ginoss_Tools
 
             Vector result = new Vector(x, y);
             return result;
+
+        }
+        
+        public static Boolean operator==(Vector a, Vector b)
+        {
+            return (a.X == b.X && a.Y == b.Y);
+
+        }
+
+        public static Boolean operator!=(Vector a, Vector b)
+        {
+            return (a.X != b.X && a.Y != b.Y);
 
         }
 
