@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 using Ginoss_Tools;
 
 /* TO DO:
@@ -11,12 +12,13 @@ using Ginoss_Tools;
  * Get start and end (X)
  * Calculate Vector normal and magnitude (X)
  * Click Select Vector button on sidebar (X)
- * Loop through each pixel using Bresenham Algorithm going along the normal (Infinite loop did something wrong)
+ * Loop through each pixel using Bresenham Algorithm going along the normal (X)
+ * (Understand how exactly the algorithm works by doing it manually on paper specifically the reson the error value works and why adding the line vector that way make it move perfectly)
  * Store pixel locations under lines index value in an xml file
  * When mouse moves check for the current mouse position coordinates in the file for associated line index
  * if coordinate exists in file and is linked to a line index get the line index
  * Show visual effect of line cursor is on (change color for now)
- * (Add glow effect)
+ * (Add glow effect around line)
  * if mouse clicks while over line create context menu to the right of cursor position
  * Custom context menu should show information on line such as magnitude, normal, button for maths functions
  * (Add Scale up and Move animation using deltaTime)
@@ -26,6 +28,12 @@ using Ginoss_Tools;
  * (Add deltaTime for animation functionality and possibly smooth mouse cursor while creating a line)
  * (linePoints array in Vector_Shapes class change to start and end point variable to avoid confusion)
  * (Make Line stats on sidebar update during guide line drawing)
+ * (Keyboard shortcut for creating a vector)
+ * (Expand Vector struct overloads and math functionality such ad dot product method)
+ * (Undo and redo keys using Z and X by removing the last in Vector List and puts into redo List and redo adds back to vector list from redo list)
+ * (Save screens of just the canvas and possibly change the for loop of creating te lines to a background bitmap to save performance)
+ * (Fullscreen on Canvas with miniside bar or pop out and hide function)
+ * (Fix guide line being behind all the drawn lines)
  */
 
 namespace Vector_Maths_Tool
@@ -43,6 +51,7 @@ namespace Vector_Maths_Tool
         Stopwatch runTimer = new Stopwatch();
 
         List<Vector_Shapes> vectorList = new List<Vector_Shapes>();
+        List<Vector> temp = new List<Vector>();
 
         static PictureBox[] boolCheckers;
         static Label[] boolLabels;
@@ -59,6 +68,7 @@ namespace Vector_Maths_Tool
         bool isSelectingVector = false;
 
         string timerOut;
+        string connectionString = "Server=.\\SQLEXPRESS;Database=master;Trusted_Connection=True;";
 
         #endregion
 
@@ -82,6 +92,27 @@ namespace Vector_Maths_Tool
             CurrentGuideColor.Color = guideColor;
             CurrentLineColor.Color = lineColor;
             LineWidth = (int)LineThicknessIncrement.Value;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand("SELECT COUNT (*) FROM sys.databases WHERE name = N'MyDatabase'", connection))
+                {
+                    int count = (int)command.ExecuteScalar();
+                    if (count == 0)
+                    {
+                        using (SqlCommand createCommand = new SqlCommand("CREATE DATABASE MyDatabase", connection))
+                        {
+                            command.ExecuteNonQuery();
+
+                        }
+
+                    }
+
+                }
+
+            }
         }
 
         #region Graphics
@@ -132,7 +163,7 @@ namespace Vector_Maths_Tool
             }
 
         }
-        //Temp line top visualise line o be created
+        //Temp line top visualise line to be created
         void DrawGuideLine(Pen pen, Point lineStart, Point lineEnd, Graphics graphics)
         {
             graphics.DrawLine(pen, lineStart, lineEnd);
@@ -157,38 +188,62 @@ namespace Vector_Maths_Tool
 
         }
 
+        //Something wrong in while loop never reaches first if statement
         void BresenhamLine(Vector_Shapes shape)
         {
-            Vector lineVector = shape.lineVector;
             Vector startPoint = new Vector(shape.linePoints[0]);
             Vector endPoint = new Vector(shape.linePoints[1]);
-            Vector currentPosition = startPoint;
+            Vector lineVector = shape.lineVector;
             float error = lineVector.X - lineVector.Y;
 
-            Console.WriteLine(error);
+            while (startPoint != endPoint)
+            {
+                if (error >= 0)
+                {
+                    error -= lineVector.Y;
+                    startPoint.X += lineVector.X;
 
-            //while (lineVector != endPoint)
-            //{
-            //    if (error >= 0)
-            //    {
-            //        error -= lineVector.Y;
-            //        currentPosition.X += startPoint.X;
+                }
+                if(error < 0)
+                {
+                    Console.WriteLine(error);
+                    error += lineVector.Y - lineVector.X;
+                    startPoint.Y += lineVector.Y;
 
-            //    }
-            //    else
-            //    {
-            //        error -= lineVector.X;
-            //        currentPosition.Y += startPoint.Y;
+                }
 
-            //    }
-
-            //}
+            }
 
         }
 
         #endregion
 
         #region User_Input
+
+        //Canvas Keyboard Input
+        void Canvas_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                if (!isDrawingVector) { isDrawingVector = true; canCreateVector = true; }
+                else { isDrawingVector = false; canCreateVector = false; }
+                UpdateBoolChecker("DrawingLine", isDrawingVector, 0);
+                UpdateBoolChecker("Can_Create", canCreateVector, 2);
+
+            }
+
+            if (e.KeyCode == Keys.C)
+            {
+                CurrentLineColor.ShowDialog();
+                lineColor = CurrentLineColor.Color;
+                LineColorButton.ForeColor = lineColor;
+
+            }
+
+            if ((e.KeyCode == Keys.Up || e.KeyCode == Keys.ShiftKey ) && LineThicknessIncrement.Value < LineThicknessIncrement.Maximum) { LineThicknessIncrement.Value += 1; }
+            if ((e.KeyCode == Keys.Down || e.KeyCode == Keys.ControlKey ) && LineThicknessIncrement.Value > LineThicknessIncrement.Minimum) { LineThicknessIncrement.Value -= 1; }
+
+        }
 
         //Mouse button down over canvas
         private void Canvas_MouseDown(object sender, MouseEventArgs e)
@@ -216,8 +271,10 @@ namespace Vector_Maths_Tool
         private void Canvas_MouseEnter(object sender, EventArgs e)
         {
             onCanvas = true;
+            Canvas.Focus();
 
         }
+
         //Mouse leaves Canvas
         private void Canvas_MouseLeave(object sender, EventArgs e)
         {
@@ -225,6 +282,7 @@ namespace Vector_Maths_Tool
             canvasPressed = false;
             UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
             UpdateBoolChecker("DrawingLine", isDrawingVector, 0);
+            Button_Panel.Focus();
 
         }
 
@@ -323,7 +381,7 @@ namespace Vector_Maths_Tool
         }
         #endregion
         //Create Vector/Line Button
-        private void CreateVector_Click(object sender, EventArgs e)
+        private void CreateVectorButton_Click(object sender, EventArgs e)
         {
             if (!isDrawingVector) { isDrawingVector = true; canCreateVector = true; }
             else { isDrawingVector = false; }
@@ -370,11 +428,21 @@ namespace Vector_Maths_Tool
                 isSelectingVector = true;
                 UpdateBoolChecker("Select_Line", isSelectingVector, 3);
 
+
             }
 
         }
 
         #endregion
 
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
     }
 }

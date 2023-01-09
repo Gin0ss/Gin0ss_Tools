@@ -29,44 +29,49 @@ namespace Vector_Maths_Tool
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Vector_Form));
             this.ExitButton = new System.Windows.Forms.Button();
             this.HeaderText_1 = new System.Windows.Forms.Label();
             this.TimerButton = new System.Windows.Forms.Button();
             this.TimerWorker = new System.ComponentModel.BackgroundWorker();
-            this.CreateVector = new System.Windows.Forms.Button();
+            this.CreateVectorButton = new System.Windows.Forms.Button();
             this.ClearButton = new System.Windows.Forms.Button();
             this.Button_Panel = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.SelectVectorButton = new System.Windows.Forms.Button();
             this.LineColorButton = new System.Windows.Forms.Button();
             this.GuideColorButton = new System.Windows.Forms.Button();
             this.LineThicknessLabel = new System.Windows.Forms.Label();
             this.LineThicknessIncrement = new System.Windows.Forms.NumericUpDown();
             this.Bool_Label_3 = new System.Windows.Forms.Label();
-            this.Bool_Check_3 = new System.Windows.Forms.PictureBox();
             this.Bool_Label_2 = new System.Windows.Forms.Label();
             this.Bool_Label_1 = new System.Windows.Forms.Label();
             this.Bool_Label_0 = new System.Windows.Forms.Label();
+            this.UI_Delay = new System.ComponentModel.BackgroundWorker();
+            this.CurrentLineColor = new System.Windows.Forms.ColorDialog();
+            this.CurrentGuideColor = new System.Windows.Forms.ColorDialog();
+            this.ButtonTooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.Canvas = new System.Windows.Forms.PictureBox();
+            this.Bool_Check_3 = new System.Windows.Forms.PictureBox();
             this.Bool_Check_1 = new System.Windows.Forms.PictureBox();
             this.Bool_Check_2 = new System.Windows.Forms.PictureBox();
             this.Bool_Check_0 = new System.Windows.Forms.PictureBox();
-            this.UI_Delay = new System.ComponentModel.BackgroundWorker();
-            this.Canvas = new System.Windows.Forms.PictureBox();
-            this.CurrentLineColor = new System.Windows.Forms.ColorDialog();
-            this.CurrentGuideColor = new System.Windows.Forms.ColorDialog();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
             this.Button_Panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LineThicknessIncrement)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Canvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_0)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Canvas)).BeginInit();
             this.SuspendLayout();
             // 
             // ExitButton
@@ -86,6 +91,7 @@ namespace Vector_Maths_Tool
             this.ExitButton.TabIndex = 0;
             this.ExitButton.Text = "CLOSE";
             this.ExitButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.ButtonTooltip.SetToolTip(this.ExitButton, "Bye Bye");
             this.ExitButton.UseVisualStyleBackColor = false;
             this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
             // 
@@ -114,6 +120,7 @@ namespace Vector_Maths_Tool
             this.TimerButton.Size = new System.Drawing.Size(237, 39);
             this.TimerButton.TabIndex = 2;
             this.TimerButton.Text = "Timer";
+            this.ButtonTooltip.SetToolTip(this.TimerButton, "Random Timer decided to ad for no reason have fun\r\n;]");
             this.TimerButton.UseVisualStyleBackColor = false;
             this.TimerButton.Click += new System.EventHandler(this.TimerButton_Click);
             // 
@@ -124,21 +131,22 @@ namespace Vector_Maths_Tool
             this.TimerWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.timerWorker_DoWork);
             this.TimerWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.timerWorker_ProgressChanged);
             // 
-            // CreateVector
+            // CreateVectorButton
             // 
-            this.CreateVector.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.CreateVectorButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.CreateVector.AutoSize = true;
-            this.CreateVector.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
-            this.CreateVector.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.CreateVector.Font = new System.Drawing.Font("Input", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CreateVector.Location = new System.Drawing.Point(10, 99);
-            this.CreateVector.Name = "CreateVector";
-            this.CreateVector.Size = new System.Drawing.Size(237, 39);
-            this.CreateVector.TabIndex = 3;
-            this.CreateVector.Text = "Create Line";
-            this.CreateVector.UseVisualStyleBackColor = false;
-            this.CreateVector.Click += new System.EventHandler(this.CreateVector_Click);
+            this.CreateVectorButton.AutoSize = true;
+            this.CreateVectorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
+            this.CreateVectorButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.CreateVectorButton.Font = new System.Drawing.Font("Input", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CreateVectorButton.Location = new System.Drawing.Point(10, 99);
+            this.CreateVectorButton.Name = "CreateVectorButton";
+            this.CreateVectorButton.Size = new System.Drawing.Size(237, 39);
+            this.CreateVectorButton.TabIndex = 3;
+            this.CreateVectorButton.Text = "Create Line";
+            this.ButtonTooltip.SetToolTip(this.CreateVectorButton, "Toggle line creation on canvas that contains vector data.\r\nShortcut: [Space]");
+            this.CreateVectorButton.UseVisualStyleBackColor = false;
+            this.CreateVectorButton.Click += new System.EventHandler(this.CreateVectorButton_Click);
             // 
             // ClearButton
             // 
@@ -153,6 +161,7 @@ namespace Vector_Maths_Tool
             this.ClearButton.Size = new System.Drawing.Size(88, 59);
             this.ClearButton.TabIndex = 4;
             this.ClearButton.Text = "Clear\r\nScreen";
+            this.ButtonTooltip.SetToolTip(this.ClearButton, "Clears screen and deletes all lines on canvas.\r\nShortcut: [Haven\'t got one yet]");
             this.ClearButton.UseVisualStyleBackColor = false;
             this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
             // 
@@ -182,7 +191,7 @@ namespace Vector_Maths_Tool
             this.Button_Panel.Controls.Add(this.Bool_Check_0);
             this.Button_Panel.Controls.Add(this.TimerButton);
             this.Button_Panel.Controls.Add(this.ClearButton);
-            this.Button_Panel.Controls.Add(this.CreateVector);
+            this.Button_Panel.Controls.Add(this.CreateVectorButton);
             this.Button_Panel.Controls.Add(this.ExitButton);
             this.Button_Panel.Location = new System.Drawing.Point(1650, 14);
             this.Button_Panel.Margin = new System.Windows.Forms.Padding(2);
@@ -190,6 +199,82 @@ namespace Vector_Maths_Tool
             this.Button_Panel.Padding = new System.Windows.Forms.Padding(2);
             this.Button_Panel.Size = new System.Drawing.Size(259, 1055);
             this.Button_Panel.TabIndex = 6;
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Input", 7F);
+            this.label6.Location = new System.Drawing.Point(8, 1004);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(65, 9);
+            this.label6.TabIndex = 23;
+            this.label6.Text = "Gradient: ";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ButtonTooltip.SetToolTip(this.label6, "Slope variable of line.\r\n(0 is a straight line)");
+            // 
+            // label5
+            // 
+            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Input", 12.2F);
+            this.label5.Location = new System.Drawing.Point(7, 787);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(137, 15);
+            this.label5.TabIndex = 22;
+            this.label5.Text = "Line Count: 0";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ButtonTooltip.SetToolTip(this.label5, "How many lines are there!");
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Input", 7F);
+            this.label4.Location = new System.Drawing.Point(8, 855);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(47, 9);
+            this.label4.TabIndex = 21;
+            this.label4.Text = "Start: ";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Input", 7F);
+            this.label3.Location = new System.Drawing.Point(8, 892);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(29, 9);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "End:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Input", 7F);
+            this.label2.Location = new System.Drawing.Point(8, 929);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 9);
+            this.label2.TabIndex = 19;
+            this.label2.Text = "Magnitude:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ButtonTooltip.SetToolTip(this.label2, "Length of Vector");
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Input", 7F);
+            this.label1.Location = new System.Drawing.Point(8, 966);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 9);
+            this.label1.TabIndex = 18;
+            this.label1.Text = "Normal: ";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ButtonTooltip.SetToolTip(this.label1, "Vector to magnitude of 1\r\n(Vectors Direction)");
             // 
             // SelectVectorButton
             // 
@@ -204,6 +289,8 @@ namespace Vector_Maths_Tool
             this.SelectVectorButton.Size = new System.Drawing.Size(237, 39);
             this.SelectVectorButton.TabIndex = 17;
             this.SelectVectorButton.Text = "Select Line";
+            this.ButtonTooltip.SetToolTip(this.SelectVectorButton, "Select line to edit or show vector math options.\r\nShortcut: [n/a]\r\n(Not Implement" +
+        "ed Yet)");
             this.SelectVectorButton.UseVisualStyleBackColor = false;
             this.SelectVectorButton.Click += new System.EventHandler(this.SelectVectorButton_Click);
             // 
@@ -219,6 +306,7 @@ namespace Vector_Maths_Tool
             this.LineColorButton.Size = new System.Drawing.Size(139, 27);
             this.LineColorButton.TabIndex = 16;
             this.LineColorButton.Text = "Line Colour";
+            this.ButtonTooltip.SetToolTip(this.LineColorButton, "Changes drawn line colour.\r\nShortcut: [C]");
             this.LineColorButton.UseVisualStyleBackColor = false;
             this.LineColorButton.Click += new System.EventHandler(this.LineColorButton_Click);
             // 
@@ -234,6 +322,7 @@ namespace Vector_Maths_Tool
             this.GuideColorButton.Size = new System.Drawing.Size(105, 23);
             this.GuideColorButton.TabIndex = 15;
             this.GuideColorButton.Text = "Guide Color";
+            this.ButtonTooltip.SetToolTip(this.GuideColorButton, "Changes guide line colour.\r\nShortcut: [Does it really need one]\r\n\r\n\r\n\r\n\r\n\r\nNah");
             this.GuideColorButton.UseVisualStyleBackColor = false;
             this.GuideColorButton.Click += new System.EventHandler(this.GuideColorButton_Click);
             // 
@@ -268,6 +357,8 @@ namespace Vector_Maths_Tool
             this.LineThicknessIncrement.Size = new System.Drawing.Size(120, 19);
             this.LineThicknessIncrement.TabIndex = 13;
             this.LineThicknessIncrement.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.ButtonTooltip.SetToolTip(this.LineThicknessIncrement, "Changes width of line\r\n(Min: 1 | Max: 100)\r\nShortcuts:\r\n   Increase: [Up Arrow]\r\n" +
+        "   Decrease: [Down Arrow]\r\n");
             this.LineThicknessIncrement.Value = new decimal(new int[] {
             5,
             0,
@@ -287,16 +378,6 @@ namespace Vector_Maths_Tool
             this.Bool_Label_3.TabIndex = 12;
             this.Bool_Label_3.Text = "Bool_3";
             this.Bool_Label_3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // Bool_Check_3
-            // 
-            this.Bool_Check_3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Bool_Check_3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Bool_Check_3.Location = new System.Drawing.Point(238, 962);
-            this.Bool_Check_3.Name = "Bool_Check_3";
-            this.Bool_Check_3.Size = new System.Drawing.Size(16, 16);
-            this.Bool_Check_3.TabIndex = 11;
-            this.Bool_Check_3.TabStop = false;
             // 
             // Bool_Label_2
             // 
@@ -337,6 +418,34 @@ namespace Vector_Maths_Tool
             this.Bool_Label_0.Text = "Bool_0";
             this.Bool_Label_0.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // Canvas
+            // 
+            this.Canvas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(6)))), ((int)(((byte)(8)))));
+            this.Canvas.BackgroundImage = global::Vector_Maths_Tool.Properties.Resources.backgroundSpeed;
+            this.Canvas.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.Canvas.Location = new System.Drawing.Point(12, 29);
+            this.Canvas.Name = "Canvas";
+            this.Canvas.Size = new System.Drawing.Size(1633, 1040);
+            this.Canvas.TabIndex = 7;
+            this.Canvas.TabStop = false;
+            this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
+            this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
+            this.Canvas.MouseEnter += new System.EventHandler(this.Canvas_MouseEnter);
+            this.Canvas.MouseLeave += new System.EventHandler(this.Canvas_MouseLeave);
+            this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
+            this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
+            this.Canvas.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Canvas_PreviewKeyDown);
+            // 
+            // Bool_Check_3
+            // 
+            this.Bool_Check_3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Bool_Check_3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Bool_Check_3.Location = new System.Drawing.Point(238, 962);
+            this.Bool_Check_3.Name = "Bool_Check_3";
+            this.Bool_Check_3.Size = new System.Drawing.Size(16, 16);
+            this.Bool_Check_3.TabIndex = 11;
+            this.Bool_Check_3.TabStop = false;
+            // 
             // Bool_Check_1
             // 
             this.Bool_Check_1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -367,93 +476,35 @@ namespace Vector_Maths_Tool
             this.Bool_Check_0.TabIndex = 5;
             this.Bool_Check_0.TabStop = false;
             // 
-            // Canvas
+            // toolStripButton1
             // 
-            this.Canvas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(6)))), ((int)(((byte)(8)))));
-            this.Canvas.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.Canvas.Location = new System.Drawing.Point(12, 29);
-            this.Canvas.Name = "Canvas";
-            this.Canvas.Size = new System.Drawing.Size(1633, 1040);
-            this.Canvas.TabIndex = 7;
-            this.Canvas.TabStop = false;
-            this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
-            this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
-            this.Canvas.MouseEnter += new System.EventHandler(this.Canvas_MouseEnter);
-            this.Canvas.MouseLeave += new System.EventHandler(this.Canvas_MouseLeave);
-            this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
-            this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
+            this.toolStripButton1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(36, 36);
+            this.toolStripButton1.Text = "toolStripButton1";
             // 
-            // label1
+            // toolStripButton2
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Input", 7F);
-            this.label1.Location = new System.Drawing.Point(8, 966);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 9);
-            this.label1.TabIndex = 18;
-            this.label1.Text = "Normal: ";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolStripButton2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(36, 36);
+            this.toolStripButton2.Text = "toolStripButton2";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
-            // label2
+            // toolStripSplitButton1
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Input", 7F);
-            this.label2.Location = new System.Drawing.Point(8, 929);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 9);
-            this.label2.TabIndex = 19;
-            this.label2.Text = "Magnitude:";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Input", 7F);
-            this.label3.Location = new System.Drawing.Point(8, 892);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 9);
-            this.label3.TabIndex = 20;
-            this.label3.Text = "End:";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Input", 7F);
-            this.label4.Location = new System.Drawing.Point(8, 855);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(47, 9);
-            this.label4.TabIndex = 21;
-            this.label4.Text = "Start: ";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label5
-            // 
-            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Input", 12.2F);
-            this.label5.Location = new System.Drawing.Point(7, 787);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(137, 15);
-            this.label5.TabIndex = 22;
-            this.label5.Text = "Line Count: 0";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label6
-            // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Input", 7F);
-            this.label6.Location = new System.Drawing.Point(8, 1004);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(65, 9);
-            this.label6.TabIndex = 23;
-            this.label6.Text = "Gradient: ";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton1.Image")));
+            this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripSplitButton1.Name = "toolStripSplitButton1";
+            this.toolStripSplitButton1.Size = new System.Drawing.Size(48, 36);
+            this.toolStripSplitButton1.Text = "toolStripSplitButton1";
             // 
             // Vector_Form
             // 
@@ -478,11 +529,11 @@ namespace Vector_Maths_Tool
             this.Button_Panel.ResumeLayout(false);
             this.Button_Panel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LineThicknessIncrement)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Canvas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_0)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Canvas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -494,7 +545,7 @@ namespace Vector_Maths_Tool
         private System.Windows.Forms.Label HeaderText_1;
         private System.Windows.Forms.Button TimerButton;
         private System.ComponentModel.BackgroundWorker TimerWorker;
-        private System.Windows.Forms.Button CreateVector;
+        private System.Windows.Forms.Button CreateVectorButton;
         private System.Windows.Forms.Button ClearButton;
         private System.Windows.Forms.Panel Button_Panel;
         private System.Windows.Forms.Label Bool_Label_2;
@@ -520,6 +571,10 @@ namespace Vector_Maths_Tool
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ToolTip ButtonTooltip;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
     }
 }
 
