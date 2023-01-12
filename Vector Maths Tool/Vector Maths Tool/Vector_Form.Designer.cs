@@ -290,7 +290,7 @@ namespace Vector_Maths_Tool
             this.SelectVectorButton.TabIndex = 17;
             this.SelectVectorButton.Text = "Select Line";
             this.ButtonTooltip.SetToolTip(this.SelectVectorButton, "Select line to edit or show vector math options.\r\nShortcut: [n/a]\r\n(Not Implement" +
-        "ed Yet)");
+        "ed Yet. Stuck in loop)");
             this.SelectVectorButton.UseVisualStyleBackColor = false;
             this.SelectVectorButton.Click += new System.EventHandler(this.SelectVectorButton_Click);
             // 
@@ -357,8 +357,8 @@ namespace Vector_Maths_Tool
             this.LineThicknessIncrement.Size = new System.Drawing.Size(120, 19);
             this.LineThicknessIncrement.TabIndex = 13;
             this.LineThicknessIncrement.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.ButtonTooltip.SetToolTip(this.LineThicknessIncrement, "Changes width of line\r\n(Min: 1 | Max: 100)\r\nShortcuts:\r\n   Increase: [Up Arrow]\r\n" +
-        "   Decrease: [Down Arrow]\r\n");
+            this.ButtonTooltip.SetToolTip(this.LineThicknessIncrement, "Changes width of line\r\n(Min: 1 | Max: 100)\r\nShortcuts:\r\n   Increase: [Up Arrow] O" +
+        "R [SHIFT]\r\n   Decrease: [Down Arrow] OR {CTRL}\r\n");
             this.LineThicknessIncrement.Value = new decimal(new int[] {
             5,
             0,
@@ -475,36 +475,6 @@ namespace Vector_Maths_Tool
             this.Bool_Check_0.Size = new System.Drawing.Size(16, 16);
             this.Bool_Check_0.TabIndex = 5;
             this.Bool_Check_0.TabStop = false;
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(36, 36);
-            this.toolStripButton1.Text = "toolStripButton1";
-            // 
-            // toolStripButton2
-            // 
-            this.toolStripButton2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(36, 36);
-            this.toolStripButton2.Text = "toolStripButton2";
-            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
-            // 
-            // toolStripSplitButton1
-            // 
-            this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton1.Image")));
-            this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripSplitButton1.Name = "toolStripSplitButton1";
-            this.toolStripSplitButton1.Size = new System.Drawing.Size(48, 36);
-            this.toolStripSplitButton1.Text = "toolStripSplitButton1";
             // 
             // Vector_Form
             // 

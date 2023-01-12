@@ -6,7 +6,6 @@ namespace Vector_Maths_Tool
 {
     public class Vector_Shapes
     {
-        public int index;
         public int LineWidth { get; }
         public float lineGradient { get; }
 

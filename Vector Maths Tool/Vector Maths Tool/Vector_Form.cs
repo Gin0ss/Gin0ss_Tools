@@ -14,8 +14,8 @@ using Ginoss_Tools;
  * Click Select Vector button on sidebar (X)
  * Loop through each pixel using Bresenham Algorithm going along the normal (X)
  * (Understand how exactly the algorithm works by doing it manually on paper specifically the reson the error value works and why adding the line vector that way make it move perfectly)
- * Store pixel locations under lines index value in an xml file
- * When mouse moves check for the current mouse position coordinates in the file for associated line index
+ * Store pixel locations under lines index value in SQL (X)
+ * When mouse moves check for the current mouse position coordinates in the file for associated line index (X)
  * if coordinate exists in file and is linked to a line index get the line index
  * Show visual effect of line cursor is on (change color for now)
  * (Add glow effect around line)
@@ -34,6 +34,8 @@ using Ginoss_Tools;
  * (Save screens of just the canvas and possibly change the for loop of creating te lines to a background bitmap to save performance)
  * (Fullscreen on Canvas with miniside bar or pop out and hide function)
  * (Fix guide line being behind all the drawn lines)
+ * (Add performance and memory boost to sql table queries by removing every other pixel stored for the line and creating a radius around each pixel in c# to -
+ * fill in the blanks depending on a threshold gap between pixels essentially halving or more the search speed and memory used in sql table but sacrificing accuracy the higher the value)
  */
 
 namespace Vector_Maths_Tool
@@ -52,6 +54,8 @@ namespace Vector_Maths_Tool
 
         List<Vector_Shapes> vectorList = new List<Vector_Shapes>();
         List<Vector> temp = new List<Vector>();
+
+        Image backgroundImage = Properties.Resources.backgroundAbberate;
 
         static PictureBox[] boolCheckers;
         static Label[] boolLabels;
@@ -93,26 +97,6 @@ namespace Vector_Maths_Tool
             CurrentLineColor.Color = lineColor;
             LineWidth = (int)LineThicknessIncrement.Value;
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                using (SqlCommand command = new SqlCommand("SELECT COUNT (*) FROM sys.databases WHERE name = N'MyDatabase'", connection))
-                {
-                    int count = (int)command.ExecuteScalar();
-                    if (count == 0)
-                    {
-                        using (SqlCommand createCommand = new SqlCommand("CREATE DATABASE MyDatabase", connection))
-                        {
-                            command.ExecuteNonQuery();
-
-                        }
-
-                    }
-
-                }
-
-            }
         }
 
         #region Graphics
@@ -122,7 +106,7 @@ namespace Vector_Maths_Tool
             Graphics graphics = e.Graphics;
 
             canvasCentre = new Point(Canvas.Width / 2, Canvas.Height / 2);
-            canvasMousePos = new Point(PointToClient(MousePosition).X - Canvas.Location.X, PointToClient(MousePosition).Y - Canvas.Location.Y);
+            canvasMousePos = GetMousePositionToCanvas();
             Pen drawPen = new Pen(guideColor, LineWidth);
             Brush drawBrush = new SolidBrush(guideColor);
             Point endPoint;
@@ -130,7 +114,7 @@ namespace Vector_Maths_Tool
             if (isClearingScreen)
             {
                 isClearingScreen = false;
-                graphics.Clear(Canvas.BackColor);
+                graphics.DrawImage(backgroundImage, Canvas.Location);
                 return;
 
             }
@@ -163,6 +147,7 @@ namespace Vector_Maths_Tool
             }
 
         }
+
         //Temp line top visualise line to be created
         void DrawGuideLine(Pen pen, Point lineStart, Point lineEnd, Graphics graphics)
         {
@@ -191,26 +176,52 @@ namespace Vector_Maths_Tool
         //Something wrong in while loop never reaches first if statement
         void BresenhamLine(Vector_Shapes shape)
         {
-            Vector startPoint = new Vector(shape.linePoints[0]);
-            Vector endPoint = new Vector(shape.linePoints[1]);
-            Vector lineVector = shape.lineVector;
-            float error = lineVector.X - lineVector.Y;
+            int startX = shape.linePoints[0].X;
+            int startY = shape.linePoints[0].Y;
+            int endX = shape.linePoints[1].X;
+            int endY = shape.linePoints[1].Y;
+            int deltaX = Math.Abs((int)endX - startX);
+            int deltaY = Math.Abs((int)endY - startY);
+            int sX = startX > endX ? -1 : 1;
+            int sY = startY > endY ? -1 : 1;
+            int err = deltaX - deltaY;
 
-            while (startPoint != endPoint)
+            while (true)
             {
-                if (error >= 0)
+                if (startX == endX && startY == endY) break;
+
+                int err2 = 2 * err;
+
+                if (err2 > -deltaY)
                 {
-                    error -= lineVector.Y;
-                    startPoint.X += lineVector.X;
+                    err -= deltaY;
+                    startX += sX;
 
                 }
-                if(error < 0)
+                if (err2 < deltaX)
                 {
-                    Console.WriteLine(error);
-                    error += lineVector.Y - lineVector.X;
-                    startPoint.Y += lineVector.Y;
+                    err += deltaX;
+                    startY += sY;
 
                 }
+
+                StoreSelectCoordinate(vectorList.Count - 1, startX, startY);
+
+            }
+
+        }
+
+        void StoreSelectCoordinate(int lineID, int startX, int startY)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string createTable = ("IF OBJECT_ID(N'POINTS', N'U') IS NULL CREATE TABLE POINTS (Line_ID int, Start_X int, Start_Y int); ");
+                string addCoordinate = (String.Format("INSERT INTO POINTS (Line_ID, Start_X, Start_Y) VALUES ( '{0}', '{1}', '{2}' );", lineID, startX, startY));
+
+                SqlCommand command = new SqlCommand(createTable + addCoordinate, connection);
+                command.ExecuteNonQuery();
 
             }
 
@@ -289,7 +300,38 @@ namespace Vector_Maths_Tool
         //Mouse moved while over canvas
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
+            bool mouseOnX = false;
+
+            canvasMousePos = GetMousePositionToCanvas();
+
             if (isDrawingVector) { Canvas.Refresh(); }
+            else
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand mouseXCommand = new SqlCommand("SELECT Start_X FROM POINTS WHERE Start_X = @mousePosX", connection))
+                    {
+                        mouseXCommand.Parameters.AddWithValue("@mousePosX", canvasMousePos.X);
+
+                        var result = mouseXCommand.ExecuteScalar();
+                        mouseOnX = result != null ? ((int)result == canvasMousePos.X) : false;
+                        Console.WriteLine(result);
+
+                    }
+                    if (mouseOnX)
+                    {
+                        Console.WriteLine("Mouse X on Line");
+                        //if y in sql table is mouse cursor y then get line index
+
+                    }
+
+                    connection.Close();
+
+                }
+
+            }
 
         }
 
@@ -317,6 +359,15 @@ namespace Vector_Maths_Tool
         private void ExitButton_Click(object sender, EventArgs e)
         {
             if (TimerWorker.WorkerSupportsCancellation) { TimerWorker.CancelAsync(); }
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("DELETE FROM POINTS", connection);
+                command.ExecuteNonQuery();
+
+            }
+
             Application.Exit();
 
         }
@@ -324,7 +375,7 @@ namespace Vector_Maths_Tool
         //Title text on click shows info
         private void HeaderText_1_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Vector Tools by Gin0ss || V. 0.07");
+            Console.WriteLine("Vector Tools by Gin0ss || V. 0.25");
         }
 
         #region Timer
@@ -394,6 +445,15 @@ namespace Vector_Maths_Tool
         {
             isClearingScreen = true;
             vectorList.Clear();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("DELETE FROM POINTS", connection);
+                command.ExecuteNonQuery();
+
+            }
+
             label5.Text = "Line Count: 0";
             Canvas.Refresh();
 
@@ -435,14 +495,7 @@ namespace Vector_Maths_Tool
 
         #endregion
 
-        private void toolStripButton2_Click(object sender, EventArgs e)
-        {
+        Point GetMousePositionToCanvas() { return new Point(PointToClient(MousePosition).X - Canvas.Location.X, PointToClient(MousePosition).Y - Canvas.Location.Y); }
 
-        }
-
-        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
     }
 }
