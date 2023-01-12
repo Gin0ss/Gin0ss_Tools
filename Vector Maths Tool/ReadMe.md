@@ -4,7 +4,7 @@ Application I Made for helping visualise math applied to vectors in realtime for
 # What I learned
 - Basics of winForms
 - Getting Familiar with .NET framework C#
-- Understanding Vector maths
+- Understanding Vector maths (Normal Unit Vector, Dot Product, Cross Product etc.)
 - Background Workers (Asynchronous thread tasks)
 - SQL Databases
 - Object Oriented Programming
