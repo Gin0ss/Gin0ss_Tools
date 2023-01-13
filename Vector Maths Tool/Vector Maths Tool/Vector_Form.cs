@@ -92,7 +92,6 @@ namespace Vector_Maths_Tool
 
         }
 
-        //Initialise all bool checkboxes and label into array on load
         private void Vector_Form_Load(object sender, EventArgs e)
         {
             PictureBox[] a = { Bool_Check_0, Bool_Check_1, Bool_Check_2, Bool_Check_3 };
@@ -113,14 +112,19 @@ namespace Vector_Maths_Tool
                     initializeCommand.ExecuteNonQuery();
                 using (SqlCommand initializeCommand = new SqlCommand("USE Vector_Math_Tool; IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'Points' and xtype='U') CREATE TABLE POINTS (Line_ID int, X int, Y int);", connection))
                     initializeCommand.ExecuteNonQuery();
+                using (SqlCommand clearTableCommand = new SqlCommand("DELETE FROM Points", connection))
+                    clearTableCommand.ExecuteNonQuery();
 
-                connection.Close();
+                    connection.Close();
 
             }
 
 
 
         }
+
+        Point GetMousePositionToCanvas()
+        { return new Point(PointToClient(MousePosition).X - Canvas.Location.X, PointToClient(MousePosition).Y - Canvas.Location.Y); }
 
         #region Graphics
 
@@ -171,15 +175,12 @@ namespace Vector_Maths_Tool
 
         }
 
-
-        //Temp line top visualise line to be created
         void DrawGuideLine(Pen pen, Point lineStart, Point lineEnd, Graphics graphics)
         {
             graphics.DrawLine(pen, lineStart, lineEnd);
 
         }
 
-        //Draw line and create a line object
         void Create_Line(Pen pen, Point lineStart, Point lineEnd)
         {
             canCreateVector = false;
@@ -188,6 +189,9 @@ namespace Vector_Maths_Tool
             vectorList.Add(newShape);
             BresenhamLine(newShape);
 
+            selectedLineID = vectorList.Count - 1;
+
+            SelectedLineIndexLabel.Text = "Selected Line: " + (selectedLineID + 1);
             label6.Text = "Gradient: " + newShape.lineGradient;
             label5.Text = "Line Count: " + vectorList.Count;
             label4.Text = "Start: " + newShape.linePoints[0];
@@ -197,7 +201,24 @@ namespace Vector_Maths_Tool
 
         }
 
-        //Something wrong in while loop never reaches first if statement
+        void UpdateBoolChecker(string boolName, bool boolCheck, int boxIndex)
+        {
+            if (boolCheck) { boolCheckers[boxIndex].BackColor = guideColor; }
+            else { boolCheckers[boxIndex].BackColor = Button_Panel.BackColor; }
+
+            if (boolName.Length > 11)
+            {
+                boolName = boolName.Substring(0, 11);
+            }
+            boolLabels[boxIndex].Text = boolName;
+            boolCheckers[boxIndex].Refresh();
+
+        }
+
+        #endregion
+
+        #region Selection
+
         void BresenhamLine(Vector_Shapes shape)
         {
             int startX = shape.linePoints[0].X;
@@ -241,8 +262,15 @@ namespace Vector_Maths_Tool
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(String.Format("USE Vector_Math_Tool; INSERT INTO POINTS (Line_ID, X, Y) VALUES ( '{0}', '{1}', '{2}' );", lineID, startX, startY), connection))
-                command.ExecuteNonQuery(); 
+                using (SqlCommand command = new SqlCommand("USE Vector_Math_Tool; INSERT INTO POINTS (Line_ID, X, Y) VALUES ( @lineID, @X, @Y );", connection))
+                {
+                    command.Parameters.AddWithValue("@lineID", lineID);
+                    command.Parameters.AddWithValue("@X", startX);
+                    command.Parameters.AddWithValue("@Y", startY);
+
+                    command.ExecuteNonQuery();
+
+                }
 
                 connection.Close();
 
@@ -263,7 +291,7 @@ namespace Vector_Maths_Tool
 
             selectedLine.drawPen = selectPen;
 
-            SelectedLineIndexLabel.Text = "Selected Line: " + selectedLineID;
+            SelectedLineIndexLabel.Text = "Selected Line: " + (selectedLineID + 1);
             label6.Text = "Gradient: " + vectorList[selectedLineID].lineGradient;
             label4.Text = "Start: " + vectorList[selectedLineID].linePoints[0];
             label3.Text = "End: " + vectorList[selectedLineID].linePoints[1];
@@ -287,39 +315,23 @@ namespace Vector_Maths_Tool
             if (vectorList.Count > 0)
             {
                 vectorList.Remove(vectorList[selectedLineID]);
-                selectedLineID = vectorList.Count > 0 ? vectorList.Count - 1 : 0;
                 label5.Text = "Line Count: " + vectorList.Count;
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    SqlCommand command = new SqlCommand("USE Vector_Math_Tool; DELETE FROM POINTS WHERE Line_ID = @selectedLineID", connection);
+                    SqlCommand command = new SqlCommand("USE Vector_Math_Tool; DELETE FROM POINTS WHERE Line_ID = @selectedLineID; UPDATE Points SET Line_ID = Line_ID - 1 WHERE Line_ID > @selectedLineID", connection);
+
                     command.Parameters.AddWithValue("@selectedLineID", selectedLineID);
 
                     command.ExecuteNonQuery();
                     connection.Close();
                 }
+                selectedLineID = vectorList.Count > 0 ? vectorList.Count - 1 : 0;
+                SelectedLineIndexLabel.Text = "Selected Line: " + (selectedLineID + 1);
                 Canvas.Refresh();
 
             }
-
-        }
-
-        Point GetMousePositionToCanvas()
-        { return new Point(PointToClient(MousePosition).X - Canvas.Location.X, PointToClient(MousePosition).Y - Canvas.Location.Y); }
-
-        //Updates Bool checker UI box and label with index of ui
-        void UpdateBoolChecker(string boolName, bool boolCheck, int boxIndex)
-        {
-            if (boolCheck) { boolCheckers[boxIndex].BackColor = guideColor; }
-            else { boolCheckers[boxIndex].BackColor = Button_Panel.BackColor; }
-
-            if (boolName.Length > 11)
-            {
-                boolName = boolName.Substring(0, 11);
-            }
-            boolLabels[boxIndex].Text = boolName;
-            boolCheckers[boxIndex].Refresh();
 
         }
 
@@ -360,20 +372,7 @@ namespace Vector_Maths_Tool
             {
                 if (vectorList.Count > 0)
                 {
-                    vectorList.Remove(vectorList[selectedLineID]);
-                    selectedLineID = vectorList.Count > 0 ? vectorList.Count - 1 : 0;
-                    label5.Text = "Line Count: " + vectorList.Count;
-
-                    using (SqlConnection connection = new SqlConnection(connectionString))
-                    {
-                        connection.Open();
-                        SqlCommand command = new SqlCommand("USE Vector_Math_Tool; DELETE FROM POINTS WHERE Line_ID = @selectedLineID", connection);
-                        command.Parameters.AddWithValue("@selectedLineID", selectedLineID);
-
-                        command.ExecuteNonQuery();
-                        connection.Close();
-                    }
-                    Canvas.Refresh();
+                    RemoveLine();
 
                 }
 
