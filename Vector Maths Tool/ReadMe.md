@@ -4,6 +4,11 @@ Application I Made for helping visualise math applied to vectors in realtime for
 # What I learned
 - Basics of winForms
 - Getting Familiar with .NET framework C#
-- Use of classes
-- Understanding Vector maths
+- Understanding Vector maths (Normal Unit Vector, Dot Product, Cross Product etc.)
 - Background Workers (Asynchronous thread tasks)
+- SQL Databases
+- Object Oriented Programming
+- Structs, Classes and Inheritance
+- Bresenham Line Algorithm
+- For, While loops
+- Planning solutions to problems
