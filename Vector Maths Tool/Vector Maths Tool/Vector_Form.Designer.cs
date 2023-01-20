@@ -275,6 +275,7 @@ namespace Vector_Maths_Tool
             this.ButtonTooltip.SetToolTip(this.VectorMathsButton, "Delete selected line (If line isn\'t selected last created line is deleted)\r\nShort" +
         "cut: [X]");
             this.VectorMathsButton.UseVisualStyleBackColor = false;
+            this.VectorMathsButton.Click += new System.EventHandler(this.VectorMathsButton_Click);
             // 
             // SelectRadiusIncrementor
             // 
@@ -625,9 +626,10 @@ namespace Vector_Maths_Tool
             this.PopupVectorMathsButton.Size = new System.Drawing.Size(162, 39);
             this.PopupVectorMathsButton.TabIndex = 33;
             this.PopupVectorMathsButton.Text = "Vector Maths";
-            this.ButtonTooltip.SetToolTip(this.PopupVectorMathsButton, "Toggle line creation on canvas that contains vector data.\r\nShortcut: [Space]");
+            this.ButtonTooltip.SetToolTip(this.PopupVectorMathsButton, "Vector Maths functions that create a new line based on the\r\nmath function and lin" +
+        "es selected.\r\nShortcut: [N/A]\r\n(Should this have a shortcut)");
             this.PopupVectorMathsButton.UseVisualStyleBackColor = false;
-            this.PopupVectorMathsButton.Click += new System.EventHandler(this.VectorMathsButton_Click);
+            this.PopupVectorMathsButton.Click += new System.EventHandler(this.PopupVectorMathsButton_Click);
             // 
             // PopupDeleteVectorButton
             // 
@@ -640,7 +642,7 @@ namespace Vector_Maths_Tool
             this.PopupDeleteVectorButton.Size = new System.Drawing.Size(162, 39);
             this.PopupDeleteVectorButton.TabIndex = 34;
             this.PopupDeleteVectorButton.Text = "Delete Line";
-            this.ButtonTooltip.SetToolTip(this.PopupDeleteVectorButton, "Toggle line creation on canvas that contains vector data.\r\nShortcut: [Space]");
+            this.ButtonTooltip.SetToolTip(this.PopupDeleteVectorButton, "Deletes currently selected line.\r\nShortcut: [X]");
             this.PopupDeleteVectorButton.UseVisualStyleBackColor = false;
             this.PopupDeleteVectorButton.Click += new System.EventHandler(this.DeleteVectorButton_Click);
             // 
@@ -655,7 +657,7 @@ namespace Vector_Maths_Tool
             this.MoveLineButton.Size = new System.Drawing.Size(162, 39);
             this.MoveLineButton.TabIndex = 35;
             this.MoveLineButton.Text = "Move Line";
-            this.ButtonTooltip.SetToolTip(this.MoveLineButton, "Toggle line creation on canvas that contains vector data.\r\nShortcut: [Space]");
+            this.ButtonTooltip.SetToolTip(this.MoveLineButton, "Moves currently selected line.\r\nShortcut: [N/A]\r\nNot done yet");
             this.MoveLineButton.UseVisualStyleBackColor = false;
             this.MoveLineButton.Click += new System.EventHandler(this.MoveLineButton_Click);
             // 
@@ -670,7 +672,7 @@ namespace Vector_Maths_Tool
             this.CopyLineButton.Size = new System.Drawing.Size(162, 39);
             this.CopyLineButton.TabIndex = 36;
             this.CopyLineButton.Text = "Copy Line";
-            this.ButtonTooltip.SetToolTip(this.CopyLineButton, "Toggle line creation on canvas that contains vector data.\r\nShortcut: [Space]");
+            this.ButtonTooltip.SetToolTip(this.CopyLineButton, "Duplicates line selected.\r\nShortcut: [N/A]\r\nNothin yet combe back later");
             this.CopyLineButton.UseVisualStyleBackColor = false;
             this.CopyLineButton.Click += new System.EventHandler(this.CopyLineButton_Click);
             // 
@@ -678,7 +680,7 @@ namespace Vector_Maths_Tool
             // 
             this.AddVectorButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.AddVectorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
+            this.AddVectorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(22)))), ((int)(((byte)(18)))));
             this.AddVectorButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.AddVectorButton.Font = new System.Drawing.Font("Input", 10.5F);
             this.AddVectorButton.Location = new System.Drawing.Point(21, 42);
@@ -694,7 +696,7 @@ namespace Vector_Maths_Tool
             // 
             this.SubtractVectorButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.SubtractVectorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
+            this.SubtractVectorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(22)))), ((int)(((byte)(18)))));
             this.SubtractVectorButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.SubtractVectorButton.Font = new System.Drawing.Font("Input", 10.5F);
             this.SubtractVectorButton.Location = new System.Drawing.Point(21, 82);
@@ -710,7 +712,7 @@ namespace Vector_Maths_Tool
             // 
             this.MultiplyVectorButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.MultiplyVectorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
+            this.MultiplyVectorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(22)))), ((int)(((byte)(18)))));
             this.MultiplyVectorButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.MultiplyVectorButton.Font = new System.Drawing.Font("Input", 10.5F);
             this.MultiplyVectorButton.Location = new System.Drawing.Point(21, 122);
@@ -726,7 +728,7 @@ namespace Vector_Maths_Tool
             // 
             this.DivideVectorButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DivideVectorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
+            this.DivideVectorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(22)))), ((int)(((byte)(18)))));
             this.DivideVectorButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.DivideVectorButton.Font = new System.Drawing.Font("Input", 10.5F);
             this.DivideVectorButton.Location = new System.Drawing.Point(21, 162);
@@ -794,7 +796,7 @@ namespace Vector_Maths_Tool
             this.SelectPopupPanel.Size = new System.Drawing.Size(340, 274);
             this.SelectPopupPanel.TabIndex = 8;
             this.SelectPopupPanel.Visible = false;
-            this.SelectPopupPanel.MouseEnter += new System.EventHandler(this.SelectPopupPanel_MouseEnter);
+            this.SelectPopupPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.SelectPopupPanel_MouseMove);
             // 
             // PopupTitleLabel
             // 
@@ -840,7 +842,7 @@ namespace Vector_Maths_Tool
             // 
             // VectorMathsTitleLabel
             // 
-            this.VectorMathsTitleLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
+            this.VectorMathsTitleLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(22)))), ((int)(((byte)(18)))));
             this.VectorMathsTitleLabel.Dock = System.Windows.Forms.DockStyle.Top;
             this.VectorMathsTitleLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.VectorMathsTitleLabel.Font = new System.Drawing.Font("Input", 14F);
@@ -855,7 +857,7 @@ namespace Vector_Maths_Tool
             // 
             // VectorMathsPanel
             // 
-            this.VectorMathsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(14)))), ((int)(((byte)(24)))));
+            this.VectorMathsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(14)))), ((int)(((byte)(32)))));
             this.VectorMathsPanel.Controls.Add(this.DivideVectorButton);
             this.VectorMathsPanel.Controls.Add(this.MultiplyVectorButton);
             this.VectorMathsPanel.Controls.Add(this.SubtractVectorButton);
@@ -867,6 +869,7 @@ namespace Vector_Maths_Tool
             this.VectorMathsPanel.Size = new System.Drawing.Size(162, 211);
             this.VectorMathsPanel.TabIndex = 38;
             this.VectorMathsPanel.Visible = false;
+            this.VectorMathsPanel.Leave += new System.EventHandler(this.VectorMathsPanel_Leave);
             // 
             // Vector_Form
             // 

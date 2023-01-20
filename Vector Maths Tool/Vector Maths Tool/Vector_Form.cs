@@ -41,12 +41,14 @@ using Ginoss_Tools;
  * Graphical representation of radius around cursor for selection area when select line button is enabled
  * When no line is present or selected show popup for no line available instead ot the edit vector interface
  * Change cursor depending on mode its on etc. Green for selecting line, Blue for creating, Red for freehand brush
- * Animate minimizing side panel and expand canvas to edge
+ * Animate minimizing side panel into side
  * 
  * --- Code Readability ---
  * linePoints array in Vector_Shapes class change to start and end point variable to avoid confusion
  * isDrawingVector and canDrawVector can most likely remove one and use the other and simplify the boolean checks
- * Change lebel 1-6 to a more specific name to what it shows
+ * Change label 1-6 to a more specific name to what it shows
+ * Change all the toggle booleans to a bool = bool ? false : true
+ * Create a function for each toggle state
  * 
  * --- Quality of Life (Ease of Use) ---
  * Visually show when the mouse exits and enters the line rather than just keeping the selected effect on when the cursor leaves -
@@ -58,6 +60,7 @@ using Ginoss_Tools;
  * Offline Alternative to sql coordinates being stored such as xml or array
  * Make Window moveable and scalable without default windows bar
  * Convert brush to lines with a specific level of precision chosen
+ * Previous and Next line index inside edit popup that moves popup to start coordinate of next selected line that moves cursor with the popup
  * 
  * --- PERFORMANCE OPTIMISATION ---
  * Make sql stored coordinate not slow down computer
@@ -94,6 +97,7 @@ namespace Vector_Maths_Tool
         int LineWidth;
         int selectRadius;
         int selectedLineID;
+        int originalCanvasWidth;
 
         bool onCanvas = false;
         bool timerRunning = false;
@@ -131,6 +135,7 @@ namespace Vector_Maths_Tool
             CurrentLineColor.Color = lineColor;
             LineWidth = (int)LineThicknessIncrement.Value;
             selectRadius = (int)SelectRadiusIncrementor.Value;
+            originalCanvasWidth = Canvas.Width;
 
             using (SqlConnection connection = new SqlConnection (connectionString))
             {
@@ -388,6 +393,28 @@ namespace Vector_Maths_Tool
 
         #endregion
 
+        #region Tool Mode States
+
+        void ToggleSelectMode()
+        {
+            isSelectingVector = isSelectingVector ? false : true;
+
+            if (isDrawingVector && isSelectingVector)
+            {
+                isDrawingVector = false;
+                canCreateVector = false;
+
+                UpdateBoolChecker("Drawing Line", isDrawingVector, 0);
+                UpdateBoolChecker("Can_Create", canCreateVector, 2);
+
+            }
+
+            UpdateBoolChecker("Select_Line", isSelectingVector, 3);
+
+        }
+
+        #endregion
+
         #region User_Input
 
         //On Canvas Keyboard Input
@@ -409,18 +436,7 @@ namespace Vector_Maths_Tool
             //Select Mode
             if (e.KeyCode == Keys.Z)
             {
-                if (!isDrawingVector && !isSelectingVector)
-                {
-                    isSelectingVector = true;
-                    UpdateBoolChecker("Select_Line", isSelectingVector, 3);
-
-                }
-                else
-                {
-                    isSelectingVector = false;
-                    UpdateBoolChecker("Select_Line", isSelectingVector, 3);
-
-                }
+                ToggleSelectMode();
 
             }
 
@@ -479,6 +495,7 @@ namespace Vector_Maths_Tool
             Canvas.Refresh();
 
         }
+
         //Mouse over Canvas
         private void Canvas_MouseEnter(object sender, EventArgs e)
         {
@@ -502,7 +519,6 @@ namespace Vector_Maths_Tool
         //Mouse moved while over canvas
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
-
             mouseXLabel.Text = "MouseX: " + canvasMousePos.X;
             mouseYLabel.Text = "MouseY: " + canvasMousePos.Y;
 
@@ -545,6 +561,12 @@ namespace Vector_Maths_Tool
                     }
                 }
             }
+        }
+
+        private void SelectPopupPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (VectorMathsPanel.Visible) VectorMathsPanel.Location = new Point((SelectPopupPanel.Size.Width + SelectPopupPanel.Location.X), GetMousePositionToCanvas().Y);
+
         }
 
         #endregion
@@ -627,6 +649,7 @@ namespace Vector_Maths_Tool
             TimerButton.Text = timerOut;
         }
         #endregion
+
         //Create Vector/Line Button
         private void CreateVectorButton_Click(object sender, EventArgs e)
         {
@@ -682,18 +705,7 @@ namespace Vector_Maths_Tool
 
         private void SelectVectorButton_Click(object sender, EventArgs e)
         {
-            if (!isDrawingVector && !isSelectingVector)
-                {
-                    isSelectingVector = true;
-                    UpdateBoolChecker("Select_Line", isSelectingVector, 3);
-
-                }
-                else
-                {
-                    isSelectingVector = false;
-                    UpdateBoolChecker("Select_Line", isSelectingVector, 3);
-
-                }
+            ToggleSelectMode();
 
         }
 
@@ -709,11 +721,11 @@ namespace Vector_Maths_Tool
 
         }
 
-        private void VectorMathsButton_Click(object sender, EventArgs e)
+        private void PopupVectorMathsButton_Click(object sender, EventArgs e)
         {
             VectorMathsPanel.Visible = true;
             VectorMathsPanel.Enabled = true;
-            VectorMathsPanel.Location = GetMousePositionToCanvas();
+            VectorMathsPanel.Location = new Point ((SelectPopupPanel.Size.Width + SelectPopupPanel.Location.X), GetMousePositionToCanvas().Y);
 
         }
 
@@ -740,6 +752,8 @@ namespace Vector_Maths_Tool
                 SidePanelMinimizeButton.Text = "-";
                 SidePanelMinimizeButton.BackColor = Color.DarkRed;
 
+                Canvas.Width = originalCanvasWidth;
+
             }
             else
             {
@@ -748,14 +762,24 @@ namespace Vector_Maths_Tool
                 SidePanelMinimizeButton.Text = "+";
                 SidePanelMinimizeButton.BackColor = Color.Red;
 
+                Canvas.Width = Form.ActiveForm.Width - 24;
+
             }
 
         }
 
-        private void SelectPopupPanel_MouseEnter(object sender, EventArgs e)
+        private void VectorMathsPanel_Leave(object sender, EventArgs e)
         {
             VectorMathsPanel.Visible = false;
             VectorMathsPanel.Enabled = false;
+
+        }
+
+        private void VectorMathsButton_Click(object sender, EventArgs e)
+        {
+            VectorMathsPanel.Visible = true;
+            VectorMathsPanel.Enabled = true;
+            VectorMathsPanel.Location = new Point((Button_Panel.Location.X - VectorMathsPanel.Width), GetMousePositionToCanvas().Y);
 
         }
 
