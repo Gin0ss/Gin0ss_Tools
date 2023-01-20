@@ -78,28 +78,33 @@ namespace Vector_Maths_Tool
     {
         #region Variables
 
-        Color guideColor = Color.FromArgb(64, 32, 120, 16);
         Color lineColor = Color.FromArgb(255, 16, 255, 8);
-        Point canvasCentre;
+        Color guideColor = Color.FromArgb(64, 32, 120, 16);
         Point startPoint;
+        Point canvasCentre;
         Point canvasMousePos;
+        Point originalWindowPos;
 
         Stopwatch runTimer = new Stopwatch();
 
-        List<Vector_Shapes> vectorList = new List<Vector_Shapes>();
         List<Vector> temp = new List<Vector>();
+        List<Vector_Shapes> vectorList = new List<Vector_Shapes>();
 
         Image backgroundImage = Properties.Resources.backgroundAbberate;
 
-        static PictureBox[] boolCheckers;
         static Label[] boolLabels;
+        static PictureBox[] boolCheckers;
 
         int LineWidth;
         int selectRadius;
         int selectedLineID;
         int originalCanvasWidth;
+        int originalWindowWidth;
+        int originalWindowHeight;
 
         bool onCanvas = false;
+        bool isBordered = false;
+        bool isMaximized = false;
         bool timerRunning = false;
         bool canvasPressed = false;
         bool canvasReleased = false;
@@ -110,8 +115,8 @@ namespace Vector_Maths_Tool
         bool isSidePanelVisible = true;
 
         string timerOut;
-        //string connectionString = "Server=31.54.59.212,6464; Database=Vector_Math_Tool; USER ID=AS; PASSWORD = 123"; //Server
         string connectionString = "Server=Ginoss,6464; Database=Vector_Math_Tool;Trusted_Connection=True"; //Local faster
+        //string connectionString = "Server=31.54.59.212,6464; Database=Vector_Math_Tool; USER ID=AS; PASSWORD = 123"; //Server
 
         #endregion
 
@@ -133,9 +138,14 @@ namespace Vector_Maths_Tool
 
             CurrentGuideColor.Color = guideColor;
             CurrentLineColor.Color = lineColor;
+
             LineWidth = (int)LineThicknessIncrement.Value;
             selectRadius = (int)SelectRadiusIncrementor.Value;
+
             originalCanvasWidth = Canvas.Width;
+            originalWindowWidth = this.Width;
+            originalWindowHeight = this.Height;
+            originalWindowPos = this.Location;
 
             using (SqlConnection connection = new SqlConnection (connectionString))
             {
@@ -752,9 +762,10 @@ namespace Vector_Maths_Tool
                 SidePanelMinimizeButton.Text = "-";
                 SidePanelMinimizeButton.BackColor = Color.DarkRed;
 
-                Canvas.Width = originalCanvasWidth;
+                Canvas.Width = this.ClientSize.Width - Button_Panel.Size.Width - 29;
 
             }
+
             else
             {
                 Button_Panel.Visible = false;
@@ -762,7 +773,7 @@ namespace Vector_Maths_Tool
                 SidePanelMinimizeButton.Text = "+";
                 SidePanelMinimizeButton.BackColor = Color.Red;
 
-                Canvas.Width = Form.ActiveForm.Width - 24;
+                Canvas.Width = this.ClientSize.Width - 24;
 
             }
 
@@ -780,6 +791,62 @@ namespace Vector_Maths_Tool
             VectorMathsPanel.Visible = true;
             VectorMathsPanel.Enabled = true;
             VectorMathsPanel.Location = new Point((Button_Panel.Location.X - VectorMathsPanel.Width), GetMousePositionToCanvas().Y);
+
+        }
+
+        private void MaximizeScreenButton_Click(object sender, EventArgs e)
+        {
+            isMaximized = !isMaximized;
+            isBordered = false;
+
+            if (isMaximized)
+            {
+                originalWindowWidth = this.Width;
+                originalWindowHeight = this.Height;
+                originalWindowPos = this.Location;
+
+                this.Location = new Point(0, 0);
+                this.Width = Screen.PrimaryScreen.Bounds.Width;
+                this.Height = Screen.PrimaryScreen.Bounds.Height;
+
+            }
+            else
+            {
+                if (originalWindowPos != Point.Empty)
+                {
+                    this.Location = originalWindowPos;
+                    this.Width = originalWindowWidth;
+                    this.Height = originalWindowHeight;
+
+                }
+                else
+                {
+                    this.Width = 1920;
+                    this.Height = 1080;
+
+                }
+            }
+        }
+
+        private void ToggleBorderButton_Click(object sender, EventArgs e)
+        {
+            isBordered = !isBordered;
+            isMaximized = false;
+
+            if (isBordered)
+            {
+                this.FormBorderStyle = FormBorderStyle.Sizable;
+
+                if (isMaximized)
+                {
+                    this.Location = originalWindowPos;
+                    this.Width = originalWindowWidth;
+                    this.Height = originalWindowHeight;
+
+                }
+            }
+
+            else { this.FormBorderStyle = FormBorderStyle.None; }
 
         }
 

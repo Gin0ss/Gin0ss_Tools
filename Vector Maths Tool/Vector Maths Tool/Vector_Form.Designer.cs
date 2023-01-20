@@ -38,6 +38,8 @@ namespace Vector_Maths_Tool
             this.CreateVectorButton = new System.Windows.Forms.Button();
             this.ClearButton = new System.Windows.Forms.Button();
             this.Button_Panel = new System.Windows.Forms.Panel();
+            this.MaximizeScreenButton = new System.Windows.Forms.Button();
+            this.ToggleBorderButton = new System.Windows.Forms.Button();
             this.SideBarLabel = new System.Windows.Forms.Label();
             this.FreehandBrushButton = new System.Windows.Forms.Button();
             this.VectorMathsButton = new System.Windows.Forms.Button();
@@ -175,13 +177,13 @@ namespace Vector_Maths_Tool
             // 
             // ClearButton
             // 
-            this.ClearButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.ClearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ClearButton.AutoSize = true;
             this.ClearButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
             this.ClearButton.FlatAppearance.BorderSize = 2;
-            this.ClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.ClearButton.Font = new System.Drawing.Font("Input", 13F);
-            this.ClearButton.Location = new System.Drawing.Point(166, 764);
+            this.ClearButton.Location = new System.Drawing.Point(10, 907);
             this.ClearButton.Name = "ClearButton";
             this.ClearButton.Size = new System.Drawing.Size(88, 59);
             this.ClearButton.TabIndex = 4;
@@ -195,6 +197,8 @@ namespace Vector_Maths_Tool
             this.Button_Panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(14)))), ((int)(((byte)(20)))));
+            this.Button_Panel.Controls.Add(this.MaximizeScreenButton);
+            this.Button_Panel.Controls.Add(this.ToggleBorderButton);
             this.Button_Panel.Controls.Add(this.SideBarLabel);
             this.Button_Panel.Controls.Add(this.FreehandBrushButton);
             this.Button_Panel.Controls.Add(this.VectorMathsButton);
@@ -227,6 +231,38 @@ namespace Vector_Maths_Tool
             this.Button_Panel.Padding = new System.Windows.Forms.Padding(2);
             this.Button_Panel.Size = new System.Drawing.Size(259, 1055);
             this.Button_Panel.TabIndex = 6;
+            // 
+            // MaximizeScreenButton
+            // 
+            this.MaximizeScreenButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.MaximizeScreenButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
+            this.MaximizeScreenButton.FlatAppearance.BorderSize = 2;
+            this.MaximizeScreenButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.MaximizeScreenButton.Font = new System.Drawing.Font("Input", 13F);
+            this.MaximizeScreenButton.Location = new System.Drawing.Point(10, 777);
+            this.MaximizeScreenButton.Name = "MaximizeScreenButton";
+            this.MaximizeScreenButton.Size = new System.Drawing.Size(88, 59);
+            this.MaximizeScreenButton.TabIndex = 37;
+            this.MaximizeScreenButton.Text = "Full\r\nScreen";
+            this.ButtonTooltip.SetToolTip(this.MaximizeScreenButton, "Clears screen and deletes all lines on canvas.\r\nShortcut: [Haven\'t got one yet]");
+            this.MaximizeScreenButton.UseVisualStyleBackColor = false;
+            this.MaximizeScreenButton.Click += new System.EventHandler(this.MaximizeScreenButton_Click);
+            // 
+            // ToggleBorderButton
+            // 
+            this.ToggleBorderButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ToggleBorderButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
+            this.ToggleBorderButton.FlatAppearance.BorderSize = 2;
+            this.ToggleBorderButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ToggleBorderButton.Font = new System.Drawing.Font("Input", 13F);
+            this.ToggleBorderButton.Location = new System.Drawing.Point(10, 842);
+            this.ToggleBorderButton.Name = "ToggleBorderButton";
+            this.ToggleBorderButton.Size = new System.Drawing.Size(88, 59);
+            this.ToggleBorderButton.TabIndex = 36;
+            this.ToggleBorderButton.Text = "Toggle\r\nBorder";
+            this.ButtonTooltip.SetToolTip(this.ToggleBorderButton, "Clears screen and deletes all lines on canvas.\r\nShortcut: [Haven\'t got one yet]");
+            this.ToggleBorderButton.UseVisualStyleBackColor = false;
+            this.ToggleBorderButton.Click += new System.EventHandler(this.ToggleBorderButton_Click);
             // 
             // SideBarLabel
             // 
@@ -279,14 +315,14 @@ namespace Vector_Maths_Tool
             // 
             // SelectRadiusIncrementor
             // 
-            this.SelectRadiusIncrementor.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.SelectRadiusIncrementor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.SelectRadiusIncrementor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
             this.SelectRadiusIncrementor.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.SelectRadiusIncrementor.Cursor = System.Windows.Forms.Cursors.Default;
-            this.SelectRadiusIncrementor.Font = new System.Drawing.Font("Input", 13F);
+            this.SelectRadiusIncrementor.Font = new System.Drawing.Font("Input", 9.5F);
             this.SelectRadiusIncrementor.ForeColor = System.Drawing.Color.Red;
             this.SelectRadiusIncrementor.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.SelectRadiusIncrementor.Location = new System.Drawing.Point(166, 597);
+            this.SelectRadiusIncrementor.Location = new System.Drawing.Point(160, 745);
             this.SelectRadiusIncrementor.Maximum = new decimal(new int[] {
             32,
             0,
@@ -298,11 +334,11 @@ namespace Vector_Maths_Tool
             0,
             0});
             this.SelectRadiusIncrementor.Name = "SelectRadiusIncrementor";
-            this.SelectRadiusIncrementor.Size = new System.Drawing.Size(58, 19);
+            this.SelectRadiusIncrementor.Size = new System.Drawing.Size(58, 15);
             this.SelectRadiusIncrementor.TabIndex = 31;
             this.SelectRadiusIncrementor.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.ButtonTooltip.SetToolTip(this.SelectRadiusIncrementor, "X offset of tooltip position\r\n(Min: 0 | Max: 9999)\r\nShortcuts:\r\n   Increase: [n/a" +
-        "]\r\n   Decrease: [n/a]");
+            this.ButtonTooltip.SetToolTip(this.SelectRadiusIncrementor, "Select cursor\'s circular radius\r\n(Min: 0 | Max: 32)\r\nShortcuts:\r\n   Increase: [n/" +
+        "a]\r\n   Decrease: [n/a]");
             this.SelectRadiusIncrementor.Value = new decimal(new int[] {
             5,
             0,
@@ -312,15 +348,16 @@ namespace Vector_Maths_Tool
             // 
             // SelectRadiusLabel
             // 
-            this.SelectRadiusLabel.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.SelectRadiusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.SelectRadiusLabel.AutoSize = true;
             this.SelectRadiusLabel.Font = new System.Drawing.Font("Input", 12.5F);
-            this.SelectRadiusLabel.Location = new System.Drawing.Point(117, 568);
+            this.SelectRadiusLabel.Location = new System.Drawing.Point(156, 704);
             this.SelectRadiusLabel.Name = "SelectRadiusLabel";
             this.SelectRadiusLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.SelectRadiusLabel.Size = new System.Drawing.Size(137, 15);
+            this.SelectRadiusLabel.Size = new System.Drawing.Size(67, 30);
             this.SelectRadiusLabel.TabIndex = 30;
-            this.SelectRadiusLabel.Text = "Select Radius";
+            this.SelectRadiusLabel.Text = "Select\r\nRadius";
+            this.SelectRadiusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // DeleteVectorButton
             // 
@@ -342,7 +379,7 @@ namespace Vector_Maths_Tool
             // 
             // mouseXLabel
             // 
-            this.mouseXLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.mouseXLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.mouseXLabel.AutoSize = true;
             this.mouseXLabel.Font = new System.Drawing.Font("Input", 7F);
             this.mouseXLabel.Location = new System.Drawing.Point(8, 985);
@@ -354,7 +391,7 @@ namespace Vector_Maths_Tool
             // 
             // mouseYLabel
             // 
-            this.mouseYLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.mouseYLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.mouseYLabel.AutoSize = true;
             this.mouseYLabel.Font = new System.Drawing.Font("Input", 7F);
             this.mouseYLabel.Location = new System.Drawing.Point(8, 999);
@@ -366,7 +403,7 @@ namespace Vector_Maths_Tool
             // 
             // label5
             // 
-            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Input", 12.2F);
             this.label5.Location = new System.Drawing.Point(7, 1027);
@@ -396,12 +433,12 @@ namespace Vector_Maths_Tool
             // 
             // LineColorButton
             // 
-            this.LineColorButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.LineColorButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.LineColorButton.AutoSize = true;
             this.LineColorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
             this.LineColorButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.LineColorButton.Font = new System.Drawing.Font("Input", 13F);
-            this.LineColorButton.Location = new System.Drawing.Point(115, 688);
+            this.LineColorButton.Location = new System.Drawing.Point(118, 780);
             this.LineColorButton.Name = "LineColorButton";
             this.LineColorButton.Size = new System.Drawing.Size(139, 27);
             this.LineColorButton.TabIndex = 16;
@@ -412,12 +449,12 @@ namespace Vector_Maths_Tool
             // 
             // GuideColorButton
             // 
-            this.GuideColorButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.GuideColorButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.GuideColorButton.AutoSize = true;
             this.GuideColorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
             this.GuideColorButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.GuideColorButton.Font = new System.Drawing.Font("Input", 10F);
-            this.GuideColorButton.Location = new System.Drawing.Point(149, 721);
+            this.GuideColorButton.Location = new System.Drawing.Point(152, 813);
             this.GuideColorButton.Name = "GuideColorButton";
             this.GuideColorButton.Size = new System.Drawing.Size(105, 23);
             this.GuideColorButton.TabIndex = 15;
@@ -428,32 +465,33 @@ namespace Vector_Maths_Tool
             // 
             // LineThicknessLabel
             // 
-            this.LineThicknessLabel.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.LineThicknessLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.LineThicknessLabel.AutoSize = true;
-            this.LineThicknessLabel.Font = new System.Drawing.Font("Input", 14F);
-            this.LineThicknessLabel.Location = new System.Drawing.Point(136, 634);
+            this.LineThicknessLabel.Font = new System.Drawing.Font("Input", 12.5F);
+            this.LineThicknessLabel.Location = new System.Drawing.Point(41, 704);
             this.LineThicknessLabel.Name = "LineThicknessLabel";
-            this.LineThicknessLabel.Size = new System.Drawing.Size(118, 17);
+            this.LineThicknessLabel.Size = new System.Drawing.Size(57, 30);
             this.LineThicknessLabel.TabIndex = 14;
-            this.LineThicknessLabel.Text = "Line Width";
+            this.LineThicknessLabel.Text = "Line\r\nWidth";
+            this.LineThicknessLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // LineThicknessIncrement
             // 
-            this.LineThicknessIncrement.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.LineThicknessIncrement.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.LineThicknessIncrement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
             this.LineThicknessIncrement.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.LineThicknessIncrement.Cursor = System.Windows.Forms.Cursors.Default;
-            this.LineThicknessIncrement.Font = new System.Drawing.Font("Input", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LineThicknessIncrement.Font = new System.Drawing.Font("Input", 9.5F);
             this.LineThicknessIncrement.ForeColor = System.Drawing.Color.Red;
             this.LineThicknessIncrement.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.LineThicknessIncrement.Location = new System.Drawing.Point(166, 654);
+            this.LineThicknessIncrement.Location = new System.Drawing.Point(40, 745);
             this.LineThicknessIncrement.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.LineThicknessIncrement.Name = "LineThicknessIncrement";
-            this.LineThicknessIncrement.Size = new System.Drawing.Size(58, 19);
+            this.LineThicknessIncrement.Size = new System.Drawing.Size(58, 15);
             this.LineThicknessIncrement.TabIndex = 13;
             this.LineThicknessIncrement.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.ButtonTooltip.SetToolTip(this.LineThicknessIncrement, "Changes width of line\r\n(Min: 1 | Max: 100)\r\nShortcuts:\r\n   Increase: [Up Arrow] O" +
@@ -742,6 +780,9 @@ namespace Vector_Maths_Tool
             // 
             // Canvas
             // 
+            this.Canvas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Canvas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(6)))), ((int)(((byte)(8)))));
             this.Canvas.BackgroundImage = global::Vector_Maths_Tool.Properties.Resources.backgroundSpeed;
             this.Canvas.Cursor = System.Windows.Forms.Cursors.Cross;
@@ -828,6 +869,7 @@ namespace Vector_Maths_Tool
             // 
             // SidePanelMinimizeButton
             // 
+            this.SidePanelMinimizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.SidePanelMinimizeButton.BackColor = System.Drawing.Color.DarkRed;
             this.SidePanelMinimizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.SidePanelMinimizeButton.Font = new System.Drawing.Font("Input", 25F, System.Drawing.FontStyle.Bold);
@@ -875,7 +917,6 @@ namespace Vector_Maths_Tool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 10F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(36)))));
             this.ClientSize = new System.Drawing.Size(1920, 1080);
             this.Controls.Add(this.VectorMathsPanel);
@@ -969,6 +1010,8 @@ namespace Vector_Maths_Tool
         private System.Windows.Forms.Button MultiplyVectorButton;
         private System.Windows.Forms.Button SubtractVectorButton;
         private System.Windows.Forms.Button AddVectorButton;
+        private System.Windows.Forms.Button MaximizeScreenButton;
+        private System.Windows.Forms.Button ToggleBorderButton;
     }
 }
 
