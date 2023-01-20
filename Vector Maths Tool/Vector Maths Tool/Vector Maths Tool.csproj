@@ -55,7 +55,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Vector_Loop.cs" />
     <Compile Include="Vector_Shapes.cs" />
     <Compile Include="Vector_Struct.cs" />
     <EmbeddedResource Include="Vector_Form.resx">

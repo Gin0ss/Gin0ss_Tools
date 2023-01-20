@@ -1,48 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Data.SqlClient;
 using System.ComponentModel;
+using System.Windows.Forms;
 using System.Diagnostics;
 using System.Drawing;
-using System.Windows.Forms;
-using System.Data.SqlClient;
 using Ginoss_Tools;
 
 /* TO DO:
+ * --- Main Function ---
  * Line Created (X)
  * Get start and end (X)
  * Calculate Vector normal and magnitude (X)
  * Click Select Vector button on sidebar (X)
  * Loop through each pixel using Bresenham Algorithm going along the normal (X)
- * (Understand how exactly the algorithm works by doing it manually on paper specifically the reson the error value works and why adding the line vector that way make it move perfectly)
+ * Understand how exactly the algorithm works by doing it manually on paper specifically the reson the error value works and why adding the line vector that way make it move perfectly
  * Store pixel locations under lines index value in SQL (X)
  * When mouse moves check for the current mouse position coordinates in the file for associated line index (X)
  * if coordinate exists in file and is linked to a line index get the line index (X)
  * Show visual effect of line cursor is on (change color for now) (X)
+ * if mouse clicks while over line create context menu to the right of cursor position (X)
+ * Custom context menu should show information on line such as magnitude, normal, button for maths functions (X)
+ * Make elements of popup panel not close the popup panel set the popup to close when mouse enters canvas or side panel rather than leaves popup (X)
  * 
- * if mouse clicks while over line create context menu to the right of cursor position
- * Custom context menu should show information on line such as magnitude, normal, button for maths functions
- * (Add Scale up and Move animation using deltaTime)
+ * Radius Around cursor selection with a new ui element for cursor radius value incrementor like the line radius <<<
+ * Brush drawing tool for freehand drawing and notes using the cursor radius
  * if math button pressed create another pop up menu with different math functions tooltip on how to use
  * if math function pressed brief instruction on how to use (label will do) e.g. Select another line to add
  * Select another line to add together and create the resulting line color with color dialouge popup
- * (Add glow effect around line)
- * (Add deltaTime for animation functionality and possibly smooth mouse cursor while creating a line)
- * (linePoints array in Vector_Shapes class change to start and end point variable to avoid confusion)
- * (Make Line stats on sidebar update during guide line drawing)
- * (Keyboard shortcut for creating, deleting and selecting a vector) (X)
- * (Expand Vector struct overloads and math functionality such ad dot product method)
- * (Undo and redo keys using Z and X by removing the last in Vector List and puts into redo List and redo adds back to vector list from redo list)
- * (Save screens of just the canvas and possibly change the for loop of creating te lines to a background bitmap to save performance)
- * (Fullscreen on Canvas with miniside bar or pop out and hide function)
- * (Fix guide line being behind all the drawn lines)
- * (Add performance and memory boost to sql table queries by removing every other pixel stored for the line and creating a radius around each pixel in c# to -
- * fill in the blanks depending on a threshold gap between pixels essentially halving or more the search speed and memory used in sql table but sacrificing accuracy the higher the value)
- * (Radius Around cursor selection with a new ui element for cursor radius value incrementor like the line radius)
- * (Change the incrementor UI to be more visually appealing get rid of the basic incrementor with white up and down and possibly add small buttons for up and down)
- * (Update all the keyboard shortcuts for new UI Added)
- * (Put SQL Server rather than having it locally stored to allow others to test the program other than just this pc)
- * (Visually show when the mouse exits and enters the line rather than just keeping the selected effect on when the cursor leaves -
- * but keep the selected line subtly changed to indicate its still the selected line)
+ * Move and copy line functionality and choose resulting lines colour if nothing is chosen use last lines colour
+ * Expand Vector struct overloads and math functionality such add dot product method
+ * Undo and redo keys using Z and X by removing the last in Vector List and puts into redo List and redo adds back to vector list from redo list
+ * 
+ * --- Visual/Graphical Elements ---
+ * Add glow effect around selected line
+ * Add deltaTime for animation functionality and possibly smooth mouse cursor while creating a line
+ * Add Scale up and Move animation using deltaTime
+ * Change the incrementor UI to be more visually appealing get rid of the basic incrementor with white up and down and possibly add small buttons for up and down
+ * Graphical representation of radius around cursor for selection area when select line button is enabled
+ * When no line is present or selected show popup for no line available instead ot the edit vector interface
+ * Change cursor depending on mode its on etc. Green for selecting line, Blue for creating, Red for freehand brush
+ * Animate minimizing side panel and expand canvas to edge
+ * 
+ * --- Code Readability ---
+ * linePoints array in Vector_Shapes class change to start and end point variable to avoid confusion
+ * isDrawingVector and canDrawVector can most likely remove one and use the other and simplify the boolean checks
+ * Change lebel 1-6 to a more specific name to what it shows
+ * 
+ * --- Quality of Life (Ease of Use) ---
+ * Visually show when the mouse exits and enters the line rather than just keeping the selected effect on when the cursor leaves -
+   but keep the selected line subtly changed to indicate its still the selected line
+ * Make Line stats on sidebar update during guide line drawing
+ * Fullscreen on Canvas with miniside bar or pop out and hide function
+ * Fix guide line being behind all the drawn lines
+ * Update all the keyboard shortcuts for new UI Added
+ * Offline Alternative to sql coordinates being stored such as xml or array
+ * Make Window moveable and scalable without default windows bar
+ * Convert brush to lines with a specific level of precision chosen
+ * 
+ * --- PERFORMANCE OPTIMISATION ---
+ * Make sql stored coordinate not slow down computer
+ * Group multiple coordinates to be moved into the sql command in one go rather than one by one with a batch command
+ * Store sql procedures to save compilation time
+ * Save screens of just the canvas and possibly change the for loop of creating lines to a background bitmap to save performance
+ * Add performance and memory boost to sql table queries by removing every other pixel stored for the line and creating a radius around each pixel in c# to -
+   fill in the blanks depending on a threshold gap between pixels essentially halving or more the search speed and memory used in sql table but sacrificing accuracy the higher the value
+ * 
  */
 
 namespace Vector_Maths_Tool
@@ -68,6 +92,7 @@ namespace Vector_Maths_Tool
         static Label[] boolLabels;
 
         int LineWidth;
+        int selectRadius;
         int selectedLineID;
 
         bool onCanvas = false;
@@ -78,9 +103,11 @@ namespace Vector_Maths_Tool
         bool isDrawingVector = false;
         bool isClearingScreen = false;
         bool isSelectingVector = false;
+        bool isSidePanelVisible = true;
 
         string timerOut;
-        string connectionString = "Server=.\\SQLEXPRESS;Database=master;Trusted_Connection=True;";
+        //string connectionString = "Server=31.54.59.212,6464; Database=Vector_Math_Tool; USER ID=AS; PASSWORD = 123"; //Server
+        string connectionString = "Server=Ginoss,6464; Database=Vector_Math_Tool;Trusted_Connection=True"; //Local faster
 
         #endregion
 
@@ -103,6 +130,7 @@ namespace Vector_Maths_Tool
             CurrentGuideColor.Color = guideColor;
             CurrentLineColor.Color = lineColor;
             LineWidth = (int)LineThicknessIncrement.Value;
+            selectRadius = (int)SelectRadiusIncrementor.Value;
 
             using (SqlConnection connection = new SqlConnection (connectionString))
             {
@@ -191,14 +219,7 @@ namespace Vector_Maths_Tool
 
             selectedLineID = vectorList.Count - 1;
 
-            SelectedLineIndexLabel.Text = "Selected Line: " + (selectedLineID + 1);
-            label6.Text = "Gradient: " + newShape.lineGradient;
-            label5.Text = "Line Count: " + vectorList.Count;
-            label4.Text = "Start: " + newShape.linePoints[0];
-            label3.Text = "End: " + newShape.linePoints[1];
-            label2.Text = "Magnitude: " + newShape.lineVector.Magnitude();
-            label1.Text = "Normal: {" + newShape.lineVector.X + ", " + newShape.lineVector.Y + "}";
-
+            UpdateVectorStatsLabels(newShape);
         }
 
         void UpdateBoolChecker(string boolName, bool boolCheck, int boxIndex)
@@ -212,6 +233,36 @@ namespace Vector_Maths_Tool
             }
             boolLabels[boxIndex].Text = boolName;
             boolCheckers[boxIndex].Refresh();
+
+        }
+
+        void UpdateVectorStatsLabels(Vector_Shapes shape)
+        {
+            label6.Text = "Gradient: " + shape.lineGradient;
+            label5.Text = "Line Count: " + vectorList.Count;
+            label4.Text = "Start: " + shape.linePoints[0];
+            label3.Text = "End: " + shape.linePoints[1];
+            label2.Text = "Magnitude: " + shape.lineVector.Magnitude();
+            label1.Text = "Normal: {" + shape.lineVector.X + ", " + shape.lineVector.Y + "}";
+
+        }
+
+        void SelectLinePopup()
+        {
+            SelectPopupPanel.Visible = true;
+            SelectPopupPanel.Enabled = true;
+            SelectPopupPanel.Location = canvasMousePos;
+
+            SelectPopupLabel.Text = "Selected Line : " + (selectedLineID + 1);
+
+        }
+
+        void DeselectLinePopup()
+        {
+            SelectPopupPanel.Enabled = false;
+            SelectPopupPanel.Visible = false;
+            VectorMathsPanel.Visible = false;
+            VectorMathsPanel.Enabled = false;
 
         }
 
@@ -256,7 +307,8 @@ namespace Vector_Maths_Tool
 
         }
 
-        void StoreSelectCoordinate(int lineID, int startX, int startY)
+        //Needs Optimising over internet connection and possibly an offline alternative
+        async void StoreSelectCoordinate(int lineID, int startX, int startY)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -268,7 +320,7 @@ namespace Vector_Maths_Tool
                     command.Parameters.AddWithValue("@X", startX);
                     command.Parameters.AddWithValue("@Y", startY);
 
-                    command.ExecuteNonQuery();
+                    await command.ExecuteNonQueryAsync().ConfigureAwait(false);
 
                 }
 
@@ -291,12 +343,9 @@ namespace Vector_Maths_Tool
 
             selectedLine.drawPen = selectPen;
 
-            SelectedLineIndexLabel.Text = "Selected Line: " + (selectedLineID + 1);
-            label6.Text = "Gradient: " + vectorList[selectedLineID].lineGradient;
-            label4.Text = "Start: " + vectorList[selectedLineID].linePoints[0];
-            label3.Text = "End: " + vectorList[selectedLineID].linePoints[1];
-            label2.Text = "Magnitude: " + vectorList[selectedLineID].lineVector.Magnitude();
-            label1.Text = "Normal: {" + vectorList[selectedLineID].lineVector.X + ", " + vectorList[selectedLineID].lineVector.Y + "}";
+            UpdateVectorStatsLabels(vectorList[selectedLineID]);
+
+            DeselectLinePopup();
             Canvas.Refresh();
 
         }
@@ -328,12 +377,14 @@ namespace Vector_Maths_Tool
                     connection.Close();
                 }
                 selectedLineID = vectorList.Count > 0 ? vectorList.Count - 1 : 0;
-                SelectedLineIndexLabel.Text = "Selected Line: " + (selectedLineID + 1);
+
+                DeselectLinePopup();
                 Canvas.Refresh();
 
             }
 
         }
+
 
         #endregion
 
@@ -342,15 +393,20 @@ namespace Vector_Maths_Tool
         //On Canvas Keyboard Input
         void Canvas_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
+            //Create Mode
             if (e.KeyCode == Keys.Space)
             {
-                if (!isDrawingVector) { isDrawingVector = true; canCreateVector = true; }
+                if (!isDrawingVector) { isDrawingVector = true; canCreateVector = true; isSelectingVector = false; }
                 else { isDrawingVector = false; canCreateVector = false; }
                 UpdateBoolChecker("DrawingLine", isDrawingVector, 0);
                 UpdateBoolChecker("Can_Create", canCreateVector, 2);
+                UpdateBoolChecker("Select_Line", isSelectingVector, 3);
+
+                DeselectLinePopup();
 
             }
 
+            //Select Mode
             if (e.KeyCode == Keys.Z)
             {
                 if (!isDrawingVector && !isSelectingVector)
@@ -368,6 +424,7 @@ namespace Vector_Maths_Tool
 
             }
 
+            //Delete Line
             if (e.KeyCode == Keys.X)
             {
                 if (vectorList.Count > 0)
@@ -378,6 +435,7 @@ namespace Vector_Maths_Tool
 
             }
 
+            //Colour change
             if (e.KeyCode == Keys.C)
             {
                 CurrentLineColor.ShowDialog();
@@ -386,6 +444,7 @@ namespace Vector_Maths_Tool
 
             }
 
+            //Line Width
             if ((e.KeyCode == Keys.Up || e.KeyCode == Keys.ShiftKey ) && LineThicknessIncrement.Value < LineThicknessIncrement.Maximum) { LineThicknessIncrement.Value += 1; }
             if ((e.KeyCode == Keys.Down || e.KeyCode == Keys.ControlKey ) && LineThicknessIncrement.Value > LineThicknessIncrement.Minimum) { LineThicknessIncrement.Value -= 1; }
 
@@ -395,7 +454,14 @@ namespace Vector_Maths_Tool
         private void Canvas_MouseDown(object sender, MouseEventArgs e)
         {
             canvasPressed = true;
-            if (isDrawingVector) { startPoint = canvasMousePos; }
+            if (isDrawingVector)  startPoint = canvasMousePos; 
+
+            if(isSelectingVector)
+            {
+                SelectLinePopup();
+
+            }
+
             UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
 
         }
@@ -418,6 +484,7 @@ namespace Vector_Maths_Tool
         {
             onCanvas = true;
             Canvas.Focus();
+            DeselectLinePopup();
 
         }
 
@@ -504,7 +571,7 @@ namespace Vector_Maths_Tool
         //Title text on click shows info
         private void HeaderText_1_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Vector Tools by Gin0ss || V. 0.25");
+            Console.WriteLine("Vector Tools by Gin0ss || V. 0.5");
         }
 
         #region Timer
@@ -585,6 +652,8 @@ namespace Vector_Maths_Tool
             }
 
             label5.Text = "Line Count: 0";
+
+            DeselectLinePopup();
             Canvas.Refresh();
 
         }
@@ -633,6 +702,86 @@ namespace Vector_Maths_Tool
             RemoveLine();
 
         }
+
+        private void SelectRadiusIncrementor_ValueChanged(object sender, EventArgs e)
+        {
+            selectRadius = (int)SelectRadiusIncrementor.Value;
+
+        }
+
+        private void VectorMathsButton_Click(object sender, EventArgs e)
+        {
+            VectorMathsPanel.Visible = true;
+            VectorMathsPanel.Enabled = true;
+            VectorMathsPanel.Location = GetMousePositionToCanvas();
+
+        }
+
+        private void MoveLineButton_Click(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void CopyLineButton_Click(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void SidePanelMinimizeButton_Click(object sender, EventArgs e)
+        {
+            isSidePanelVisible = isSidePanelVisible ? false : true;
+
+            if(isSidePanelVisible)
+            {
+                Button_Panel.Visible = true;
+                Button_Panel.Enabled = true;
+                SidePanelMinimizeButton.Text = "-";
+                SidePanelMinimizeButton.BackColor = Color.DarkRed;
+
+            }
+            else
+            {
+                Button_Panel.Visible = false;
+                Button_Panel.Enabled = false;
+                SidePanelMinimizeButton.Text = "+";
+                SidePanelMinimizeButton.BackColor = Color.Red;
+
+            }
+
+        }
+
+        private void SelectPopupPanel_MouseEnter(object sender, EventArgs e)
+        {
+            VectorMathsPanel.Visible = false;
+            VectorMathsPanel.Enabled = false;
+
+        }
+
+        #region Vector_Maths UI
+
+        private void AddVectorButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SubtractVectorButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MultiplyVectorButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DivideVectorButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion
 
         #endregion
 

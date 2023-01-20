@@ -15,6 +15,13 @@ namespace Ginoss_Tools
 
         }
 
+        public Vector(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+
+        }
+
         public Vector(Point point)
         {
             Vector result = new Vector(point.X, point.Y);
