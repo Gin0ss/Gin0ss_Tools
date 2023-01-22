@@ -79,6 +79,7 @@ namespace Vector_Maths_Tool
             this.SubtractVectorButton = new System.Windows.Forms.Button();
             this.MultiplyVectorButton = new System.Windows.Forms.Button();
             this.DivideVectorButton = new System.Windows.Forms.Button();
+            this.SidePanelMinimizeButton = new System.Windows.Forms.Button();
             this.Canvas = new System.Windows.Forms.PictureBox();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
@@ -86,7 +87,6 @@ namespace Vector_Maths_Tool
             this.SelectPopupPanel = new System.Windows.Forms.Panel();
             this.PopupTitleLabel = new System.Windows.Forms.Label();
             this.SelectPopupLabel = new System.Windows.Forms.Label();
-            this.SidePanelMinimizeButton = new System.Windows.Forms.Button();
             this.VectorMathsTitleLabel = new System.Windows.Forms.Label();
             this.VectorMathsPanel = new System.Windows.Forms.Panel();
             this.Button_Panel.SuspendLayout();
@@ -141,7 +141,7 @@ namespace Vector_Maths_Tool
             this.TimerButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
             this.TimerButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.TimerButton.Font = new System.Drawing.Font("Input", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimerButton.Location = new System.Drawing.Point(10, 495);
+            this.TimerButton.Location = new System.Drawing.Point(10, 401);
             this.TimerButton.Name = "TimerButton";
             this.TimerButton.Size = new System.Drawing.Size(237, 39);
             this.TimerButton.TabIndex = 2;
@@ -244,7 +244,8 @@ namespace Vector_Maths_Tool
             this.MaximizeScreenButton.Size = new System.Drawing.Size(88, 59);
             this.MaximizeScreenButton.TabIndex = 37;
             this.MaximizeScreenButton.Text = "Full\r\nScreen";
-            this.ButtonTooltip.SetToolTip(this.MaximizeScreenButton, "Clears screen and deletes all lines on canvas.\r\nShortcut: [Haven\'t got one yet]");
+            this.ButtonTooltip.SetToolTip(this.MaximizeScreenButton, "Fills window to screen\r\nShortcut: [Up Up Down Down Left Right Left Right A B]\r\n(W" +
+        "indowed Fullscreen)");
             this.MaximizeScreenButton.UseVisualStyleBackColor = false;
             this.MaximizeScreenButton.Click += new System.EventHandler(this.MaximizeScreenButton_Click);
             // 
@@ -260,7 +261,8 @@ namespace Vector_Maths_Tool
             this.ToggleBorderButton.Size = new System.Drawing.Size(88, 59);
             this.ToggleBorderButton.TabIndex = 36;
             this.ToggleBorderButton.Text = "Toggle\r\nBorder";
-            this.ButtonTooltip.SetToolTip(this.ToggleBorderButton, "Clears screen and deletes all lines on canvas.\r\nShortcut: [Haven\'t got one yet]");
+            this.ButtonTooltip.SetToolTip(this.ToggleBorderButton, "Toggles window border enabling resizing of the window\r\nShortcut: [Haven\'t got one" +
+        " yet]");
             this.ToggleBorderButton.UseVisualStyleBackColor = false;
             this.ToggleBorderButton.Click += new System.EventHandler(this.ToggleBorderButton_Click);
             // 
@@ -323,11 +325,6 @@ namespace Vector_Maths_Tool
             this.SelectRadiusIncrementor.ForeColor = System.Drawing.Color.Red;
             this.SelectRadiusIncrementor.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.SelectRadiusIncrementor.Location = new System.Drawing.Point(160, 745);
-            this.SelectRadiusIncrementor.Maximum = new decimal(new int[] {
-            32,
-            0,
-            0,
-            0});
             this.SelectRadiusIncrementor.Minimum = new decimal(new int[] {
             1,
             0,
@@ -337,10 +334,10 @@ namespace Vector_Maths_Tool
             this.SelectRadiusIncrementor.Size = new System.Drawing.Size(58, 15);
             this.SelectRadiusIncrementor.TabIndex = 31;
             this.SelectRadiusIncrementor.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.ButtonTooltip.SetToolTip(this.SelectRadiusIncrementor, "Select cursor\'s circular radius\r\n(Min: 0 | Max: 32)\r\nShortcuts:\r\n   Increase: [n/" +
-        "a]\r\n   Decrease: [n/a]");
+            this.ButtonTooltip.SetToolTip(this.SelectRadiusIncrementor, "Select cursor\'s circular radius\r\n(Min: 0 | Max: 100)\r\nShortcuts:\r\n   Increase: [n" +
+        "/a]\r\n   Decrease: [n/a]");
             this.SelectRadiusIncrementor.Value = new decimal(new int[] {
-            5,
+            10,
             0,
             0,
             0});
@@ -778,6 +775,22 @@ namespace Vector_Maths_Tool
             this.DivideVectorButton.UseVisualStyleBackColor = false;
             this.DivideVectorButton.Click += new System.EventHandler(this.DivideVectorButton_Click);
             // 
+            // SidePanelMinimizeButton
+            // 
+            this.SidePanelMinimizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.SidePanelMinimizeButton.BackColor = System.Drawing.Color.DarkRed;
+            this.SidePanelMinimizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.SidePanelMinimizeButton.Font = new System.Drawing.Font("Input", 25F, System.Drawing.FontStyle.Bold);
+            this.SidePanelMinimizeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(12)))), ((int)(((byte)(18)))));
+            this.SidePanelMinimizeButton.Location = new System.Drawing.Point(1888, 9);
+            this.SidePanelMinimizeButton.Name = "SidePanelMinimizeButton";
+            this.SidePanelMinimizeButton.Size = new System.Drawing.Size(35, 36);
+            this.SidePanelMinimizeButton.TabIndex = 36;
+            this.SidePanelMinimizeButton.Text = "-";
+            this.ButtonTooltip.SetToolTip(this.SidePanelMinimizeButton, "Minimize button side panel.\r\nShortcut [What keey should it bee]");
+            this.SidePanelMinimizeButton.UseVisualStyleBackColor = false;
+            this.SidePanelMinimizeButton.Click += new System.EventHandler(this.SidePanelMinimizeButton_Click);
+            // 
             // Canvas
             // 
             this.Canvas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -785,6 +798,7 @@ namespace Vector_Maths_Tool
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Canvas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(6)))), ((int)(((byte)(8)))));
             this.Canvas.BackgroundImage = global::Vector_Maths_Tool.Properties.Resources.backgroundSpeed;
+            this.Canvas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Canvas.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Canvas.Location = new System.Drawing.Point(12, 29);
             this.Canvas.Name = "Canvas";
@@ -866,21 +880,6 @@ namespace Vector_Maths_Tool
             this.SelectPopupLabel.TabIndex = 0;
             this.SelectPopupLabel.Text = "Selected Line: 0";
             this.SelectPopupLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // SidePanelMinimizeButton
-            // 
-            this.SidePanelMinimizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.SidePanelMinimizeButton.BackColor = System.Drawing.Color.DarkRed;
-            this.SidePanelMinimizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SidePanelMinimizeButton.Font = new System.Drawing.Font("Input", 25F, System.Drawing.FontStyle.Bold);
-            this.SidePanelMinimizeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(12)))), ((int)(((byte)(18)))));
-            this.SidePanelMinimizeButton.Location = new System.Drawing.Point(1888, 9);
-            this.SidePanelMinimizeButton.Name = "SidePanelMinimizeButton";
-            this.SidePanelMinimizeButton.Size = new System.Drawing.Size(35, 36);
-            this.SidePanelMinimizeButton.TabIndex = 36;
-            this.SidePanelMinimizeButton.Text = "-";
-            this.SidePanelMinimizeButton.UseVisualStyleBackColor = false;
-            this.SidePanelMinimizeButton.Click += new System.EventHandler(this.SidePanelMinimizeButton_Click);
             // 
             // VectorMathsTitleLabel
             // 

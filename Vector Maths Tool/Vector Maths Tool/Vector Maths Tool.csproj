@@ -32,6 +32,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>eclipse_Cursor.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,6 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Tool_Manager.cs" />
     <Compile Include="Vector_Form.cs">
       <SubType>Form</SubType>
@@ -62,14 +74,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -84,11 +91,25 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\backgroundSpeed.png" />
+    <EmbeddedResource Include="Resources\backgroundSpeed.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\backgroundAbberate.png" />
-    <None Include="Resources\backgroundDefault.png" />
+    <EmbeddedResource Include="Resources\eclipse_Cursor.cur" />
+    <EmbeddedResource Include="Resources\dotSelect_Cursor.cur" />
+    <EmbeddedResource Include="Resources\pressed_Cursor.cur" />
+    <EmbeddedResource Include="Resources\solidDot_Cursor.cur" />
+    <EmbeddedResource Include="Resources\dot_Cursor.cur" />
+    <EmbeddedResource Include="Resources\eclipseHR_Cursor.png" />
+    <EmbeddedResource Include="Resources\dotSelectHR_Cursor.png" />
+    <EmbeddedResource Include="Resources\pressedHR_Cursor.png" />
+    <EmbeddedResource Include="Resources\solidDotHR_Cursor.png" />
+    <None Include="bin\Debug\dot_Cursor.cur" />
+    <None Include="bin\Debug\eclipse_Cursor.ico" />
+    <EmbeddedResource Include="Resources\backgroundAbberate.png" />
+    <EmbeddedResource Include="Resources\backgroundDefault.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="eclipse_Cursor.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

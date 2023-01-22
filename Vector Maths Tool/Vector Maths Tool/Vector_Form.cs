@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Threading;
+using System.Runtime.InteropServices;
 using System.Data.SqlClient;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -23,8 +25,8 @@ using Ginoss_Tools;
  * if mouse clicks while over line create context menu to the right of cursor position (X)
  * Custom context menu should show information on line such as magnitude, normal, button for maths functions (X)
  * Make elements of popup panel not close the popup panel set the popup to close when mouse enters canvas or side panel rather than leaves popup (X)
+ * Radius Around cursor selection (X)
  * 
- * Radius Around cursor selection with a new ui element for cursor radius value incrementor like the line radius <<<
  * Brush drawing tool for freehand drawing and notes using the cursor radius
  * if math button pressed create another pop up menu with different math functions tooltip on how to use
  * if math function pressed brief instruction on how to use (label will do) e.g. Select another line to add
@@ -32,8 +34,9 @@ using Ginoss_Tools;
  * Move and copy line functionality and choose resulting lines colour if nothing is chosen use last lines colour
  * Expand Vector struct overloads and math functionality such add dot product method
  * Undo and redo keys using Z and X by removing the last in Vector List and puts into redo List and redo adds back to vector list from redo list
- * 
- * --- Visual/Graphical Elements ---
+ */
+
+ /* --- Visual/Graphical Elements ---
  * Add glow effect around selected line
  * Add deltaTime for animation functionality and possibly smooth mouse cursor while creating a line
  * Add Scale up and Move animation using deltaTime
@@ -42,34 +45,34 @@ using Ginoss_Tools;
  * When no line is present or selected show popup for no line available instead ot the edit vector interface
  * Change cursor depending on mode its on etc. Green for selecting line, Blue for creating, Red for freehand brush
  * Animate minimizing side panel into side
- * 
- * --- Code Readability ---
+ */
+
+ /* --- Code Readability ---
  * linePoints array in Vector_Shapes class change to start and end point variable to avoid confusion
  * isDrawingVector and canDrawVector can most likely remove one and use the other and simplify the boolean checks
  * Change label 1-6 to a more specific name to what it shows
  * Change all the toggle booleans to a bool = bool ? false : true
  * Create a function for each toggle state
- * 
- * --- Quality of Life (Ease of Use) ---
+ */ 
+
+ /* --- Quality of Life (Ease of Use) ---
  * Visually show when the mouse exits and enters the line rather than just keeping the selected effect on when the cursor leaves -
    but keep the selected line subtly changed to indicate its still the selected line
  * Make Line stats on sidebar update during guide line drawing
- * Fullscreen on Canvas with miniside bar or pop out and hide function
  * Fix guide line being behind all the drawn lines
  * Update all the keyboard shortcuts for new UI Added
  * Offline Alternative to sql coordinates being stored such as xml or array
- * Make Window moveable and scalable without default windows bar
  * Convert brush to lines with a specific level of precision chosen
  * Previous and Next line index inside edit popup that moves popup to start coordinate of next selected line that moves cursor with the popup
- * 
- * --- PERFORMANCE OPTIMISATION ---
+ */
+
+ /* --- PERFORMANCE OPTIMISATION ---
  * Make sql stored coordinate not slow down computer
  * Group multiple coordinates to be moved into the sql command in one go rather than one by one with a batch command
  * Store sql procedures to save compilation time
  * Save screens of just the canvas and possibly change the for loop of creating lines to a background bitmap to save performance
  * Add performance and memory boost to sql table queries by removing every other pixel stored for the line and creating a radius around each pixel in c# to -
    fill in the blanks depending on a threshold gap between pixels essentially halving or more the search speed and memory used in sql table but sacrificing accuracy the higher the value
- * 
  */
 
 namespace Vector_Maths_Tool
@@ -90,7 +93,8 @@ namespace Vector_Maths_Tool
         List<Vector> temp = new List<Vector>();
         List<Vector_Shapes> vectorList = new List<Vector_Shapes>();
 
-        Image backgroundImage = Properties.Resources.backgroundAbberate;
+        Image defImage = Properties.Resources.backgroundSpeed;
+        Image clearImage = Properties.Resources.backgroundAbberate;
 
         static Label[] boolLabels;
         static PictureBox[] boolCheckers;
@@ -142,6 +146,12 @@ namespace Vector_Maths_Tool
             LineWidth = (int)LineThicknessIncrement.Value;
             selectRadius = (int)SelectRadiusIncrementor.Value;
 
+            using (MemoryStream ms = new MemoryStream(Properties.Resources.dot_Cursor)) Canvas.Cursor = new Cursor(ms);
+            using (MemoryStream ms = new MemoryStream(Properties.Resources.solidDot_Cursor)) this.Cursor = new Cursor(ms);
+            using (MemoryStream ms = new MemoryStream(Properties.Resources.eclipse_Cursor)) Button_Panel.Cursor = new Cursor(ms);
+            using (MemoryStream ms = new MemoryStream(Properties.Resources.eclipse_Cursor)) SelectPopupPanel.Cursor = new Cursor(ms);
+            using (MemoryStream ms = new MemoryStream(Properties.Resources.eclipse_Cursor)) VectorMathsPanel.Cursor = new Cursor(ms);
+
             originalCanvasWidth = Canvas.Width;
             originalWindowWidth = this.Width;
             originalWindowHeight = this.Height;
@@ -177,36 +187,44 @@ namespace Vector_Maths_Tool
 
             canvasCentre = new Point(Canvas.Width / 2, Canvas.Height / 2);
             canvasMousePos = GetMousePositionToCanvas();
-            Pen drawPen = new Pen(guideColor, LineWidth);
-            Brush drawBrush = new SolidBrush(guideColor);
+            Pen guidePen = new Pen(guideColor, LineWidth);
+            Brush guideBrush = new SolidBrush(guideColor);
             Point endPoint;
 
             if (isClearingScreen)
             {
                 isClearingScreen = false;
-                graphics.DrawImage(backgroundImage, Canvas.Location);
+                Canvas.BackgroundImage = clearImage;
                 return;
 
             }
+            else { Canvas.BackgroundImage = defImage; }
 
             if (canvasPressed && isDrawingVector)
             {
-
-                DrawGuideLine(drawPen, startPoint, canvasMousePos, e.Graphics);
+                DrawGuideLine(guidePen, startPoint, canvasMousePos, e.Graphics);
 
             }
 
             if (canvasReleased)
             {
+                using (MemoryStream ms = new MemoryStream(Properties.Resources.dot_Cursor)) Canvas.Cursor = new Cursor(ms);
                 canvasReleased = false;
                 if (canCreateVector)
                 {
                     canCreateVector = false;
                     endPoint = canvasMousePos;
 
-                    Create_Line(drawPen, startPoint, endPoint);
+                    Create_Line(guidePen, startPoint, endPoint);
 
                 }
+
+            }
+
+            if (isSelectingVector)
+            {
+                using (MemoryStream ms = new MemoryStream(Properties.Resources.dotSelect_Cursor)) Canvas.Cursor = new Cursor(ms);
+                DrawCircle(guideBrush, canvasMousePos.X, canvasMousePos.Y, selectRadius, graphics);
 
             }
 
@@ -278,6 +296,41 @@ namespace Vector_Maths_Tool
             SelectPopupPanel.Visible = false;
             VectorMathsPanel.Visible = false;
             VectorMathsPanel.Enabled = false;
+
+        }
+
+        void DrawCircle(Brush brush, int centreX, int centreY, int radius, Graphics graphics)
+        {
+            int x = radius;
+            int y = 0;
+            int p = 1 - x;
+
+            while (x > y)
+            {
+                y++;
+
+                if (p <= 0) p += 2 * y + 1;
+                else
+                {
+                    x--;
+                    p += 2 * y - 2 * x + 1;
+
+                }
+
+                graphics.FillRectangle(brush, centreX + x, centreY + y, 1, 1);
+                graphics.FillRectangle(brush, centreX + x, centreY - y, 1, 1);
+
+                graphics.FillRectangle(brush, centreX + y, centreY + x, 1, 1);
+                graphics.FillRectangle(brush, centreX + y, centreY - x, 1, 1);
+
+                graphics.FillRectangle(brush, centreX - x, centreY + y, 1, 1);
+                graphics.FillRectangle(brush, centreX - x, centreY - y, 1, 1);
+
+                graphics.FillRectangle(brush, centreX - y, centreY + x, 1, 1);
+                graphics.FillRectangle(brush, centreX - y, centreY - x, 1, 1);
+
+
+            }
 
         }
 
@@ -400,6 +453,106 @@ namespace Vector_Maths_Tool
 
         }
 
+        void CursorCircleSelect(int radius)
+        {
+            int x = radius;
+            int y = 0;
+            int decision = 1 - x;
+
+            int mousePosX = canvasMousePos.X;
+            int mousePosY = canvasMousePos.Y;
+            int searchX = mousePosX;
+            int searchY = mousePosY;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                int i = 0;
+
+                while (x > y && mousePosX == canvasMousePos.X && mousePosY == canvasMousePos.Y)
+                {
+                    y++;
+
+                    if (decision <= 0) decision += 2 * y + 1;
+                    else
+                    {
+                        x--;
+                        decision += 2 * y - 2 * x;
+
+                    }
+
+                    //Search Pixel coordinate switch for each iteration
+                    switch (i)
+                    {
+                        case 0:
+                            searchX = canvasMousePos.X + x;
+                            searchY = canvasMousePos.Y + y;
+                            break;
+                        case 1:
+                            searchX = canvasMousePos.X - x;
+                            searchY = canvasMousePos.Y + y;
+                            break;
+                        case 2:
+                            searchX = canvasMousePos.X + x;
+                            searchY = canvasMousePos.Y - y;
+                            break;
+                        case 3:
+                            searchX = canvasMousePos.X - x;
+                            searchY = canvasMousePos.Y - y;
+                            break;
+                        case 4:
+                            searchX = canvasMousePos.X + y;
+                            searchY = canvasMousePos.Y + x;
+                            break;
+                        case 5:
+                            searchX = canvasMousePos.X - y;
+                            searchY = canvasMousePos.Y + x;
+                            break;
+                        case 6:
+                            searchX = canvasMousePos.X + y;
+                            searchY = canvasMousePos.Y - x;
+                            break;
+                        case 7:
+                            searchX = canvasMousePos.X - y;
+                            searchY = canvasMousePos.Y - x;
+                            break;
+                            
+                    }
+
+                    i++;
+
+                        using (SqlCommand searchCommand = new SqlCommand("IF EXISTS(SELECT Line_ID FROM Points WHERE X = @currentSearchX AND Y = @currentSearchY) SELECT Line_ID FROM Points WHERE X = @currentSearchX AND Y = @currentSearchY", connection)) //Search for lineID of the pixels coordinates that is inside database
+                        {
+                            searchCommand.Parameters.AddWithValue("@currentSearchX", searchX);
+                            searchCommand.Parameters.AddWithValue("@currentSearchY", searchY);
+
+                            #region Select LineID
+                            var result = searchCommand.ExecuteScalar();
+
+                            if (vectorList.Count > 0)
+                            {
+                                selectedLineID = selectedLineID < 0 ? 0 : selectedLineID;
+
+                                if (result != null)
+                                {
+                                    int lineID = selectedLineID <= vectorList.Count - 1 ? (int)result : vectorList.Count - 1;
+                                    selectedLineID = lineID;
+                                    SelectLine(lineID);
+
+                                }
+                                else DeselectLine(selectedLineID);
+
+                            }
+
+                            #endregion
+
+                        }
+                    }
+                connection.Close();
+            }
+
+        }
 
         #endregion
 
@@ -407,7 +560,7 @@ namespace Vector_Maths_Tool
 
         void ToggleSelectMode()
         {
-            isSelectingVector = isSelectingVector ? false : true;
+            isSelectingVector = !isSelectingVector;
 
             if (isDrawingVector && isSelectingVector)
             {
@@ -420,6 +573,9 @@ namespace Vector_Maths_Tool
             }
 
             UpdateBoolChecker("Select_Line", isSelectingVector, 3);
+            using (MemoryStream ms = new MemoryStream(Properties.Resources.dotSelect_Cursor)) Canvas.Cursor = new Cursor(ms);
+
+            Canvas.Refresh();
 
         }
 
@@ -488,6 +644,8 @@ namespace Vector_Maths_Tool
 
             }
 
+
+            using (MemoryStream ms = new MemoryStream(Properties.Resources.pressed_Cursor)) Canvas.Cursor = new Cursor(ms);
             UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
 
         }
@@ -536,47 +694,22 @@ namespace Vector_Maths_Tool
 
             if (isDrawingVector) { Canvas.Refresh(); }
 
-            else
+            if (isSelectingVector)
             {
-                if (isSelectingVector)
-                {
-                    using (SqlConnection connection = new SqlConnection(connectionString))
-                    {
-                        connection.Open();
+                CursorCircleSelect(selectRadius);
+                Canvas.Refresh();
 
-                        using (SqlCommand mousePosCommand = new SqlCommand("USE Vector_Math_Tool; IF EXISTS(SELECT Line_ID FROM Points WHERE X = @mousePosX AND Y = @mousePosY) SELECT Line_ID FROM Points WHERE X = @mousePosX AND Y = @mousePosY", connection))
-                        {
-                            mousePosCommand.Parameters.AddWithValue("@mousePosX", canvasMousePos.X);
-                            mousePosCommand.Parameters.AddWithValue("@mousePosY", canvasMousePos.Y);
-
-                            var result = mousePosCommand.ExecuteScalar();
-                            if (vectorList.Count > 0)
-                            {
-                                selectedLineID = selectedLineID < 0 ? 0 : selectedLineID;
-
-                                if (result != null)
-                                {
-                                    int lineID = selectedLineID <= vectorList.Count - 1 ? (int)result : vectorList.Count - 1;
-                                    selectedLineID = lineID;
-                                    SelectLine(lineID);
-
-                                }
-                                else DeselectLine(selectedLineID);
-
-                            }
-
-                        }
-                        connection.Close();
-
-                    }
-                }
             }
+
         }
 
         private void SelectPopupPanel_MouseMove(object sender, MouseEventArgs e)
         {
-            if (VectorMathsPanel.Visible) VectorMathsPanel.Location = new Point((SelectPopupPanel.Size.Width + SelectPopupPanel.Location.X), GetMousePositionToCanvas().Y);
+            if (VectorMathsPanel.Visible)
+            {
+                VectorMathsPanel.Location = new Point((SelectPopupPanel.Size.Width + SelectPopupPanel.Location.X), GetMousePositionToCanvas().Y);
 
+            }
         }
 
         #endregion
@@ -821,8 +954,8 @@ namespace Vector_Maths_Tool
                 }
                 else
                 {
-                    this.Width = 1920;
-                    this.Height = 1080;
+                    this.Width = 1280;
+                    this.Height = 720;
 
                 }
             }
