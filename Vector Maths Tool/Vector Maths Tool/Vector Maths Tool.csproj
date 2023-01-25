@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="eclipse_Cursor.ico" />
+    <None Include="Resources\renderImage.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -10,8 +10,7 @@ using System.Diagnostics;
 using System.Drawing;
 using Ginoss_Tools;
 
-/* TO DO:
- * --- Main Function ---
+ /* --- Main Function ---
  * Line Created (X)
  * Get start and end (X)
  * Calculate Vector normal and magnitude (X)
@@ -26,8 +25,9 @@ using Ginoss_Tools;
  * Custom context menu should show information on line such as magnitude, normal, button for maths functions (X)
  * Make elements of popup panel not close the popup panel set the popup to close when mouse enters canvas or side panel rather than leaves popup (X)
  * Radius Around cursor selection (X)
+ * Brush drawing tool for freehand drawing and notes using the cursor radius (X)
  * 
- * Brush drawing tool for freehand drawing and notes using the cursor radius
+ * Make all graphics render on bitmap
  * if math button pressed create another pop up menu with different math functions tooltip on how to use
  * if math function pressed brief instruction on how to use (label will do) e.g. Select another line to add
  * Select another line to add together and create the resulting line color with color dialouge popup
@@ -45,6 +45,7 @@ using Ginoss_Tools;
  * When no line is present or selected show popup for no line available instead ot the edit vector interface
  * Change cursor depending on mode its on etc. Green for selecting line, Blue for creating, Red for freehand brush
  * Animate minimizing side panel into side
+ * Gaps in the circle algorithm possibly missing the last iteration of the loop
  */
 
  /* --- Code Readability ---
@@ -53,6 +54,7 @@ using Ginoss_Tools;
  * Change label 1-6 to a more specific name to what it shows
  * Change all the toggle booleans to a bool = bool ? false : true
  * Create a function for each toggle state
+ * Move Toggle state false bool change to be a seperate function that turns all bools false and changes the bool pased into the function true GlobalToggleState(bool to turn true);
  */ 
 
  /* --- Quality of Life (Ease of Use) ---
@@ -90,11 +92,12 @@ namespace Vector_Maths_Tool
 
         Stopwatch runTimer = new Stopwatch();
 
-        List<Vector> temp = new List<Vector>();
         List<Vector_Shapes> vectorList = new List<Vector_Shapes>();
 
         Image defImage = Properties.Resources.backgroundSpeed;
         Image clearImage = Properties.Resources.backgroundAbberate;
+
+        Bitmap renderImage;
 
         static Label[] boolLabels;
         static PictureBox[] boolCheckers;
@@ -115,6 +118,7 @@ namespace Vector_Maths_Tool
         bool canCreateVector = false;
         bool isDrawingVector = false;
         bool isClearingScreen = false;
+        bool isDrawingFreehand = false;
         bool isSelectingVector = false;
         bool isSidePanelVisible = true;
 
@@ -129,6 +133,8 @@ namespace Vector_Maths_Tool
             runTimer.Start();
 
             InitializeComponent();
+
+            renderImage = new Bitmap(Width, Height);
 
         }
 
@@ -191,15 +197,6 @@ namespace Vector_Maths_Tool
             Brush guideBrush = new SolidBrush(guideColor);
             Point endPoint;
 
-            if (isClearingScreen)
-            {
-                isClearingScreen = false;
-                Canvas.BackgroundImage = clearImage;
-                return;
-
-            }
-            else { Canvas.BackgroundImage = defImage; }
-
             if (canvasPressed && isDrawingVector)
             {
                 DrawGuideLine(guidePen, startPoint, canvasMousePos, e.Graphics);
@@ -208,7 +205,6 @@ namespace Vector_Maths_Tool
 
             if (canvasReleased)
             {
-                using (MemoryStream ms = new MemoryStream(Properties.Resources.dot_Cursor)) Canvas.Cursor = new Cursor(ms);
                 canvasReleased = false;
                 if (canCreateVector)
                 {
@@ -223,8 +219,13 @@ namespace Vector_Maths_Tool
 
             if (isSelectingVector)
             {
-                using (MemoryStream ms = new MemoryStream(Properties.Resources.dotSelect_Cursor)) Canvas.Cursor = new Cursor(ms);
-                DrawCircle(guideBrush, canvasMousePos.X, canvasMousePos.Y, selectRadius, graphics);
+                DrawCircle(graphics, guideBrush, canvasMousePos.X, canvasMousePos.Y, selectRadius, false);
+
+            }
+
+            if (isDrawingFreehand)
+            {
+                DrawCircle(graphics, guideBrush, canvasMousePos.X, canvasMousePos.Y, selectRadius, false);
 
             }
 
@@ -233,6 +234,8 @@ namespace Vector_Maths_Tool
                 graphics.DrawLine(vectorList[i].drawPen, vectorList[i].linePoints[0], vectorList[i].linePoints[1]);
 
             }
+
+            if(Canvas.Image != null) Canvas.Image = renderImage;
 
         }
 
@@ -299,36 +302,43 @@ namespace Vector_Maths_Tool
 
         }
 
-        void DrawCircle(Brush brush, int centreX, int centreY, int radius, Graphics graphics)
+        void DrawCircle(Graphics graphics, Brush brush, int centreX, int centreY, int radius, bool isFilled)
         {
-            int x = radius;
-            int y = 0;
-            int p = 1 - x;
-
-            while (x > y)
+            while (radius > 0)
             {
-                y++;
+                int x = radius;
+                int y = 0;
+                int p = 1 - x;
 
-                if (p <= 0) p += 2 * y + 1;
-                else
+                while (x >= y)
                 {
-                    x--;
-                    p += 2 * y - 2 * x + 1;
 
+                    if (p <= 0) p += 2 * y + 1;
+                    else
+                    {
+                        x--;
+                        p += 2 * y - 2 * x + 1;
+
+                    }
+
+                    graphics.FillRectangle(brush, centreX + x, centreY + y, 1, 1);
+                    graphics.FillRectangle(brush, centreX + x, centreY - y, 1, 1);
+
+                    graphics.FillRectangle(brush, centreX + y, centreY + x, 1, 1);
+                    graphics.FillRectangle(brush, centreX + y, centreY - x, 1, 1);
+
+                    graphics.FillRectangle(brush, centreX - x, centreY + y, 1, 1);
+                    graphics.FillRectangle(brush, centreX - x, centreY - y, 1, 1);
+
+                    graphics.FillRectangle(brush, centreX - y, centreY + x, 1, 1);
+                    graphics.FillRectangle(brush, centreX - y, centreY - x, 1, 1);
+                    
+                    y++;
                 }
+                if (!isFilled) break;
+                radius--;
 
-                graphics.FillRectangle(brush, centreX + x, centreY + y, 1, 1);
-                graphics.FillRectangle(brush, centreX + x, centreY - y, 1, 1);
-
-                graphics.FillRectangle(brush, centreX + y, centreY + x, 1, 1);
-                graphics.FillRectangle(brush, centreX + y, centreY - x, 1, 1);
-
-                graphics.FillRectangle(brush, centreX - x, centreY + y, 1, 1);
-                graphics.FillRectangle(brush, centreX - x, centreY - y, 1, 1);
-
-                graphics.FillRectangle(brush, centreX - y, centreY + x, 1, 1);
-                graphics.FillRectangle(brush, centreX - y, centreY - x, 1, 1);
-
+                Canvas.Image = renderImage;
 
             }
 
@@ -566,6 +576,7 @@ namespace Vector_Maths_Tool
             {
                 isDrawingVector = false;
                 canCreateVector = false;
+                isDrawingFreehand = false;
 
                 UpdateBoolChecker("Drawing Line", isDrawingVector, 0);
                 UpdateBoolChecker("Can_Create", canCreateVector, 2);
@@ -573,7 +584,47 @@ namespace Vector_Maths_Tool
             }
 
             UpdateBoolChecker("Select_Line", isSelectingVector, 3);
+
             using (MemoryStream ms = new MemoryStream(Properties.Resources.dotSelect_Cursor)) Canvas.Cursor = new Cursor(ms);
+
+            Canvas.Refresh();
+
+        }
+
+        void ToggleCreateLineState()
+        {
+            isDrawingVector = !isDrawingVector;
+
+            if (isDrawingVector) 
+            { 
+                canCreateVector = true; 
+                isSelectingVector = false;
+                isDrawingFreehand = false;
+
+            }
+            else canCreateVector = false; 
+
+            UpdateBoolChecker("DrawingLine", isDrawingVector, 0);
+            UpdateBoolChecker("Can_Create", canCreateVector, 2);
+            UpdateBoolChecker("Select_Line", isSelectingVector, 3);
+
+        }
+
+        void ToggleFreehandState() 
+        {
+            isDrawingFreehand = !isDrawingFreehand;
+            Brush brush = new SolidBrush(lineColor);
+
+            if (isDrawingFreehand)
+            {
+                isDrawingVector = false;
+                canCreateVector = false;
+                isSelectingVector = false;
+
+                Canvas.Cursor = Cursors.Cross;
+
+            }
+            else { using (MemoryStream ms = new MemoryStream(Properties.Resources.dot_Cursor)) Canvas.Cursor = new Cursor(ms); }
 
             Canvas.Refresh();
 
@@ -589,11 +640,7 @@ namespace Vector_Maths_Tool
             //Create Mode
             if (e.KeyCode == Keys.Space)
             {
-                if (!isDrawingVector) { isDrawingVector = true; canCreateVector = true; isSelectingVector = false; }
-                else { isDrawingVector = false; canCreateVector = false; }
-                UpdateBoolChecker("DrawingLine", isDrawingVector, 0);
-                UpdateBoolChecker("Can_Create", canCreateVector, 2);
-                UpdateBoolChecker("Select_Line", isSelectingVector, 3);
+                ToggleCreateLineState();
 
                 DeselectLinePopup();
 
@@ -644,9 +691,16 @@ namespace Vector_Maths_Tool
 
             }
 
+            if (isDrawingFreehand) 
+            {
+                Brush drawBrush = new SolidBrush(lineColor);
+                DrawCircle(Graphics.FromImage(renderImage), drawBrush, canvasMousePos.X, canvasMousePos.Y, selectRadius, true);
+            
+            }
 
-            using (MemoryStream ms = new MemoryStream(Properties.Resources.pressed_Cursor)) Canvas.Cursor = new Cursor(ms);
             UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
+
+            Canvas.Refresh();
 
         }
 
@@ -657,9 +711,13 @@ namespace Vector_Maths_Tool
             canvasPressed = false;
             isDrawingVector = false;
             isSelectingVector = false;
+
             UpdateBoolChecker("Select_Line", isSelectingVector, 3);
             UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
             UpdateBoolChecker("DrawingLine", isDrawingVector, 0);
+
+            if (!isDrawingFreehand) using (MemoryStream ms = new MemoryStream(Properties.Resources.dot_Cursor)) Canvas.Cursor = new Cursor(ms);
+
             Canvas.Refresh();
 
         }
@@ -692,11 +750,21 @@ namespace Vector_Maths_Tool
 
             canvasMousePos = GetMousePositionToCanvas();
 
-            if (isDrawingVector) { Canvas.Refresh(); }
+            if (isDrawingVector) Canvas.Refresh();
 
             if (isSelectingVector)
             {
                 CursorCircleSelect(selectRadius);
+                Canvas.Refresh();
+
+            }
+
+            if (isDrawingFreehand && canvasPressed)
+            {
+                Brush drawBrush = new SolidBrush(lineColor);
+                Rectangle drawRect = new Rectangle(canvasMousePos.X, canvasMousePos.Y, selectRadius* 2, selectRadius * 2);
+                DrawCircle(Graphics.FromImage(renderImage), drawBrush, canvasMousePos.X, canvasMousePos.Y, selectRadius, true);
+
                 Canvas.Refresh();
 
             }
@@ -748,6 +816,8 @@ namespace Vector_Maths_Tool
             if (!TimerWorker.IsBusy) { TimerWorker.RunWorkerAsync(); }
             UpdateBoolChecker("Timer_Run", timerRunning, 2);
 
+            Button_Panel.Refresh();
+
         }
 
         //Timer Button Async Thread
@@ -793,17 +863,13 @@ namespace Vector_Maths_Tool
         }
         #endregion
 
-        //Create Vector/Line Button
         private void CreateVectorButton_Click(object sender, EventArgs e)
         {
-            if (!isDrawingVector) { isDrawingVector = true; canCreateVector = true; isSelectingVector = false; }
-            else { isDrawingVector = false; canCreateVector = false; }
-            UpdateBoolChecker("DrawingLine", isDrawingVector, 0);
-            UpdateBoolChecker("Can_Create", canCreateVector, 2);
-            UpdateBoolChecker("Select_Line", isSelectingVector, 3);
+            ToggleCreateLineState();
+
+            Button_Panel.Refresh();
         }
 
-        //Clears Screen
         private void ClearButton_Click(object sender, EventArgs e)
         {
             isClearingScreen = true;
@@ -821,12 +887,15 @@ namespace Vector_Maths_Tool
 
             DeselectLinePopup();
             Canvas.Refresh();
+            Button_Panel.Refresh();
 
         }
 
         private void LineThicknessIncrement_ValueChanged(object sender, EventArgs e)
         {
             LineWidth = (int)((float)LineThicknessIncrement.Value * 1.25f);
+
+            Button_Panel.Refresh();
 
         }
 
@@ -836,6 +905,8 @@ namespace Vector_Maths_Tool
             guideColor = CurrentGuideColor.Color;
             GuideColorButton.ForeColor = guideColor;
 
+            Button_Panel.Refresh();
+
         }
 
         private void LineColorButton_Click(object sender, EventArgs e)
@@ -844,11 +915,15 @@ namespace Vector_Maths_Tool
             lineColor = CurrentLineColor.Color;
             LineColorButton.ForeColor = lineColor;
 
+            Button_Panel.Refresh();
+
         }
 
         private void SelectVectorButton_Click(object sender, EventArgs e)
         {
             ToggleSelectMode();
+
+            Button_Panel.Refresh();
 
         }
 
@@ -856,11 +931,15 @@ namespace Vector_Maths_Tool
         {
             RemoveLine();
 
+            Button_Panel.Refresh();
+
         }
 
         private void SelectRadiusIncrementor_ValueChanged(object sender, EventArgs e)
         {
             selectRadius = (int)SelectRadiusIncrementor.Value;
+
+            Button_Panel.Refresh();
 
         }
 
@@ -870,17 +949,19 @@ namespace Vector_Maths_Tool
             VectorMathsPanel.Enabled = true;
             VectorMathsPanel.Location = new Point ((SelectPopupPanel.Size.Width + SelectPopupPanel.Location.X), GetMousePositionToCanvas().Y);
 
+            Button_Panel.Refresh();
+
         }
 
         private void MoveLineButton_Click(object sender, EventArgs e)
         {
-
+            Button_Panel.Refresh();
 
         }
 
         private void CopyLineButton_Click(object sender, EventArgs e)
         {
-
+            Button_Panel.Refresh();
 
         }
 
@@ -910,12 +991,16 @@ namespace Vector_Maths_Tool
 
             }
 
+            Button_Panel.Refresh();
+
         }
 
         private void VectorMathsPanel_Leave(object sender, EventArgs e)
         {
             VectorMathsPanel.Visible = false;
             VectorMathsPanel.Enabled = false;
+
+            Button_Panel.Refresh();
 
         }
 
@@ -924,6 +1009,8 @@ namespace Vector_Maths_Tool
             VectorMathsPanel.Visible = true;
             VectorMathsPanel.Enabled = true;
             VectorMathsPanel.Location = new Point((Button_Panel.Location.X - VectorMathsPanel.Width), GetMousePositionToCanvas().Y);
+
+            Button_Panel.Refresh();
 
         }
 
@@ -959,6 +1046,8 @@ namespace Vector_Maths_Tool
 
                 }
             }
+
+            Button_Panel.Refresh();
         }
 
         private void ToggleBorderButton_Click(object sender, EventArgs e)
@@ -980,6 +1069,16 @@ namespace Vector_Maths_Tool
             }
 
             else { this.FormBorderStyle = FormBorderStyle.None; }
+
+            Button_Panel.Refresh();
+
+        }
+
+        private void FreehandBrushButton_Click(object sender, EventArgs e)
+        {
+            ToggleFreehandState();
+
+            Button_Panel.Refresh();
 
         }
 

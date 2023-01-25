@@ -80,7 +80,6 @@ namespace Vector_Maths_Tool
             this.MultiplyVectorButton = new System.Windows.Forms.Button();
             this.DivideVectorButton = new System.Windows.Forms.Button();
             this.SidePanelMinimizeButton = new System.Windows.Forms.Button();
-            this.Canvas = new System.Windows.Forms.PictureBox();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
@@ -89,6 +88,7 @@ namespace Vector_Maths_Tool
             this.SelectPopupLabel = new System.Windows.Forms.Label();
             this.VectorMathsTitleLabel = new System.Windows.Forms.Label();
             this.VectorMathsPanel = new System.Windows.Forms.Panel();
+            this.Canvas = new System.Windows.Forms.PictureBox();
             this.Button_Panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SelectRadiusIncrementor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LineThicknessIncrement)).BeginInit();
@@ -96,9 +96,9 @@ namespace Vector_Maths_Tool
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_0)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Canvas)).BeginInit();
             this.SelectPopupPanel.SuspendLayout();
             this.VectorMathsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Canvas)).BeginInit();
             this.SuspendLayout();
             // 
             // ExitButton
@@ -296,6 +296,7 @@ namespace Vector_Maths_Tool
         "ould i have a clear brush and clear lines button or just clear screen?)\r\nShortcu" +
         "t: [N/A]");
             this.FreehandBrushButton.UseVisualStyleBackColor = false;
+            this.FreehandBrushButton.Click += new System.EventHandler(this.FreehandBrushButton_Click);
             // 
             // VectorMathsButton
             // 
@@ -791,28 +792,6 @@ namespace Vector_Maths_Tool
             this.SidePanelMinimizeButton.UseVisualStyleBackColor = false;
             this.SidePanelMinimizeButton.Click += new System.EventHandler(this.SidePanelMinimizeButton_Click);
             // 
-            // Canvas
-            // 
-            this.Canvas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Canvas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(6)))), ((int)(((byte)(8)))));
-            this.Canvas.BackgroundImage = global::Vector_Maths_Tool.Properties.Resources.backgroundSpeed;
-            this.Canvas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.Canvas.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.Canvas.Location = new System.Drawing.Point(12, 29);
-            this.Canvas.Name = "Canvas";
-            this.Canvas.Size = new System.Drawing.Size(1633, 1040);
-            this.Canvas.TabIndex = 7;
-            this.Canvas.TabStop = false;
-            this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
-            this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
-            this.Canvas.MouseEnter += new System.EventHandler(this.Canvas_MouseEnter);
-            this.Canvas.MouseLeave += new System.EventHandler(this.Canvas_MouseLeave);
-            this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
-            this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
-            this.Canvas.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Canvas_PreviewKeyDown);
-            // 
             // toolStripButton1
             // 
             this.toolStripButton1.Name = "toolStripButton1";
@@ -912,6 +891,28 @@ namespace Vector_Maths_Tool
             this.VectorMathsPanel.Visible = false;
             this.VectorMathsPanel.Leave += new System.EventHandler(this.VectorMathsPanel_Leave);
             // 
+            // Canvas
+            // 
+            this.Canvas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Canvas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(6)))), ((int)(((byte)(8)))));
+            this.Canvas.BackgroundImage = global::Vector_Maths_Tool.Properties.Resources.backgroundSpeed;
+            this.Canvas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Canvas.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.Canvas.Location = new System.Drawing.Point(12, 29);
+            this.Canvas.Name = "Canvas";
+            this.Canvas.Size = new System.Drawing.Size(1633, 1040);
+            this.Canvas.TabIndex = 7;
+            this.Canvas.TabStop = false;
+            this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
+            this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
+            this.Canvas.MouseEnter += new System.EventHandler(this.Canvas_MouseEnter);
+            this.Canvas.MouseLeave += new System.EventHandler(this.Canvas_MouseLeave);
+            this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
+            this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
+            this.Canvas.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Canvas_PreviewKeyDown);
+            // 
             // Vector_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 10F);
@@ -942,10 +943,10 @@ namespace Vector_Maths_Tool
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bool_Check_0)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Canvas)).EndInit();
             this.SelectPopupPanel.ResumeLayout(false);
             this.SelectPopupPanel.PerformLayout();
             this.VectorMathsPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Canvas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
