@@ -350,6 +350,21 @@ namespace Vector_Maths_Tool
 
         }
 
+        void ResizeCanvas()
+        {
+            Bitmap backBuffer = new Bitmap(Width, Height);
+            using (Graphics graphics = Graphics.FromImage(backBuffer))
+            {
+                graphics.DrawImage(renderImage, 0, 0);
+
+            }
+            renderImage = backBuffer;
+            Canvas.Image = renderImage;
+
+            Canvas.Refresh();
+
+        }
+
         #endregion
 
         #region Selection
@@ -1111,11 +1126,7 @@ namespace Vector_Maths_Tool
 
         private void Vector_Form_Resize(object sender, EventArgs e)
         {
-            //renderImage = new Bitmap(renderImage, Width, Height);
-            renderImage = renderImage.
-            Canvas.Image = renderImage;
-
-            Canvas.Refresh();
+            ResizeCanvas();
 
         }
 
