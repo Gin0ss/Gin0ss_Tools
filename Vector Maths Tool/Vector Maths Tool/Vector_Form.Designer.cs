@@ -724,7 +724,8 @@ namespace Vector_Maths_Tool
             this.AddVectorButton.Size = new System.Drawing.Size(119, 37);
             this.AddVectorButton.TabIndex = 37;
             this.AddVectorButton.Text = "Add";
-            this.ButtonTooltip.SetToolTip(this.AddVectorButton, "Toggle line creation on canvas that contains vector data.\r\nShortcut: [Space]");
+            this.ButtonTooltip.SetToolTip(this.AddVectorButton, "Adds two selected vectors to create a new line representing the result\r\n(X1 + X2," +
+        " Y1 + Y2) = (X3, Y3)\r\n");
             this.AddVectorButton.UseVisualStyleBackColor = false;
             this.AddVectorButton.Click += new System.EventHandler(this.AddVectorButton_Click);
             // 
@@ -740,7 +741,8 @@ namespace Vector_Maths_Tool
             this.SubtractVectorButton.Size = new System.Drawing.Size(119, 37);
             this.SubtractVectorButton.TabIndex = 38;
             this.SubtractVectorButton.Text = "Subtract";
-            this.ButtonTooltip.SetToolTip(this.SubtractVectorButton, "Toggle line creation on canvas that contains vector data.\r\nShortcut: [Space]");
+            this.ButtonTooltip.SetToolTip(this.SubtractVectorButton, "Subtracts two selected vectors to create a new line representing the result\r\n(X1 " +
+        "- X2, Y1 - Y2) = (X3, Y3)\r\n");
             this.SubtractVectorButton.UseVisualStyleBackColor = false;
             this.SubtractVectorButton.Click += new System.EventHandler(this.SubtractVectorButton_Click);
             // 
@@ -756,7 +758,8 @@ namespace Vector_Maths_Tool
             this.MultiplyVectorButton.Size = new System.Drawing.Size(119, 37);
             this.MultiplyVectorButton.TabIndex = 39;
             this.MultiplyVectorButton.Text = "Multiply";
-            this.ButtonTooltip.SetToolTip(this.MultiplyVectorButton, "Toggle line creation on canvas that contains vector data.\r\nShortcut: [Space]");
+            this.ButtonTooltip.SetToolTip(this.MultiplyVectorButton, "Multiplies two selected vectors to create a new line representing the result\r\n(X1" +
+        " * X2, Y1 * Y2) = (X3, Y3)\r\n");
             this.MultiplyVectorButton.UseVisualStyleBackColor = false;
             this.MultiplyVectorButton.Click += new System.EventHandler(this.MultiplyVectorButton_Click);
             // 
@@ -772,7 +775,8 @@ namespace Vector_Maths_Tool
             this.DivideVectorButton.Size = new System.Drawing.Size(119, 37);
             this.DivideVectorButton.TabIndex = 40;
             this.DivideVectorButton.Text = "Divide";
-            this.ButtonTooltip.SetToolTip(this.DivideVectorButton, "Toggle line creation on canvas that contains vector data.\r\nShortcut: [Space]");
+            this.ButtonTooltip.SetToolTip(this.DivideVectorButton, "Divides two selected vectors to create a new line representing the result\r\n(X1 / " +
+        "X2, Y1 / Y2) = (X3, Y3)\r\n");
             this.DivideVectorButton.UseVisualStyleBackColor = false;
             this.DivideVectorButton.Click += new System.EventHandler(this.DivideVectorButton_Click);
             // 
@@ -935,6 +939,7 @@ namespace Vector_Maths_Tool
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Vector Tool";
             this.Load += new System.EventHandler(this.Vector_Form_Load);
+            this.Resize += new System.EventHandler(this.Vector_Form_Resize);
             this.Button_Panel.ResumeLayout(false);
             this.Button_Panel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SelectRadiusIncrementor)).EndInit();
