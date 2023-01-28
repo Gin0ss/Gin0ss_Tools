@@ -9,80 +9,84 @@ using System.Data.SqlClient;
 using System.Collections.Generic;
 using Ginoss_Tools;
 
- /* --- Main Function ---
- * Line Created (X)
- * Get start and end (X)
- * Calculate Vector normal and magnitude (X)
- * Click Select Vector button on sidebar (X)
- * Loop through each pixel using Bresenham Algorithm going along the normal (X)
- * Understand how exactly the algorithm works by doing it manually on paper specifically the reson the error value works and why adding the line vector that way make it move perfectly
- * Store pixel locations under lines index value in SQL (X)
- * When mouse moves check for the current mouse position coordinates in the file for associated line index (X)
- * if coordinate exists in file and is linked to a line index get the line index (X)
- * Show visual effect of line cursor is on (change color for now) (X)
- * if mouse clicks while over line create context menu to the right of cursor position (X)
- * Custom context menu should show information on line such as magnitude, normal, button for maths functions (X)
- * Make elements of popup panel not close the popup panel set the popup to close when mouse enters canvas or side panel rather than leaves popup (X)
- * Radius Around cursor selection (X)
- * Brush drawing tool for freehand drawing and notes using the cursor radius (X)
- * Make all draw brush graphics render on bitmap (X)
- * if math button pressed create another pop up menu with different math functions tooltip on how to use (X)
- * if math function pressed brief instruction on how to use (label will do) e.g. Select another line to add (X)
- * Select another line to add together and create the resulting line color with color dialouge popup (X)
- * 
- * Move and copy line functionality and choose resulting lines colour if nothing is chosen use last lines colour <<<
- * Expand Vector struct overloads and math functionality such add dot product method
- * Undo and redo keys using Z and X by removing the last in Vector List and puts into redo List and redo adds back to vector list from redo list
- */
+/* --- Main Function ---
+* Line Created (X)
+* Get start and end (X)
+* Calculate Vector normal and magnitude (X)
+* Click Select Vector button on sidebar (X)
+* Loop through each pixel using Bresenham Algorithm going along the normal (X)
+* Understand how exactly the algorithm works by doing it manually on paper specifically the reson the error value works and why adding the line vector that way make it move perfectly
+* Store pixel locations under lines index value in SQL (X)
+* When mouse moves check for the current mouse position coordinates in the file for associated line index (X)
+* if coordinate exists in file and is linked to a line index get the line index (X)
+* Show visual effect of line cursor is on (change color for now) (X)
+* if mouse clicks while over line create context menu to the right of cursor position (X)
+* Custom context menu should show information on line such as magnitude, normal, button for maths functions (X)
+* Make elements of popup panel not close the popup panel set the popup to close when mouse enters canvas or side panel rather than leaves popup (X)
+* Radius Around cursor selection (X)
+* Brush drawing tool for freehand drawing and notes using the cursor radius (X)
+* Make all draw brush graphics render on bitmap (X)
+* if math button pressed create another pop up menu with different math functions tooltip on how to use (X)
+* if math function pressed brief instruction on how to use (label will do) e.g. Select another line to add (X)
+* Perform maths function on two lines and create a new line of result with line color with color dialouge popup (X)
+* 
+* Select other line for math function remove temporary code for selecting selected line index - 1 <<<
+* Move and copy line functionality and choose resulting lines colour if nothing is chosen use last lines colour
+* Expand Vector struct overloads and math functionality such add dot product method
+* Show selected line as guide colour permanently while selected and in select mode
+* Dot Spacing too far find out how to make circle draw closer to eachother
+* Undo and redo keys using Z and X by removing the last in Vector List and puts into redo List and redo adds back to vector list from redo list
+* Correct scaling for ui buttons, labels etc. when window is resized to prevent overlapping ui elements
+*/
 
- /* --- Visual/Graphical Elements ---
- * Add glow effect around selected line
- * Add deltaTime for animation functionality and possibly smooth mouse cursor while creating a line
- * Add Scale up and Move animation using deltaTime
- * Change the incrementor UI to be more visually appealing get rid of the basic incrementor with white up and down and possibly add small buttons for up and down
- * Graphical representation of radius around cursor for selection area when select line button is enabled
- * When no line is present or selected show popup for no line available instead ot the edit vector interface
- * Change cursor depending on mode its on etc. Green for selecting line, Blue for creating, Red for freehand brush
- * Animate minimizing side panel into side
- * Gaps in the circle algorithm possibly missing the last iteration of the loop
- */
+/* --- Visual/Graphical Elements ---
+* Add glow effect around selected line
+* Add deltaTime for animation functionality and possibly smooth mouse cursor while creating a line
+* Add Scale up and Move animation using deltaTime
+* Change the incrementor UI to be more visually appealing get rid of the basic incrementor with white up and down and possibly add small buttons for up and down
+* Graphical representation of radius around cursor for selection area when select line button is enabled
+* When no line is present or selected show popup for no line available instead ot the edit vector interface
+* Change cursor depending on mode its on etc. Green for selecting line, Blue for creating, Red for freehand brush
+* Animate minimizing side panel into side
+*/
 
- /* --- Code Readability ---
- * linePoints array in Vector_Shapes class change to start and end point variable to avoid confusion
- * isDrawingVector and canDrawVector can most likely remove one and use the other and simplify the boolean checks
- * Change label 1-6 to a more specific name to what it shows
- * Change all the toggle booleans to a bool = bool ? false : true
- * Create a function for each toggle state
- * Move Toggle state false bool change to be a seperate function that turns all bools false and changes the bool pased into the function true GlobalToggleState(bool to turn true);
- * Sort function regions into more useful groups
- * Make Vector struct capable of being cat to a Point with (Point)Vector_Variable
- */ 
+/* --- Code Readability ---
+* linePoints array in Vector_Shapes class change to start and end point variable to avoid confusion
+* isDrawingVector and canDrawVector can most likely remove one and use the other and simplify the boolean checks
+* Change label 1-6 to a more specific name to what it shows
+* Change all the toggle booleans to a bool = bool ? false : true
+* Create a function for each toggle state
+* Move Toggle state false bool change to be a seperate function that turns all bools false and changes the bool pased into the function true GlobalToggleState(bool to turn true);
+* Sort function regions into more useful groups
+*/
 
- /* --- Quality of Life (Ease of Use) ---
- * Visually show when the mouse exits and enters the line rather than just keeping the selected effect on when the cursor leaves -
-   but keep the selected line subtly changed to indicate its still the selected line
- * Make Line stats on sidebar update during guide line drawing
- * Fix guide line being behind all the drawn lines
- * Update all the keyboard shortcuts for new UI Added
- * Offline Alternative to sql coordinates being stored such as xml or array
- * Convert brush to lines with a specific level of precision chosen
- * Previous and Next line index inside edit popup that moves popup to start coordinate of next selected line that moves cursor with the popup
- */
+/* --- Quality of Life (Ease of Use) ---
+* Visually show when the mouse exits and enters the line rather than just keeping the selected effect on when the cursor leaves -
+  but keep the selected line subtly changed to indicate its still the selected line
+* Make Line stats on sidebar update during guide line drawing
+* Fix guide line being behind all the drawn lines
+* Update all the keyboard shortcuts for new UI Added
+* Offline Alternative to sql coordinates being stored such as xml or array
+* Convert brush to lines with a specific level of precision chosen
+* Previous and Next line index inside edit popup that moves popup to start coordinate of next selected line that moves cursor with the popup
+* Manually input coordinates of line to create precise line using a seperate popup menu once a button is pressed
+*/
 
- /* --- PERFORMANCE OPTIMISATION ---
- * Make sql stored coordinate not slow down computer
- * Group multiple coordinates to be moved into the sql command in one go rather than one by one with a batch command
- * Store sql procedures to save compilation time
- * Save screens of just the canvas and possibly change the for loop of creating lines to a background bitmap to save performance
- * Add performance and memory boost to sql table queries by removing every other pixel stored for the line and creating a radius around each pixel in c# to -
-   fill in the blanks depending on a threshold gap between pixels essentially halving or more the search speed and memory used in sql table but sacrificing accuracy the higher the value
- * Change background worker to thread and dispose of thread when timer is stopped
- */
+/* --- PERFORMANCE OPTIMISATION ---
+* Make sql stored coordinate not slow down computer
+* Group multiple coordinates to be moved into the sql command in one go rather than one by one with a batch command
+* Store sql procedures to save compilation time
+* Save screens of just the canvas and possibly change the for loop of creating lines to a background bitmap to save performance
+* Add performance and memory boost to sql table queries by removing every other pixel stored for the line and creating a radius around each pixel in c# to -
+  fill in the blanks depending on a threshold gap between pixels essentially halving or more the search speed and memory used in sql table but sacrificing accuracy the higher the value
+* Change background worker to thread and dispose of thread when timer is stopped
+*/
 
 namespace Vector_Maths_Tool
 {
     public partial class Vector_Form : Form
     {
+
         #region Variables
 
         Color lineColor = Color.FromArgb(255, 16, 255, 8);
@@ -93,8 +97,7 @@ namespace Vector_Maths_Tool
         Point canvasMousePos;
         Point originalWindowPos;
 
-        Point resultStartPoint;
-        Point resultEndPoint;
+        Vector resultVector;
 
         Stopwatch runTimer = new Stopwatch();
 
@@ -113,6 +116,7 @@ namespace Vector_Maths_Tool
         int LineWidth;
         int selectRadius;
         int selectedLineID;
+        int mathLineId;
         int originalCanvasWidth;
         int originalWindowWidth;
         int originalWindowHeight;
@@ -131,16 +135,18 @@ namespace Vector_Maths_Tool
         bool isSidePanelVisible = true;
 
         bool isAdding = false;
+        bool isDividing = false;
         bool isSubtracting = false;
         bool isMultiplying = false;
-        bool isDividing = false;
 
         string timerOut;
 
-        //string connectionString = "Server=Ginoss,6464; Database=Vector_Math_Tool;Trusted_Connection=True"; //Local faster
-        string connectionString = "Server=31.54.59.212,6464; Database=Vector_Math_Tool; USER ID=AS; PASSWORD = 123"; //Server
+        string connectionString = "Server=Ginoss,6464; Database=Vector_Math_Tool;Trusted_Connection=True"; //Local faster
+                                                                                                           //string connectionString = "Server=31.54.59.212,6464; Database=Vector_Math_Tool; USER ID=AS; PASSWORD = 123"; //Server
 
         #endregion
+
+        #region Initialisation
 
         public Vector_Form()
         {
@@ -196,8 +202,7 @@ namespace Vector_Maths_Tool
 
         }
 
-        Point GetMousePositionToCanvas()
-        { return new Point(PointToClient(MousePosition).X - Canvas.Location.X, PointToClient(MousePosition).Y - Canvas.Location.Y); }
+        #endregion
 
         #region Graphics
 
@@ -246,22 +251,22 @@ namespace Vector_Maths_Tool
 
             if (isAdding)
             {
-                DrawGuideLine(guidePen, canvasMousePos, new Point(resultEndPoint.X + canvasMousePos.X, resultEndPoint.Y + canvasMousePos.Y), graphics);
+                DrawGuideLine(guidePen, canvasMousePos, new Point(resultVector.X + canvasMousePos.X, resultVector.Y + canvasMousePos.Y), graphics);
 
             }
             if (isSubtracting)
             {
-                DrawGuideLine(guidePen, canvasMousePos, new Point(resultEndPoint.X + canvasMousePos.X, resultEndPoint.Y + canvasMousePos.Y), graphics);
+                DrawGuideLine(guidePen, canvasMousePos, new Point(resultVector.X + canvasMousePos.X, resultVector.Y + canvasMousePos.Y), graphics);
 
             }
             if (isMultiplying)
             {
-                DrawGuideLine(guidePen, canvasMousePos, new Point(resultEndPoint.X + canvasMousePos.X, resultEndPoint.Y + canvasMousePos.Y), graphics);
+                DrawGuideLine(guidePen, canvasMousePos, new Point(resultVector.X + canvasMousePos.X, resultVector.Y + canvasMousePos.Y), graphics);
 
             }
             if (isDividing)
             {
-                DrawGuideLine(guidePen, canvasMousePos, new Point(resultEndPoint.X + canvasMousePos.X, resultEndPoint.Y + canvasMousePos.Y), graphics);
+                DrawGuideLine(guidePen, canvasMousePos, new Point(resultVector.X + canvasMousePos.X, resultVector.Y + canvasMousePos.Y), graphics);
 
             }
 
@@ -475,7 +480,6 @@ namespace Vector_Maths_Tool
 
             UpdateVectorStatsLabels(vectorList[selectedLineID]);
 
-            DeselectLinePopup();
             Canvas.Refresh();
 
         }
@@ -491,6 +495,8 @@ namespace Vector_Maths_Tool
 
         void RemoveLine()
         {
+            selectedLineID = vectorList.Count > 0 ? vectorList.Count - 1 : 0;
+
             if (vectorList.Count > 0)
             {
                 vectorList.Remove(vectorList[selectedLineID]);
@@ -506,7 +512,6 @@ namespace Vector_Maths_Tool
                     command.ExecuteNonQuery();
                     connection.Close();
                 }
-                selectedLineID = vectorList.Count > 0 ? vectorList.Count - 1 : 0;
 
                 DeselectLinePopup();
                 Canvas.Refresh();
@@ -623,6 +628,7 @@ namespace Vector_Maths_Tool
 
         void ToggleSelectMode()
         {
+            Vector vector = mathLineId < vectorList.Count ? vectorList[mathLineId].lineVector : Vector.One;
             isSelectingVector = !isSelectingVector;
 
             if (isSelectingVector)
@@ -641,8 +647,14 @@ namespace Vector_Maths_Tool
             }
             else using (MemoryStream ms = new MemoryStream(Properties.Resources.dotSelect_Cursor)) Canvas.Cursor = new Cursor(ms);
 
-            UpdateBoolChecker("Select_Line", isSelectingVector, 3);
+            if (isAdding || isSubtracting || isMultiplying || isDividing)
+            {
+                resultVector = vector;
+                DeselectLinePopup();
 
+            }
+
+            UpdateBoolChecker("Select_Line", isSelectingVector, 3); 
             using (MemoryStream ms = new MemoryStream(Properties.Resources.dotSelect_Cursor)) Canvas.Cursor = new Cursor(ms);
 
             Canvas.Refresh();
@@ -699,53 +711,54 @@ namespace Vector_Maths_Tool
 
         void ToggleAddState()
         {
-            isAdding = !isAdding;
+            isAdding = vectorList.Count > 1 ? !isAdding : isAdding;
 
-            if (isAdding && vectorList.Count > 1)
+            if (isAdding)
             {
-                Vector endPoint = vectorList[selectedLineID].lineVector + vectorList[selectedLineID - 1].lineVector;
-                resultEndPoint = new Point((int)endPoint.X, (int)endPoint.Y);
+                Console.Write("Math_Line_ID: " + mathLineId);
+                mathLineId = selectedLineID;
+                Console.WriteLine(" to: " + mathLineId);
+                ToggleSelectMode();
 
-                Canvas.Refresh();
             }
 
         }
+
         void ToggleSubtractState()
         {
-            isSubtracting = !isSubtracting;
+            isSubtracting = vectorList.Count > 1 ? !isSubtracting : isSubtracting;
 
             if (isSubtracting && vectorList.Count > 1)
             {
-                Vector endPoint = vectorList[selectedLineID].lineVector - vectorList[selectedLineID - 1].lineVector;
-                resultEndPoint = new Point((int)endPoint.X, (int)endPoint.Y);
+                mathLineId = selectedLineID;
+                ToggleSelectMode();
 
-                Canvas.Refresh();
             }
 
         }
+
         void ToggleMultiplyState()
         {
-            isMultiplying = !isMultiplying;
+            isMultiplying = vectorList.Count > 1 ? !isMultiplying : isMultiplying ;
 
             if (isMultiplying && vectorList.Count > 1)
             {
-                Vector endPoint = vectorList[selectedLineID].lineVector * vectorList[selectedLineID - 1].lineVector;
-                resultEndPoint = new Point((int)endPoint.X, (int)endPoint.Y);
+                mathLineId = selectedLineID;
+                ToggleSelectMode();
 
-                Canvas.Refresh();
             }
 
         }
+
         void ToggleDivideState()
         {
-            isDividing = !isDividing;
+            isDividing = vectorList.Count > 1 ? !isDividing : isDividing;
 
             if (isDividing && vectorList.Count > 1)
             {
-                Vector endPoint = vectorList[selectedLineID].lineVector / vectorList[selectedLineID - 1].lineVector;
-                resultEndPoint = new Point((int)endPoint.X, (int)endPoint.Y);
+                mathLineId = selectedLineID;
+                ToggleSelectMode();
 
-                Canvas.Refresh();
             }
 
         }
@@ -753,6 +766,9 @@ namespace Vector_Maths_Tool
         #endregion
 
         #region User_Input
+
+        Point GetMousePositionToCanvas()
+        { return new Point(PointToClient(MousePosition).X - Canvas.Location.X, PointToClient(MousePosition).Y - Canvas.Location.Y); }
 
         void Canvas_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -800,9 +816,14 @@ namespace Vector_Maths_Tool
         {
             canvasPressed = true;
 
-            if (isDrawingVector)  startPoint = canvasMousePos; 
+            if (isDrawingVector)  startPoint = canvasMousePos;
 
-            if(isSelectingVector) SelectLinePopup();
+            if (isSelectingVector)
+            {
+                SelectLinePopup();
+                isSelectingVector = false;
+
+            }
 
             if (isDrawingFreehand) 
             {
@@ -819,7 +840,7 @@ namespace Vector_Maths_Tool
                 CurrentLineColor.ShowDialog();
                 lineColor = CurrentLineColor.Color;
 
-                Create_Line(canvasMousePos, new Point(resultEndPoint.X + canvasMousePos.X, resultEndPoint.Y + canvasMousePos.Y));
+                Create_Line(canvasMousePos, new Point(resultVector.X + canvasMousePos.X, resultVector.Y + canvasMousePos.Y));
 
                 lineColor = originalColor;
                 isAdding = false;
@@ -840,7 +861,6 @@ namespace Vector_Maths_Tool
             canvasReleased = true;
             canvasPressed = false;
             isDrawingVector = false;
-            isSelectingVector = false;
 
             UpdateBoolChecker("Select_Line", isSelectingVector, 3);
             UpdateBoolChecker("Mouse_Down", canvasPressed, 1);
@@ -879,6 +899,14 @@ namespace Vector_Maths_Tool
 
             if (isSelectingVector)
             {
+                if (isAdding) resultVector = vectorList[mathLineId].lineVector + vectorList[selectedLineID].lineVector;
+
+                if (isSubtracting) resultVector = vectorList[mathLineId].lineVector - vectorList[selectedLineID].lineVector;
+
+                if (isMultiplying) resultVector = vectorList[mathLineId].lineVector * vectorList[selectedLineID].lineVector;
+
+                if (isDividing) resultVector = vectorList[mathLineId].lineVector / vectorList[selectedLineID].lineVector;
+
                 CursorCircleSelect(selectRadius);
                 Canvas.Refresh();
 
@@ -1008,6 +1036,9 @@ namespace Vector_Maths_Tool
 
             renderImage = new Bitmap(Width, Height);
             Canvas.Image = renderImage;
+
+            mathLineId = 0;
+            selectedLineID = 0;
 
             vectorList.Clear();
 
@@ -1259,4 +1290,5 @@ namespace Vector_Maths_Tool
         #endregion
 
     }
+
 }

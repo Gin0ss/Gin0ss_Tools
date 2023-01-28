@@ -89,6 +89,8 @@ namespace Vector_Maths_Tool
             this.VectorMathsTitleLabel = new System.Windows.Forms.Label();
             this.VectorMathsPanel = new System.Windows.Forms.Panel();
             this.Canvas = new System.Windows.Forms.PictureBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
             this.Button_Panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SelectRadiusIncrementor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LineThicknessIncrement)).BeginInit();
@@ -99,6 +101,7 @@ namespace Vector_Maths_Tool
             this.SelectPopupPanel.SuspendLayout();
             this.VectorMathsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Canvas)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ExitButton
@@ -888,7 +891,7 @@ namespace Vector_Maths_Tool
             this.VectorMathsPanel.Controls.Add(this.AddVectorButton);
             this.VectorMathsPanel.Controls.Add(this.VectorMathsTitleLabel);
             this.VectorMathsPanel.Enabled = false;
-            this.VectorMathsPanel.Location = new System.Drawing.Point(453, 85);
+            this.VectorMathsPanel.Location = new System.Drawing.Point(449, 85);
             this.VectorMathsPanel.Name = "VectorMathsPanel";
             this.VectorMathsPanel.Size = new System.Drawing.Size(162, 211);
             this.VectorMathsPanel.TabIndex = 38;
@@ -917,12 +920,39 @@ namespace Vector_Maths_Tool
             this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
             this.Canvas.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Canvas_PreviewKeyDown);
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(14)))), ((int)(((byte)(32)))));
+            this.panel1.Controls.Add(this.label7);
+            this.panel1.Enabled = false;
+            this.panel1.Location = new System.Drawing.Point(617, 92);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(423, 90);
+            this.panel1.TabIndex = 41;
+            this.panel1.Visible = false;
+            // 
+            // label7
+            // 
+            this.label7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(22)))), ((int)(((byte)(18)))));
+            this.label7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label7.Font = new System.Drawing.Font("Input", 14F);
+            this.label7.ForeColor = System.Drawing.Color.Lime;
+            this.label7.Location = new System.Drawing.Point(0, 0);
+            this.label7.Margin = new System.Windows.Forms.Padding(0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(423, 72);
+            this.label7.TabIndex = 37;
+            this.label7.Text = "Vector Maths";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Vector_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 10F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(36)))));
             this.ClientSize = new System.Drawing.Size(1920, 1080);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.VectorMathsPanel);
             this.Controls.Add(this.SidePanelMinimizeButton);
             this.Controls.Add(this.SelectPopupPanel);
@@ -952,6 +982,7 @@ namespace Vector_Maths_Tool
             this.SelectPopupPanel.PerformLayout();
             this.VectorMathsPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Canvas)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1017,6 +1048,8 @@ namespace Vector_Maths_Tool
         private System.Windows.Forms.Button AddVectorButton;
         private System.Windows.Forms.Button MaximizeScreenButton;
         private System.Windows.Forms.Button ToggleBorderButton;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label7;
     }
 }
 
