@@ -114,9 +114,9 @@ namespace Vector_Maths_Tool
         static PictureBox[] boolCheckers;
 
         int LineWidth;
+        int mathLineID;
         int selectRadius;
         int selectedLineID;
-        int mathLineId;
         int originalCanvasWidth;
         int originalWindowWidth;
         int originalWindowHeight;
@@ -249,24 +249,16 @@ namespace Vector_Maths_Tool
 
             }
 
-            if (isAdding)
+            if (isAdding | isSubtracting | isMultiplying | isDividing)
             {
+                Vector lefthandVector = vectorList[mathLineID].lineVector;
+                Vector righthandVector = vectorList[selectedLineID].lineVector;
+
                 DrawGuideLine(guidePen, canvasMousePos, new Point(resultVector.X + canvasMousePos.X, resultVector.Y + canvasMousePos.Y), graphics);
 
-            }
-            if (isSubtracting)
-            {
-                DrawGuideLine(guidePen, canvasMousePos, new Point(resultVector.X + canvasMousePos.X, resultVector.Y + canvasMousePos.Y), graphics);
-
-            }
-            if (isMultiplying)
-            {
-                DrawGuideLine(guidePen, canvasMousePos, new Point(resultVector.X + canvasMousePos.X, resultVector.Y + canvasMousePos.Y), graphics);
-
-            }
-            if (isDividing)
-            {
-                DrawGuideLine(guidePen, canvasMousePos, new Point(resultVector.X + canvasMousePos.X, resultVector.Y + canvasMousePos.Y), graphics);
+                MathsLeftLabel.Text = String.Format("[{0}] \n({1} : {2})", mathLineID, lefthandVector.X, lefthandVector.Y);
+                MathsRightLabel.Text = String.Format("[{0}] \n({1} : {2})", selectedLineID, righthandVector.X, righthandVector.Y);
+                MathsResultLabel.Text = String.Format("Result \n({0} : {1})", resultVector.X, resultVector.Y);
 
             }
 
@@ -398,6 +390,29 @@ namespace Vector_Maths_Tool
             Canvas.Image = renderImage;
 
             Canvas.Refresh();
+
+        }
+
+        void UpdateOperatorLabel(int operatorIndex)
+        {
+            switch (operatorIndex)
+            {
+                case 0:
+                    MathOperationLabel.Text = "+";
+                    return;
+
+                case 1:
+                    MathOperationLabel.Text = "-";
+                    return;
+
+                case 2:
+                    MathOperationLabel.Text = "*";
+                    return;
+
+                case 3:
+                    MathOperationLabel.Text = "/";
+                    return;
+            }
 
         }
 
@@ -628,7 +643,7 @@ namespace Vector_Maths_Tool
 
         void ToggleSelectMode()
         {
-            Vector vector = mathLineId < vectorList.Count ? vectorList[mathLineId].lineVector : Vector.One;
+            Vector vector = mathLineID < vectorList.Count ? vectorList[mathLineID].lineVector : Vector.One;
             isSelectingVector = !isSelectingVector;
 
             if (isSelectingVector)
@@ -715,9 +730,12 @@ namespace Vector_Maths_Tool
 
             if (isAdding)
             {
-                Console.Write("Math_Line_ID: " + mathLineId);
-                mathLineId = selectedLineID;
-                Console.WriteLine(" to: " + mathLineId);
+                UpdateOperatorLabel(0);
+
+                SelectedMathsPanel.Visible = true;
+                SelectedMathsPanel.Enabled = true;
+
+                mathLineID = selectedLineID;
                 ToggleSelectMode();
 
             }
@@ -730,7 +748,12 @@ namespace Vector_Maths_Tool
 
             if (isSubtracting && vectorList.Count > 1)
             {
-                mathLineId = selectedLineID;
+                UpdateOperatorLabel(1);
+
+                SelectedMathsPanel.Visible = true;
+                SelectedMathsPanel.Enabled = true;
+
+                mathLineID = selectedLineID;
                 ToggleSelectMode();
 
             }
@@ -743,7 +766,12 @@ namespace Vector_Maths_Tool
 
             if (isMultiplying && vectorList.Count > 1)
             {
-                mathLineId = selectedLineID;
+                UpdateOperatorLabel(2);
+
+                SelectedMathsPanel.Visible = true;
+                SelectedMathsPanel.Enabled = true;
+
+                mathLineID = selectedLineID;
                 ToggleSelectMode();
 
             }
@@ -756,7 +784,12 @@ namespace Vector_Maths_Tool
 
             if (isDividing && vectorList.Count > 1)
             {
-                mathLineId = selectedLineID;
+                UpdateOperatorLabel(3);
+
+                SelectedMathsPanel.Visible = true;
+                SelectedMathsPanel.Enabled = true;
+
+                mathLineID = selectedLineID;
                 ToggleSelectMode();
 
             }
@@ -841,6 +874,8 @@ namespace Vector_Maths_Tool
                 lineColor = CurrentLineColor.Color;
 
                 Create_Line(canvasMousePos, new Point(resultVector.X + canvasMousePos.X, resultVector.Y + canvasMousePos.Y));
+                SelectedMathsPanel.Visible = false;
+                SelectedMathsPanel.Enabled = false;
 
                 lineColor = originalColor;
                 isAdding = false;
@@ -899,13 +934,13 @@ namespace Vector_Maths_Tool
 
             if (isSelectingVector)
             {
-                if (isAdding) resultVector = vectorList[mathLineId].lineVector + vectorList[selectedLineID].lineVector;
+                if (isAdding) resultVector = vectorList[mathLineID].lineVector + vectorList[selectedLineID].lineVector;
 
-                if (isSubtracting) resultVector = vectorList[mathLineId].lineVector - vectorList[selectedLineID].lineVector;
+                if (isSubtracting) resultVector = vectorList[mathLineID].lineVector - vectorList[selectedLineID].lineVector;
 
-                if (isMultiplying) resultVector = vectorList[mathLineId].lineVector * vectorList[selectedLineID].lineVector;
+                if (isMultiplying) resultVector = vectorList[mathLineID].lineVector * vectorList[selectedLineID].lineVector;
 
-                if (isDividing) resultVector = vectorList[mathLineId].lineVector / vectorList[selectedLineID].lineVector;
+                if (isDividing) resultVector = vectorList[mathLineID].lineVector / vectorList[selectedLineID].lineVector;
 
                 CursorCircleSelect(selectRadius);
                 Canvas.Refresh();
@@ -1037,7 +1072,7 @@ namespace Vector_Maths_Tool
             renderImage = new Bitmap(Width, Height);
             Canvas.Image = renderImage;
 
-            mathLineId = 0;
+            mathLineID = 0;
             selectedLineID = 0;
 
             vectorList.Clear();

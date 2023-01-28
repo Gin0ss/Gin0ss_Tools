@@ -89,8 +89,11 @@ namespace Vector_Maths_Tool
             this.VectorMathsTitleLabel = new System.Windows.Forms.Label();
             this.VectorMathsPanel = new System.Windows.Forms.Panel();
             this.Canvas = new System.Windows.Forms.PictureBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label7 = new System.Windows.Forms.Label();
+            this.SelectedMathsPanel = new System.Windows.Forms.Panel();
+            this.MathsResultLabel = new System.Windows.Forms.Label();
+            this.MathOperationLabel = new System.Windows.Forms.Label();
+            this.MathsLeftLabel = new System.Windows.Forms.Label();
+            this.MathsRightLabel = new System.Windows.Forms.Label();
             this.Button_Panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SelectRadiusIncrementor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LineThicknessIncrement)).BeginInit();
@@ -101,7 +104,7 @@ namespace Vector_Maths_Tool
             this.SelectPopupPanel.SuspendLayout();
             this.VectorMathsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Canvas)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.SelectedMathsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // ExitButton
@@ -891,7 +894,7 @@ namespace Vector_Maths_Tool
             this.VectorMathsPanel.Controls.Add(this.AddVectorButton);
             this.VectorMathsPanel.Controls.Add(this.VectorMathsTitleLabel);
             this.VectorMathsPanel.Enabled = false;
-            this.VectorMathsPanel.Location = new System.Drawing.Point(449, 85);
+            this.VectorMathsPanel.Location = new System.Drawing.Point(449, 92);
             this.VectorMathsPanel.Name = "VectorMathsPanel";
             this.VectorMathsPanel.Size = new System.Drawing.Size(162, 211);
             this.VectorMathsPanel.TabIndex = 38;
@@ -920,31 +923,80 @@ namespace Vector_Maths_Tool
             this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
             this.Canvas.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Canvas_PreviewKeyDown);
             // 
-            // panel1
+            // SelectedMathsPanel
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(14)))), ((int)(((byte)(32)))));
-            this.panel1.Controls.Add(this.label7);
-            this.panel1.Enabled = false;
-            this.panel1.Location = new System.Drawing.Point(617, 92);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(423, 90);
-            this.panel1.TabIndex = 41;
-            this.panel1.Visible = false;
+            this.SelectedMathsPanel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.SelectedMathsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(14)))), ((int)(((byte)(32)))));
+            this.SelectedMathsPanel.Controls.Add(this.MathsResultLabel);
+            this.SelectedMathsPanel.Controls.Add(this.MathOperationLabel);
+            this.SelectedMathsPanel.Controls.Add(this.MathsLeftLabel);
+            this.SelectedMathsPanel.Controls.Add(this.MathsRightLabel);
+            this.SelectedMathsPanel.Enabled = false;
+            this.SelectedMathsPanel.Location = new System.Drawing.Point(617, 92);
+            this.SelectedMathsPanel.Name = "SelectedMathsPanel";
+            this.SelectedMathsPanel.Size = new System.Drawing.Size(423, 145);
+            this.SelectedMathsPanel.TabIndex = 41;
+            this.SelectedMathsPanel.Visible = false;
             // 
-            // label7
+            // MathsResultLabel
             // 
-            this.label7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(22)))), ((int)(((byte)(18)))));
-            this.label7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label7.Font = new System.Drawing.Font("Input", 14F);
-            this.label7.ForeColor = System.Drawing.Color.Lime;
-            this.label7.Location = new System.Drawing.Point(0, 0);
-            this.label7.Margin = new System.Windows.Forms.Padding(0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(423, 72);
-            this.label7.TabIndex = 37;
-            this.label7.Text = "Vector Maths";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.MathsResultLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.MathsResultLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(22)))), ((int)(((byte)(18)))));
+            this.MathsResultLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MathsResultLabel.Font = new System.Drawing.Font("Input", 18F);
+            this.MathsResultLabel.ForeColor = System.Drawing.Color.Lime;
+            this.MathsResultLabel.Location = new System.Drawing.Point(13, 72);
+            this.MathsResultLabel.Margin = new System.Windows.Forms.Padding(0);
+            this.MathsResultLabel.Name = "MathsResultLabel";
+            this.MathsResultLabel.Size = new System.Drawing.Size(400, 72);
+            this.MathsResultLabel.TabIndex = 40;
+            this.MathsResultLabel.Text = "(2, 2)";
+            this.MathsResultLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // MathOperationLabel
+            // 
+            this.MathOperationLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.MathOperationLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(22)))), ((int)(((byte)(18)))));
+            this.MathOperationLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MathOperationLabel.Font = new System.Drawing.Font("Input", 22F, System.Drawing.FontStyle.Bold);
+            this.MathOperationLabel.ForeColor = System.Drawing.Color.Lime;
+            this.MathOperationLabel.Location = new System.Drawing.Point(159, 0);
+            this.MathOperationLabel.Margin = new System.Windows.Forms.Padding(0);
+            this.MathOperationLabel.Name = "MathOperationLabel";
+            this.MathOperationLabel.Size = new System.Drawing.Size(105, 72);
+            this.MathOperationLabel.TabIndex = 39;
+            this.MathOperationLabel.Text = "+";
+            this.MathOperationLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // MathsLeftLabel
+            // 
+            this.MathsLeftLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.MathsLeftLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(22)))), ((int)(((byte)(18)))));
+            this.MathsLeftLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MathsLeftLabel.Font = new System.Drawing.Font("Input", 10.5F);
+            this.MathsLeftLabel.ForeColor = System.Drawing.Color.Lime;
+            this.MathsLeftLabel.Location = new System.Drawing.Point(10, 0);
+            this.MathsLeftLabel.Margin = new System.Windows.Forms.Padding(0);
+            this.MathsLeftLabel.Name = "MathsLeftLabel";
+            this.MathsLeftLabel.Size = new System.Drawing.Size(149, 72);
+            this.MathsLeftLabel.TabIndex = 37;
+            this.MathsLeftLabel.Text = "[0]\r\n(1, 1)";
+            this.MathsLeftLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // MathsRightLabel
+            // 
+            this.MathsRightLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.MathsRightLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(22)))), ((int)(((byte)(18)))));
+            this.MathsRightLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MathsRightLabel.Font = new System.Drawing.Font("Input", 10.5F);
+            this.MathsRightLabel.ForeColor = System.Drawing.Color.Lime;
+            this.MathsRightLabel.Location = new System.Drawing.Point(264, 0);
+            this.MathsRightLabel.Margin = new System.Windows.Forms.Padding(0);
+            this.MathsRightLabel.Name = "MathsRightLabel";
+            this.MathsRightLabel.Size = new System.Drawing.Size(149, 72);
+            this.MathsRightLabel.TabIndex = 38;
+            this.MathsRightLabel.Text = "[1]\r\n(1, 1)";
+            this.MathsRightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Vector_Form
             // 
@@ -952,7 +1004,7 @@ namespace Vector_Maths_Tool
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(36)))));
             this.ClientSize = new System.Drawing.Size(1920, 1080);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.SelectedMathsPanel);
             this.Controls.Add(this.VectorMathsPanel);
             this.Controls.Add(this.SidePanelMinimizeButton);
             this.Controls.Add(this.SelectPopupPanel);
@@ -982,7 +1034,7 @@ namespace Vector_Maths_Tool
             this.SelectPopupPanel.PerformLayout();
             this.VectorMathsPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Canvas)).EndInit();
-            this.panel1.ResumeLayout(false);
+            this.SelectedMathsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1048,8 +1100,11 @@ namespace Vector_Maths_Tool
         private System.Windows.Forms.Button AddVectorButton;
         private System.Windows.Forms.Button MaximizeScreenButton;
         private System.Windows.Forms.Button ToggleBorderButton;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Panel SelectedMathsPanel;
+        private System.Windows.Forms.Label MathsLeftLabel;
+        private System.Windows.Forms.Label MathOperationLabel;
+        private System.Windows.Forms.Label MathsRightLabel;
+        private System.Windows.Forms.Label MathsResultLabel;
     }
 }
 
