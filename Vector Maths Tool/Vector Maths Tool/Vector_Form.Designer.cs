@@ -73,8 +73,8 @@ namespace Vector_Maths_Tool
             this.ButtonTooltip = new System.Windows.Forms.ToolTip(this.components);
             this.PopupVectorMathsButton = new System.Windows.Forms.Button();
             this.PopupDeleteVectorButton = new System.Windows.Forms.Button();
-            this.MoveLineButton = new System.Windows.Forms.Button();
-            this.CopyLineButton = new System.Windows.Forms.Button();
+            this.PopupMoveLineButton = new System.Windows.Forms.Button();
+            this.PopupCopyLineButton = new System.Windows.Forms.Button();
             this.AddVectorButton = new System.Windows.Forms.Button();
             this.SubtractVectorButton = new System.Windows.Forms.Button();
             this.MultiplyVectorButton = new System.Windows.Forms.Button();
@@ -147,7 +147,7 @@ namespace Vector_Maths_Tool
             this.TimerButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
             this.TimerButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.TimerButton.Font = new System.Drawing.Font("Input", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimerButton.Location = new System.Drawing.Point(10, 401);
+            this.TimerButton.Location = new System.Drawing.Point(10, 386);
             this.TimerButton.Name = "TimerButton";
             this.TimerButton.Size = new System.Drawing.Size(237, 39);
             this.TimerButton.TabIndex = 2;
@@ -293,7 +293,7 @@ namespace Vector_Maths_Tool
             this.FreehandBrushButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
             this.FreehandBrushButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.FreehandBrushButton.Font = new System.Drawing.Font("Input", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FreehandBrushButton.Location = new System.Drawing.Point(10, 265);
+            this.FreehandBrushButton.Location = new System.Drawing.Point(10, 321);
             this.FreehandBrushButton.Name = "FreehandBrushButton";
             this.FreehandBrushButton.Size = new System.Drawing.Size(237, 39);
             this.FreehandBrushButton.TabIndex = 34;
@@ -312,7 +312,7 @@ namespace Vector_Maths_Tool
             this.VectorMathsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
             this.VectorMathsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.VectorMathsButton.Font = new System.Drawing.Font("Input", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.VectorMathsButton.Location = new System.Drawing.Point(10, 197);
+            this.VectorMathsButton.Location = new System.Drawing.Point(10, 126);
             this.VectorMathsButton.Name = "VectorMathsButton";
             this.VectorMathsButton.Size = new System.Drawing.Size(237, 39);
             this.VectorMathsButton.TabIndex = 33;
@@ -341,8 +341,9 @@ namespace Vector_Maths_Tool
             this.SelectRadiusIncrementor.Size = new System.Drawing.Size(58, 15);
             this.SelectRadiusIncrementor.TabIndex = 31;
             this.SelectRadiusIncrementor.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.ButtonTooltip.SetToolTip(this.SelectRadiusIncrementor, "Select cursor\'s circular radius\r\n(Min: 0 | Max: 100)\r\nShortcuts:\r\n   Increase: [n" +
-        "/a]\r\n   Decrease: [n/a]");
+            this.ButtonTooltip.SetToolTip(this.SelectRadiusIncrementor, "Select cursor\'s circular radius for brush and selection\r\n(Min: 0 | Max: 100)\r\nSho" +
+        "rtcuts:\r\n   Increase: [Scroll Wheel +]\r\n   Decrease: [Scroll Wheel -]\r\n   Scroll" +
+        "wheel active when in SELECT mode");
             this.SelectRadiusIncrementor.Value = new decimal(new int[] {
             10,
             0,
@@ -360,7 +361,7 @@ namespace Vector_Maths_Tool
             this.SelectRadiusLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SelectRadiusLabel.Size = new System.Drawing.Size(67, 30);
             this.SelectRadiusLabel.TabIndex = 30;
-            this.SelectRadiusLabel.Text = "Select\r\nRadius";
+            this.SelectRadiusLabel.Text = "Cursor\r\nRadius";
             this.SelectRadiusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // DeleteVectorButton
@@ -371,7 +372,7 @@ namespace Vector_Maths_Tool
             this.DeleteVectorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
             this.DeleteVectorButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.DeleteVectorButton.Font = new System.Drawing.Font("Input", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DeleteVectorButton.Location = new System.Drawing.Point(10, 333);
+            this.DeleteVectorButton.Location = new System.Drawing.Point(10, 256);
             this.DeleteVectorButton.Name = "DeleteVectorButton";
             this.DeleteVectorButton.Size = new System.Drawing.Size(237, 39);
             this.DeleteVectorButton.TabIndex = 26;
@@ -426,7 +427,7 @@ namespace Vector_Maths_Tool
             this.SelectVectorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
             this.SelectVectorButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.SelectVectorButton.Font = new System.Drawing.Font("Input", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SelectVectorButton.Location = new System.Drawing.Point(10, 129);
+            this.SelectVectorButton.Location = new System.Drawing.Point(10, 191);
             this.SelectVectorButton.Name = "SelectVectorButton";
             this.SelectVectorButton.Size = new System.Drawing.Size(237, 39);
             this.SelectVectorButton.TabIndex = 17;
@@ -498,8 +499,7 @@ namespace Vector_Maths_Tool
             this.LineThicknessIncrement.Size = new System.Drawing.Size(58, 15);
             this.LineThicknessIncrement.TabIndex = 13;
             this.LineThicknessIncrement.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.ButtonTooltip.SetToolTip(this.LineThicknessIncrement, "Changes width of line\r\n(Min: 1 | Max: 100)\r\nShortcuts:\r\n   Increase: [Up Arrow] O" +
-        "R [SHIFT]\r\n   Decrease: [Down Arrow] OR {CTRL}\r\n");
+            this.ButtonTooltip.SetToolTip(this.LineThicknessIncrement, resources.GetString("LineThicknessIncrement.ToolTip"));
             this.LineThicknessIncrement.Value = new decimal(new int[] {
             5,
             0,
@@ -688,35 +688,35 @@ namespace Vector_Maths_Tool
             this.PopupDeleteVectorButton.UseVisualStyleBackColor = false;
             this.PopupDeleteVectorButton.Click += new System.EventHandler(this.DeleteVectorButton_Click);
             // 
-            // MoveLineButton
+            // PopupMoveLineButton
             // 
-            this.MoveLineButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.MoveLineButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
-            this.MoveLineButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.MoveLineButton.Font = new System.Drawing.Font("Input", 13F);
-            this.MoveLineButton.Location = new System.Drawing.Point(172, 105);
-            this.MoveLineButton.Name = "MoveLineButton";
-            this.MoveLineButton.Size = new System.Drawing.Size(162, 39);
-            this.MoveLineButton.TabIndex = 35;
-            this.MoveLineButton.Text = "Move Line";
-            this.ButtonTooltip.SetToolTip(this.MoveLineButton, "Moves currently selected line.\r\nShortcut: [N/A]\r\nNot done yet");
-            this.MoveLineButton.UseVisualStyleBackColor = false;
-            this.MoveLineButton.Click += new System.EventHandler(this.MoveLineButton_Click);
+            this.PopupMoveLineButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.PopupMoveLineButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
+            this.PopupMoveLineButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.PopupMoveLineButton.Font = new System.Drawing.Font("Input", 13F);
+            this.PopupMoveLineButton.Location = new System.Drawing.Point(172, 105);
+            this.PopupMoveLineButton.Name = "PopupMoveLineButton";
+            this.PopupMoveLineButton.Size = new System.Drawing.Size(162, 39);
+            this.PopupMoveLineButton.TabIndex = 35;
+            this.PopupMoveLineButton.Text = "Move Line";
+            this.ButtonTooltip.SetToolTip(this.PopupMoveLineButton, "Moves currently selected line.\r\nShortcut: [N/A]\r\nNot done yet");
+            this.PopupMoveLineButton.UseVisualStyleBackColor = false;
+            this.PopupMoveLineButton.Click += new System.EventHandler(this.PopupMoveLineButton_Click);
             // 
-            // CopyLineButton
+            // PopupCopyLineButton
             // 
-            this.CopyLineButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.CopyLineButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
-            this.CopyLineButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.CopyLineButton.Font = new System.Drawing.Font("Input", 13F);
-            this.CopyLineButton.Location = new System.Drawing.Point(172, 162);
-            this.CopyLineButton.Name = "CopyLineButton";
-            this.CopyLineButton.Size = new System.Drawing.Size(162, 39);
-            this.CopyLineButton.TabIndex = 36;
-            this.CopyLineButton.Text = "Copy Line";
-            this.ButtonTooltip.SetToolTip(this.CopyLineButton, "Duplicates line selected.\r\nShortcut: [N/A]\r\nNothin yet combe back later");
-            this.CopyLineButton.UseVisualStyleBackColor = false;
-            this.CopyLineButton.Click += new System.EventHandler(this.CopyLineButton_Click);
+            this.PopupCopyLineButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.PopupCopyLineButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(18)))), ((int)(((byte)(12)))));
+            this.PopupCopyLineButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.PopupCopyLineButton.Font = new System.Drawing.Font("Input", 13F);
+            this.PopupCopyLineButton.Location = new System.Drawing.Point(172, 162);
+            this.PopupCopyLineButton.Name = "PopupCopyLineButton";
+            this.PopupCopyLineButton.Size = new System.Drawing.Size(162, 39);
+            this.PopupCopyLineButton.TabIndex = 36;
+            this.PopupCopyLineButton.Text = "Copy Line";
+            this.ButtonTooltip.SetToolTip(this.PopupCopyLineButton, "Duplicates line selected.\r\nShortcut: [N/A]\r\nNothin yet combe back later");
+            this.PopupCopyLineButton.UseVisualStyleBackColor = false;
+            this.PopupCopyLineButton.Click += new System.EventHandler(this.PopupCopyLineButton_Click);
             // 
             // AddVectorButton
             // 
@@ -763,7 +763,7 @@ namespace Vector_Maths_Tool
             this.MultiplyVectorButton.Name = "MultiplyVectorButton";
             this.MultiplyVectorButton.Size = new System.Drawing.Size(119, 37);
             this.MultiplyVectorButton.TabIndex = 39;
-            this.MultiplyVectorButton.Text = "Multiply";
+            this.MultiplyVectorButton.Text = "Scalar Multiply";
             this.ButtonTooltip.SetToolTip(this.MultiplyVectorButton, "Multiplies two selected vectors to create a new line representing the result\r\n(X1" +
         " * X2, Y1 * Y2) = (X3, Y3)\r\n");
             this.MultiplyVectorButton.UseVisualStyleBackColor = false;
@@ -821,8 +821,8 @@ namespace Vector_Maths_Tool
             // 
             this.SelectPopupPanel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.SelectPopupPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(14)))), ((int)(((byte)(22)))));
-            this.SelectPopupPanel.Controls.Add(this.CopyLineButton);
-            this.SelectPopupPanel.Controls.Add(this.MoveLineButton);
+            this.SelectPopupPanel.Controls.Add(this.PopupCopyLineButton);
+            this.SelectPopupPanel.Controls.Add(this.PopupMoveLineButton);
             this.SelectPopupPanel.Controls.Add(this.PopupDeleteVectorButton);
             this.SelectPopupPanel.Controls.Add(this.PopupVectorMathsButton);
             this.SelectPopupPanel.Controls.Add(this.PopupTitleLabel);
@@ -937,6 +937,9 @@ namespace Vector_Maths_Tool
             this.SelectedMathsPanel.Size = new System.Drawing.Size(423, 145);
             this.SelectedMathsPanel.TabIndex = 41;
             this.SelectedMathsPanel.Visible = false;
+            this.SelectedMathsPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
+            this.SelectedMathsPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
+            this.SelectedMathsPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
             // 
             // MathsResultLabel
             // 
@@ -952,6 +955,9 @@ namespace Vector_Maths_Tool
             this.MathsResultLabel.TabIndex = 40;
             this.MathsResultLabel.Text = "(2, 2)";
             this.MathsResultLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.MathsResultLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
+            this.MathsResultLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
+            this.MathsResultLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
             // 
             // MathOperationLabel
             // 
@@ -960,13 +966,16 @@ namespace Vector_Maths_Tool
             this.MathOperationLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MathOperationLabel.Font = new System.Drawing.Font("Input", 22F, System.Drawing.FontStyle.Bold);
             this.MathOperationLabel.ForeColor = System.Drawing.Color.Lime;
-            this.MathOperationLabel.Location = new System.Drawing.Point(159, 0);
+            this.MathOperationLabel.Location = new System.Drawing.Point(162, 0);
             this.MathOperationLabel.Margin = new System.Windows.Forms.Padding(0);
             this.MathOperationLabel.Name = "MathOperationLabel";
-            this.MathOperationLabel.Size = new System.Drawing.Size(105, 72);
+            this.MathOperationLabel.Size = new System.Drawing.Size(102, 72);
             this.MathOperationLabel.TabIndex = 39;
             this.MathOperationLabel.Text = "+";
             this.MathOperationLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.MathOperationLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
+            this.MathOperationLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
+            this.MathOperationLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
             // 
             // MathsLeftLabel
             // 
@@ -975,13 +984,16 @@ namespace Vector_Maths_Tool
             this.MathsLeftLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MathsLeftLabel.Font = new System.Drawing.Font("Input", 10.5F);
             this.MathsLeftLabel.ForeColor = System.Drawing.Color.Lime;
-            this.MathsLeftLabel.Location = new System.Drawing.Point(10, 0);
+            this.MathsLeftLabel.Location = new System.Drawing.Point(13, 0);
             this.MathsLeftLabel.Margin = new System.Windows.Forms.Padding(0);
             this.MathsLeftLabel.Name = "MathsLeftLabel";
             this.MathsLeftLabel.Size = new System.Drawing.Size(149, 72);
             this.MathsLeftLabel.TabIndex = 37;
             this.MathsLeftLabel.Text = "[0]\r\n(1, 1)";
             this.MathsLeftLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.MathsLeftLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
+            this.MathsLeftLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
+            this.MathsLeftLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
             // 
             // MathsRightLabel
             // 
@@ -997,6 +1009,9 @@ namespace Vector_Maths_Tool
             this.MathsRightLabel.TabIndex = 38;
             this.MathsRightLabel.Text = "[1]\r\n(1, 1)";
             this.MathsRightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.MathsRightLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
+            this.MathsRightLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
+            this.MathsRightLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
             // 
             // Vector_Form
             // 
@@ -1085,8 +1100,8 @@ namespace Vector_Maths_Tool
         private System.Windows.Forms.NumericUpDown SelectRadiusIncrementor;
         private System.Windows.Forms.Label PopupTitleLabel;
         private System.Windows.Forms.Button VectorMathsButton;
-        private System.Windows.Forms.Button CopyLineButton;
-        private System.Windows.Forms.Button MoveLineButton;
+        private System.Windows.Forms.Button PopupCopyLineButton;
+        private System.Windows.Forms.Button PopupMoveLineButton;
         private System.Windows.Forms.Button PopupDeleteVectorButton;
         private System.Windows.Forms.Button PopupVectorMathsButton;
         private System.Windows.Forms.Label SideBarLabel;

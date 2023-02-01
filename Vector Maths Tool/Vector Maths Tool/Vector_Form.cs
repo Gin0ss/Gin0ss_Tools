@@ -29,10 +29,11 @@ using Ginoss_Tools;
 * if math button pressed create another pop up menu with different math functions tooltip on how to use (X)
 * if math function pressed brief instruction on how to use (label will do) e.g. Select another line to add (X)
 * Perform maths function on two lines and create a new line of result with line color with color dialouge popup (X)
+* Select other line for math function remove temporary code for selecting: selected line index - 1 (X)
+* Move and copy line functionality and choose resulting lines colour if nothing is chosen use last lines colour (X)
 * 
-* Select other line for math function remove temporary code for selecting selected line index - 1 <<<
-* Move and copy line functionality and choose resulting lines colour if nothing is chosen use last lines colour
-* Expand Vector struct overloads and math functionality such add dot product method
+* Replace Multiply to scalar multiplication with a input for the multiplier
+* Replace divide button with popup for dot/cross product then give result in closeable window that can be overwritten if not closed
 * Show selected line as guide colour permanently while selected and in select mode
 * Dot Spacing too far find out how to make circle draw closer to eachother
 * Undo and redo keys using Z and X by removing the last in Vector List and puts into redo List and redo adds back to vector list from redo list
@@ -58,6 +59,7 @@ using Ginoss_Tools;
 * Create a function for each toggle state
 * Move Toggle state false bool change to be a seperate function that turns all bools false and changes the bool pased into the function true GlobalToggleState(bool to turn true);
 * Sort function regions into more useful groups
+* Merge all Toggle state functions into one that takes the the bool to change ToggleState(bool stateBool)
 */
 
 /* --- Quality of Life (Ease of Use) ---
@@ -125,11 +127,12 @@ namespace Vector_Maths_Tool
         bool isBordered = false;
         bool isMaximized = false;
         bool timerRunning = false;
+        bool isMovingLine = false;
+        bool isCopyingLine = false;
         bool canvasPressed = false;
         bool canvasReleased = false;
         bool canCreateVector = false;
         bool isDrawingVector = false;
-        bool isClearingScreen = false;
         bool isDrawingFreehand = false;
         bool isSelectingVector = false;
         bool isSidePanelVisible = true;
@@ -142,7 +145,7 @@ namespace Vector_Maths_Tool
         string timerOut;
 
         string connectionString = "Server=Ginoss,6464; Database=Vector_Math_Tool;Trusted_Connection=True"; //Local faster
-                                                                                                           //string connectionString = "Server=31.54.59.212,6464; Database=Vector_Math_Tool; USER ID=AS; PASSWORD = 123"; //Server
+        //string connectionString = "Server=31.54.59.212,6464; Database=Vector_Math_Tool; USER ID=AS; PASSWORD = 123"; //Server
 
         #endregion
 
@@ -168,6 +171,7 @@ namespace Vector_Maths_Tool
 
             CurrentGuideColor.Color = guideColor;
             CurrentLineColor.Color = lineColor;
+            SelectedMathsPanel.BackColor = Color.FromArgb(100, 24, 14, 32);
 
             LineWidth = (int)LineThicknessIncrement.Value;
             selectRadius = (int)SelectRadiusIncrementor.Value;
@@ -197,8 +201,6 @@ namespace Vector_Maths_Tool
                     connection.Close();
 
             }
-
-
 
         }
 
@@ -249,6 +251,14 @@ namespace Vector_Maths_Tool
 
             }
 
+            if (isMovingLine || isCopyingLine)
+            {
+                Point currentLineVector = resultVector + new Vector(canvasMousePos);
+
+                DrawGuideLine(guidePen, canvasMousePos, currentLineVector, graphics);
+
+            }
+
             if (isAdding | isSubtracting | isMultiplying | isDividing)
             {
                 Vector lefthandVector = vectorList[mathLineID].lineVector;
@@ -263,10 +273,12 @@ namespace Vector_Maths_Tool
             }
 
             for (int i = 0; i < vectorList.Count; i++)
-                {
-                    graphics.DrawLine(vectorList[i].drawPen, vectorList[i].linePoints[0], vectorList[i].linePoints[1]);
+            {
+                DeselectLineGraphics(i);
+                if (i == selectedLineID && isSelectingVector) vectorList[selectedLineID].drawPen = guidePen;
+                graphics.DrawLine(vectorList[i].drawPen, vectorList[i].linePoints[0], vectorList[i].linePoints[1]);
 
-                }
+            }
 
         }
 
@@ -330,6 +342,8 @@ namespace Vector_Maths_Tool
             SelectPopupPanel.Visible = false;
             VectorMathsPanel.Visible = false;
             VectorMathsPanel.Enabled = false;
+
+            DeselectLineGraphics(selectedLineID);
 
         }
 
@@ -480,9 +494,11 @@ namespace Vector_Maths_Tool
 
         }
 
-        void SelectLine(int lineID)
+        void SelectLine()
         {
-            Vector_Shapes selectedLine = vectorList[lineID];
+            Vector_Shapes selectedLine = new Vector_Shapes(Point.Empty, Point.Empty, 1, Color.Lime);
+            if (selectedLineID - 1 > 0 && selectedLineID + 1 < vectorList.Count) selectedLine = vectorList[selectedLineID];
+            else return;
 
             int selectWidth = selectedLine.LineWidth;
             Color selectColor = selectedLine.LineColor;
@@ -493,29 +509,36 @@ namespace Vector_Maths_Tool
 
             selectedLine.drawPen = selectPen;
 
-            UpdateVectorStatsLabels(vectorList[selectedLineID]);
+            UpdateVectorStatsLabels(selectedLine);
 
             Canvas.Refresh();
 
         }
 
-        void DeselectLine(int lineID)
+        void DeselectLineGraphics(int lineID)
         {
-            int originalWidth = vectorList[lineID].LineWidth;
-            Color originalColor = vectorList[lineID].LineColor;
+            if (lineID < vectorList.Count)
+            {
+                int originalWidth = vectorList[lineID].LineWidth;
+                Color originalColor = vectorList[lineID].LineColor;
 
-            vectorList[lineID].drawPen = new Pen(originalColor, originalWidth);
+                vectorList[lineID].drawPen = new Pen(originalColor, originalWidth);
+
+            }
 
         }
 
         void RemoveLine()
         {
-            selectedLineID = vectorList.Count > 0 ? vectorList.Count - 1 : 0;
+            selectedLineID = vectorList.Count > 0 ? selectedLineID : 0;
+            selectedLineID = vectorList.Count > selectedLineID ? selectedLineID : vectorList.Count - 1;
 
             if (vectorList.Count > 0)
             {
                 vectorList.Remove(vectorList[selectedLineID]);
                 label5.Text = "Line Count: " + vectorList.Count;
+
+                if(vectorList.Count == 1) UpdateVectorStatsLabels(new Vector_Shapes((Point)Vector.Zero, (Point)Vector.Zero, LineWidth, lineColor));
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
@@ -528,6 +551,8 @@ namespace Vector_Maths_Tool
                     connection.Close();
                 }
 
+                DeselectLineGraphics(selectedLineID);
+                SelectLine();
                 DeselectLinePopup();
                 Canvas.Refresh();
 
@@ -610,6 +635,7 @@ namespace Vector_Maths_Tool
                             searchCommand.Parameters.AddWithValue("@currentSearchY", searchY);
 
                             #region Select LineID
+
                             var result = searchCommand.ExecuteScalar();
 
                             if (vectorList.Count > 0)
@@ -618,12 +644,11 @@ namespace Vector_Maths_Tool
 
                                 if (result != null)
                                 {
-                                    int lineID = selectedLineID <= vectorList.Count - 1 ? (int)result : vectorList.Count - 1;
-                                    selectedLineID = lineID;
-                                    SelectLine(lineID);
+                                    selectedLineID = selectedLineID <= vectorList.Count - 1 ? (int)result : vectorList.Count - 1;
+                                    SelectLine();
 
                                 }
-                                else DeselectLine(selectedLineID);
+                                else DeselectLineGraphics(selectedLineID);
 
                             }
 
@@ -644,6 +669,7 @@ namespace Vector_Maths_Tool
         void ToggleSelectMode()
         {
             Vector vector = mathLineID < vectorList.Count ? vectorList[mathLineID].lineVector : Vector.One;
+
             isSelectingVector = !isSelectingVector;
 
             if (isSelectingVector)
@@ -651,13 +677,12 @@ namespace Vector_Maths_Tool
                 isDrawingVector = false;
                 canCreateVector = false;
                 isDrawingFreehand = false;
+                isMovingLine = false;
+                isCopyingLine = false;
 
-                if (isDrawingVector)
-                {
-                    UpdateBoolChecker("Drawing Line", isDrawingVector, 0);
-                    UpdateBoolChecker("Can_Create", canCreateVector, 2);
+                UpdateBoolChecker("Drawing Line", isDrawingVector, 0);
+                UpdateBoolChecker("Can_Create", canCreateVector, 2);
 
-                }
 
             }
             else using (MemoryStream ms = new MemoryStream(Properties.Resources.dotSelect_Cursor)) Canvas.Cursor = new Cursor(ms);
@@ -685,6 +710,8 @@ namespace Vector_Maths_Tool
                 canCreateVector = true; 
                 isSelectingVector = false;
                 isDrawingFreehand = false;
+                isMovingLine = false;
+                isCopyingLine = false;
 
             }
             else canCreateVector = false; 
@@ -724,6 +751,52 @@ namespace Vector_Maths_Tool
 
         }
 
+        void ToggleMoveState()
+        {
+            isMovingLine = !isMovingLine;
+
+            if (isMovingLine)
+            {
+                isDrawingVector = false;
+                canCreateVector = false;
+                isSelectingVector = false;
+
+                RemoveLine();
+
+                UpdateBoolChecker("Drawing Line", isDrawingVector, 0);
+                UpdateBoolChecker("Can_Create", canCreateVector, 2);
+                UpdateBoolChecker("Select_Line", isSelectingVector, 3);
+
+                DeselectLinePopup();
+
+            }
+
+            Canvas.Refresh();
+
+        }
+
+        void ToggleCopyState()
+        {
+            isCopyingLine = !isCopyingLine;
+
+            if (isCopyingLine)
+            {
+                isDrawingVector = false;
+                canCreateVector = false;
+                isSelectingVector = false;
+
+                UpdateBoolChecker("Drawing Line", isDrawingVector, 0);
+                UpdateBoolChecker("Can_Create", canCreateVector, 2);
+                UpdateBoolChecker("Select_Line", isSelectingVector, 3);
+
+                DeselectLinePopup();
+
+            }
+
+            Canvas.Refresh();
+
+        }
+
         void ToggleAddState()
         {
             isAdding = vectorList.Count > 1 ? !isAdding : isAdding;
@@ -735,6 +808,7 @@ namespace Vector_Maths_Tool
                 SelectedMathsPanel.Visible = true;
                 SelectedMathsPanel.Enabled = true;
 
+                DeselectLineGraphics(selectedLineID);
                 mathLineID = selectedLineID;
                 ToggleSelectMode();
 
@@ -803,7 +877,19 @@ namespace Vector_Maths_Tool
         Point GetMousePositionToCanvas()
         { return new Point(PointToClient(MousePosition).X - Canvas.Location.X, PointToClient(MousePosition).Y - Canvas.Location.Y); }
 
-        void Canvas_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            int delta = (int)(e.Delta * 0.01f);
+
+            if(isSelectingVector || isDrawingFreehand) SelectRadiusIncrementor.Value += delta;
+
+            if (isDrawingVector) LineThicknessIncrement.Value += delta;
+
+            Canvas.Refresh();
+
+        }
+
+        private void Canvas_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             //Create Mode
             if (e.KeyCode == Keys.Space)
@@ -867,7 +953,7 @@ namespace Vector_Maths_Tool
             }
             else using (MemoryStream ms = new MemoryStream(Properties.Resources.pressed_Cursor)) Canvas.Cursor = new Cursor(ms);
 
-            if(isAdding || isSubtracting || isMultiplying || isDividing)
+            if(isAdding || isSubtracting || isMultiplying || isDividing || isMovingLine || isCopyingLine)
             {
                 Color originalColor = lineColor;
                 CurrentLineColor.ShowDialog();
@@ -882,6 +968,8 @@ namespace Vector_Maths_Tool
                 isSubtracting = false;
                 isMultiplying = false;
                 isDividing = false;
+                isMovingLine = false;
+                isCopyingLine = false;
 
                 Canvas.Refresh();
 
@@ -942,10 +1030,15 @@ namespace Vector_Maths_Tool
 
                 if (isDividing) resultVector = vectorList[mathLineID].lineVector / vectorList[selectedLineID].lineVector;
 
+
+
                 CursorCircleSelect(selectRadius);
                 Canvas.Refresh();
 
             }
+
+            if (isMovingLine) resultVector = vectorList[selectedLineID].lineVector;
+            if (isCopyingLine) resultVector = vectorList[selectedLineID].lineVector;
 
             if (isDrawingFreehand)
             {
@@ -960,7 +1053,7 @@ namespace Vector_Maths_Tool
 
             }
 
-            if (isDrawingVector | isAdding | isSubtracting | isMultiplying | isDividing) Canvas.Refresh();
+            if (isDrawingVector | isAdding | isSubtracting | isMultiplying | isDividing | isMovingLine | isCopyingLine) Canvas.Refresh();
 
         }
 
@@ -1067,8 +1160,6 @@ namespace Vector_Maths_Tool
 
         private void ClearButton_Click(object sender, EventArgs e)
         {
-            isClearingScreen = true;
-
             renderImage = new Bitmap(Width, Height);
             Canvas.Image = renderImage;
 
@@ -1155,15 +1246,15 @@ namespace Vector_Maths_Tool
 
         }
 
-        private void MoveLineButton_Click(object sender, EventArgs e)
+        private void PopupMoveLineButton_Click(object sender, EventArgs e)
         {
-            Button_Panel.Refresh();
+            ToggleMoveState();
 
         }
 
-        private void CopyLineButton_Click(object sender, EventArgs e)
+        private void PopupCopyLineButton_Click(object sender, EventArgs e)
         {
-            Button_Panel.Refresh();
+            ToggleCopyState();
 
         }
 
@@ -1319,6 +1410,7 @@ namespace Vector_Maths_Tool
             ToggleDivideState();
 
         }
+
 
         #endregion
 

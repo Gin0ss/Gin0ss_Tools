@@ -123,6 +123,18 @@
   <metadata name="TimerWorker.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <metadata name="ButtonTooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>534, 17</value>
+  </metadata>
+  <data name="LineThicknessIncrement.ToolTip" xml:space="preserve">
+    <value>Changes width of line
+(Min: 1 | Max: 100)
+Shortcuts:
+   Increase: [Up Arrow] OR [SHIFT] OR [Scrolll Wheel +]
+   Decrease: [Down Arrow] OR {CTRL} OR [Scroll Wheel -]
+   (Scrollwheel active when DRAWING line)
+</value>
+  </data>
   <metadata name="UI_Delay.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>137, 17</value>
   </metadata>
