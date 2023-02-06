@@ -1,0 +1,9 @@
+C:\Users\triba\OneDrive\Desktop\Portfolio\Software Dev\C# Application\My Tool Applications\Gin0ss_Tools\Vector Maths Tool\Vector Maths Tool\bin\Release\Vector Maths Tool.exe.config
+C:\Users\triba\OneDrive\Desktop\Portfolio\Software Dev\C# Application\My Tool Applications\Gin0ss_Tools\Vector Maths Tool\Vector Maths Tool\bin\Release\Vector Maths Tool.exe
+C:\Users\triba\OneDrive\Desktop\Portfolio\Software Dev\C# Application\My Tool Applications\Gin0ss_Tools\Vector Maths Tool\Vector Maths Tool\bin\Release\Vector Maths Tool.pdb
+C:\Users\triba\OneDrive\Desktop\Portfolio\Software Dev\C# Application\My Tool Applications\Gin0ss_Tools\Vector Maths Tool\Vector Maths Tool\obj\Release\Vector_Maths_Tool.Vector_Form.resources
+C:\Users\triba\OneDrive\Desktop\Portfolio\Software Dev\C# Application\My Tool Applications\Gin0ss_Tools\Vector Maths Tool\Vector Maths Tool\obj\Release\Vector_Maths_Tool.Properties.Resources.resources
+C:\Users\triba\OneDrive\Desktop\Portfolio\Software Dev\C# Application\My Tool Applications\Gin0ss_Tools\Vector Maths Tool\Vector Maths Tool\obj\Release\Vector Maths Tool.csproj.GenerateResource.cache
+C:\Users\triba\OneDrive\Desktop\Portfolio\Software Dev\C# Application\My Tool Applications\Gin0ss_Tools\Vector Maths Tool\Vector Maths Tool\obj\Release\Vector Maths Tool.csproj.CoreCompileInputs.cache
+C:\Users\triba\OneDrive\Desktop\Portfolio\Software Dev\C# Application\My Tool Applications\Gin0ss_Tools\Vector Maths Tool\Vector Maths Tool\obj\Release\Vector Maths Tool.exe
+C:\Users\triba\OneDrive\Desktop\Portfolio\Software Dev\C# Application\My Tool Applications\Gin0ss_Tools\Vector Maths Tool\Vector Maths Tool\obj\Release\Vector Maths Tool.pdb

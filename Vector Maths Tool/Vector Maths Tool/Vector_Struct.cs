@@ -109,13 +109,13 @@ namespace Ginoss_Tools
 
         }
 
-        public float DotProduct(Vector a, Vector b)
+        public static float DotProduct(Vector a, Vector b)
         {
             return (a.X * b.X) + (a.Y * b.Y);
 
         }
 
-        public float CrossProduct(Vector a, Vector b)
+        public static float CrossProduct(Vector a, Vector b)
         {
             return (a.X * b.X) - (a.Y * b.Y);
 
@@ -125,6 +125,9 @@ namespace Ginoss_Tools
 
         #region Operator Overloads
 
+        #region Add
+
+        //Add
         public static Vector operator+(Vector a, Vector b)
         {
             float x = a.X + b.X;
@@ -135,6 +138,7 @@ namespace Ginoss_Tools
 
         }
 
+        //Float Scalar Add
         public static Vector operator+(Vector a, float b)
         {
             float x = a.X + b;
@@ -145,6 +149,7 @@ namespace Ginoss_Tools
 
         }
 
+        //Int Scalar Add
         public static Vector operator+(Vector a, int b)
         {
             float x = a.X + b;
@@ -155,6 +160,10 @@ namespace Ginoss_Tools
 
         }
 
+        #endregion
+
+        #region Subtract
+        //Subtract
         public static Vector operator-(Vector a, Vector b)
         {
             float x = a.X - b.X;
@@ -166,6 +175,7 @@ namespace Ginoss_Tools
 
         }
 
+        //Float Scalar Subtract
         public static Vector operator-(Vector a, float b)
         {
             float x = a.X - b;
@@ -177,6 +187,7 @@ namespace Ginoss_Tools
 
         }
 
+        //Int Scalar Subtract
         public static Vector operator-(Vector a, int b)
         {
             float x = a.X - b;
@@ -187,17 +198,11 @@ namespace Ginoss_Tools
 
 
         }
+        #endregion
 
-        public static Vector operator*(Vector a, Vector b)
-        {
-            float x = a.X * b.X;
-            float y = a.Y * b.Y;
+        #region Multiply
 
-            Vector result = new Vector(x, y);
-            return result;
-
-        }
-
+        //Scalar Multiply Float
         public static Vector operator*(Vector a, float b)
         {
             float x = a.X * b;
@@ -208,6 +213,7 @@ namespace Ginoss_Tools
 
         }
 
+        //Scalar Multiply Int
         public static Vector operator*(Vector a, int b)
         {
             float x = a.X * b;
@@ -218,25 +224,11 @@ namespace Ginoss_Tools
 
         }
 
-        public static Vector operator/(Vector a, Vector b)
-        {
-            if (a.X != 0|| a.Y != 0|| b.X != 0|| b.Y != 0)
-            {
-                float x = a.X / b.X;
-                float y = a.Y / b.Y;
+        #endregion
 
-                Vector result = new Vector(x, y);
-                return result;
-            }
-            else
-            {
-                Console.WriteLine("Returning (1, 1) !!!Can't divide by zero!!!");
-                return Vector.One;
+        #region Divide
 
-            }
-
-        }
-
+        //Scalar Divide Float
         public static Vector operator/(Vector a, float b)
         {
             if (a.X != 0|| a.Y != 0|| b != 0)
@@ -256,6 +248,7 @@ namespace Ginoss_Tools
 
         }
 
+        //Scalar Divide Int
         public static Vector operator/(Vector a, int b)
         {
             if (a.X != 0|| a.Y != 0|| b != 0)
@@ -274,7 +267,44 @@ namespace Ginoss_Tools
             }
 
         }
-        
+
+        #endregion
+
+        #region Extra
+
+        public static Vector operator *(Vector a, Vector b)
+        {
+            float x = a.X * b.X;
+            float y = a.Y * b.Y;
+
+            Vector result = new Vector(x, y);
+            return result;
+
+        }
+
+        public static Vector operator /(Vector a, Vector b)
+        {
+            if (a.X != 0 || a.Y != 0 || b.X != 0 || b.Y != 0)
+            {
+                float x = a.X / b.X;
+                float y = a.Y / b.Y;
+
+                Vector result = new Vector(x, y);
+                return result;
+            }
+            else
+            {
+                Console.WriteLine("Returning (1, 1) !!!Can't divide by zero!!!");
+                return Vector.One;
+
+            }
+
+        }
+
+        #endregion
+
+        #region Boolean
+
         public static Boolean operator==(Vector a, Vector b)
         {
             return (a.X == b.X && a.Y == b.Y);
@@ -292,6 +322,8 @@ namespace Ginoss_Tools
             return new Point((int)vector.X, (int)vector.Y);
 
         }
+
+        #endregion
 
         #endregion
 
