@@ -337,6 +337,8 @@ namespace Vector_Maths_Tool
 
             if (isDrawingFreehand)
             {
+                guidePen = new Pen(guideColor, selectRadius * 2);
+
                 DrawCircle(graphics, guideBrush, canvasMousePos.X, canvasMousePos.Y, selectRadius, false);
                 graphics.DrawLine(guidePen, startPoint, canvasMousePos);
                 startPoint = canvasMousePos;
