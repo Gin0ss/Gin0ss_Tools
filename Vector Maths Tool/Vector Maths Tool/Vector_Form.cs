@@ -719,7 +719,6 @@ namespace Vector_Maths_Tool
 
                     }
 
-                    //Search Pixel coordinate switch for each iteration
                     switch (i)
                     {
                         case 0:
@@ -759,7 +758,8 @@ namespace Vector_Maths_Tool
 
                     i++;
 
-                        using (SqlCommand searchCommand = new SqlCommand("IF EXISTS(SELECT Line_ID FROM Points WHERE X = @currentSearchX AND Y = @currentSearchY) SELECT Line_ID FROM Points WHERE X = @currentSearchX AND Y = @currentSearchY", connection)) //Search for lineID of the pixels coordinates that is inside database
+                        //Needs batch command to speed up select performance
+                        using (SqlCommand searchCommand = new SqlCommand("IF EXISTS(SELECT Line_ID FROM Points WHERE X = @currentSearchX AND Y = @currentSearchY) SELECT Line_ID FROM Points WHERE X = @currentSearchX AND Y = @currentSearchY", connection))
                         {
                             searchCommand.Parameters.AddWithValue("@currentSearchX", searchX);
                             searchCommand.Parameters.AddWithValue("@currentSearchY", searchY);
